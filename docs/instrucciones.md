@@ -303,11 +303,13 @@ enum TimeOfDay {
 
 ## ✅ Fase 3 — HeroUI v3 + Layout base
 
-- [ ] Inicializar HeroUI: `npx heroui-cli@latest init` (seguir el wizard)
-- [ ] Configurar tema oscuro/claro (rally-friendly: tema oscuro por defecto con acentos en naranja/rojo)
-- [ ] Crear layout raíz `src/app/layout.tsx` con providers de HeroUI y theme
-- [ ] Verificar que un componente de prueba (`<Button>`) renderiza correctamente
-- [ ] Commit: `feat(ui): integrate heroui v3 with theme provider`
+- [x] Inicializar HeroUI: `npx heroui-cli@latest init` (seguir el wizard) _(instalado a mano: `@heroui/react` + `@heroui/styles` + `@import "@heroui/styles"` en `globals.css`; el wizard requiere pnpm + Node ≥22.22)_
+- [x] Configurar tema oscuro/claro (rally-friendly: tema oscuro por defecto con acentos en naranja/rojo) _(via `next-themes` con `defaultTheme="dark"` y `--accent` naranja)_
+- [x] Crear layout raíz `src/app/layout.tsx` con providers de HeroUI y theme _(en v3 sólo se necesita `ThemeProvider` de `next-themes`)_
+- [x] Verificar que un componente de prueba (`<Button>`) renderiza correctamente
+- [x] Commit: `feat(ui): integrate heroui v3 with theme provider`
+
+> Notas v3: el `Button` de HeroUI v3 usa `variant="primary"` (no `color="primary"`) y no acepta `as`/`href` (es un `<button>` real). Para navegación usar `<Link>` de Next.js o el `Link` de HeroUI por separado.
 
 ---
 
