@@ -415,13 +415,13 @@ enum TimeOfDay {
 
 ## ✅ Fase 9 — Sección Usuarios (admin)
 
-- [ ] Página `/usuarios` (solo admin):
+- [x] Página `/usuarios` (solo admin):
   - Tabla de usuarios con avatar, username, rol, fecha creación, # tiempos registrados
   - Botón "Crear usuario" (modal)
   - Acciones por fila: editar, resetear contraseña (vuelve a `P@ssw0rd` + `mustChangePassword: true`), borrar (con confirm)
-- [ ] Página `/perfil` (todos): editar propio username, foto, cambiar password
-- [ ] Server Actions con checks de permisos (admin para gestión, user para perfil propio)
-- [ ] Commit: `feat(users): admin user management and self profile`
+- [x] Página `/perfil` (todos): editar propio username, foto, cambiar password
+- [x] Server Actions con checks de permisos (admin para gestión, user para perfil propio)
+- [x] Commit: `feat(users): admin user management and self profile`
 
 ---
 
