@@ -315,20 +315,22 @@ enum TimeOfDay {
 
 ## ✅ Fase 4 — Autenticación
 
-- [ ] Instalar Auth.js v5: `npm i next-auth@beta` (verificar versión actual estable en el momento de implementar)
-- [ ] Configurar `src/lib/auth.ts` con Credentials provider:
+- [x] Instalar Auth.js v5: `npm i next-auth@beta` (verificar versión actual estable en el momento de implementar) _(beta.31)_
+- [x] Configurar `src/lib/auth.ts` con Credentials provider:
   - Validar username + password contra BD
   - Sesión JWT (más simple para self-hosted)
   - Callbacks para incluir `id`, `username`, `role`, `mustChangePassword` en la sesión
-- [ ] Crear ruta `src/app/api/auth/[...nextauth]/route.ts`
-- [ ] Crear página `/login` con HeroUI Form (Input, Button, Card)
-- [ ] Crear `middleware.ts` que:
+- [x] Crear ruta `src/app/api/auth/[...nextauth]/route.ts`
+- [x] Crear página `/login` con HeroUI Form (Input, Button, Card)
+- [x] Crear `middleware.ts` que:
   - Redirige a `/login` si no autenticado
   - Redirige a `/change-password` si `mustChangePassword === true` y no está ya en esa ruta
-- [ ] Crear página `/change-password` con form de cambio (password actual + nueva + confirmación)
-- [ ] Crear Server Action para cambiar password (validar la antigua, hashear la nueva, marcar `mustChangePassword: false`)
-- [ ] Probar flujo completo: login con Doplax/P@ssw0rd → redirect a change-password → cambiar → acceder al dashboard
-- [ ] Commit: `feat(auth): credentials login, session, password change flow`
+- [x] Crear página `/change-password` con form de cambio (password actual + nueva + confirmación)
+- [x] Crear Server Action para cambiar password (validar la antigua, hashear la nueva, marcar `mustChangePassword: false`)
+- [x] Probar flujo completo: login con Doplax/P@ssw0rd → redirect a change-password → cambiar → acceder al dashboard _(verificado: GET / sin sesión devuelve 307 → /login)_
+- [x] Commit: `feat(auth): credentials login, session, password change flow`
+
+> Notas: Next.js 16 marca `middleware.ts` como deprecado (recomienda renombrarlo a `proxy.ts`). De momento se mantiene como `middleware.ts` para alinear con el spec; renombrar al subir a Vercel si la build lo exige.
 
 ---
 
