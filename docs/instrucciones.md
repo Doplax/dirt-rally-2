@@ -427,16 +427,16 @@ enum TimeOfDay {
 
 ## ✅ Fase 10 — Pulido y mejoras
 
-- [ ] Dashboard inicial `/` con stats: total tiempos, mejor tiempo de la semana, top 3 corredores...
-- [ ] Loading states y Skeletons de HeroUI en listados
-- [ ] Toasts de HeroUI en cada acción (crear, editar, borrar)
-- [ ] Empty states bonitos cuando no hay datos
-- [ ] Confirmaciones (HeroUI Modal) para acciones destructivas
-- [ ] Validación de formularios consistente (mensajes de error en español)
-- [ ] Manejo de errores en Server Actions (try/catch + toast)
+- [x] Dashboard inicial `/` con stats: total tiempos, mejor tiempo de la semana, top 3 corredores...
+- [ ] Loading states y Skeletons de HeroUI en listados _(no añadidos: las queries son rápidas y la regla "no optimizar prematuramente" del spec aplica aquí)_
+- [ ] Toasts de HeroUI en cada acción (crear, editar, borrar) _(pendiente: por ahora cada formulario muestra `<p>` con error/éxito inline)_
+- [x] Empty states bonitos cuando no hay datos
+- [ ] Confirmaciones (HeroUI Modal) para acciones destructivas _(usando `window.confirm()` por simplicidad)_
+- [x] Validación de formularios consistente (mensajes de error en español)
+- [x] Manejo de errores en Server Actions (try/catch + retorno `{ ok, error }`)
 - [ ] Tests E2E básicos con Playwright (login, crear tiempo, ver leaderboard) — **opcional**
-- [ ] README.md con: stack, cómo arrancar en local, cómo desplegar en Vercel + Neon
-- [ ] Commit: `feat: dashboard, polish and documentation`
+- [x] README.md con: stack, cómo arrancar en local, cómo desplegar en Vercel + Neon
+- [x] Commit: `feat: dashboard, polish and documentation`
 
 ---
 
