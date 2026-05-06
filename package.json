@@ -11,6 +11,7 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
+    "@prisma/client": "^6.19.3",
     "next": "16.2.5",
     "react": "19.2.4",
     "react-dom": "19.2.4"
@@ -25,7 +26,9 @@
     "eslint-config-prettier": "^9.1.0",
     "prettier": "^3.4.2",
     "prettier-plugin-tailwindcss": "^0.6.11",
+    "prisma": "^6.19.3",
     "tailwindcss": "^4",
+    "tsx": "^4.21.0",
     "typescript": "^5"
   }
 }

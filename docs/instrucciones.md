@@ -275,17 +275,17 @@ enum TimeOfDay {
 
 ## ✅ Fase 1 — Base de datos y Docker
 
-- [ ] Crear `docker-compose.yml` con un servicio PostgreSQL 16:
-  - Puerto: 5432
+- [x] Crear `docker-compose.yml` con un servicio PostgreSQL 16:
+  - Puerto: ~~5432~~ **5435** (5432 estaba ocupado en local; mapeado al 5432 del contenedor)
   - User: `dirt`, Password: `dirt`, DB: `dirt_tracker`
   - Volumen persistente
-- [ ] Crear `.env.example` con `DATABASE_URL`, `NEXTAUTH_SECRET`, `NEXTAUTH_URL`
-- [ ] Instalar Prisma: `npm i -D prisma && npm i @prisma/client`
-- [ ] `npx prisma init`
-- [ ] Copiar el schema de Prisma de la sección "Modelo de datos" arriba
-- [ ] `docker compose up -d` y `npx prisma migrate dev --name init`
-- [ ] Crear cliente Prisma singleton en `src/lib/db.ts`
-- [ ] Commit: `feat(db): setup postgres docker and prisma schema`
+- [x] Crear `.env.example` con `DATABASE_URL`, `NEXTAUTH_SECRET`, `NEXTAUTH_URL`
+- [x] Instalar Prisma: `npm i -D prisma && npm i @prisma/client` _(fijado a v6 — v7 introduce breaking changes con `prisma.config.ts`)_
+- [x] `npx prisma init`
+- [x] Copiar el schema de Prisma de la sección "Modelo de datos" arriba
+- [x] `docker compose up -d` y `npx prisma migrate dev --name init`
+- [x] Crear cliente Prisma singleton en `src/lib/db.ts`
+- [x] Commit: `feat(db): setup postgres docker and prisma schema`
 
 ---
 

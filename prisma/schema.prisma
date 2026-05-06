@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                 String   @id @default(cuid())
+  username           String   @unique
+  passwordHash       String
+  photoUrl           String?
+  role               Role     @default(USER)
+  mustChangePassword Boolean  @default(true)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  timesAsRunner    TimeRecord[] @relation("Runner")
+  timesAsRegistrar TimeRecord[] @relation("Registrar")
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+model Location {
+  id       String  @id @default(cuid())
+  name     String
+  country  String
+  surface  String
+  isDlc    Boolean @default(false)
+  dlcPack  String?
+  photoUrl String?
+  stages   Stage[]
+
+  @@unique([name, country])
+}
+
+model Stage {
+  id         String       @id @default(cuid())
+  name       String
+  distanceKm Float
+  direction  Direction
+  locationId String
+  location   Location     @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  times      TimeRecord[]
+
+  @@unique([name, locationId])
+}
+
+enum Direction {
+  FORWARD
+  REVERSE
+}
+
+model Car {
+  id           String       @id @default(cuid())
+  name         String       @unique
+  className    String
+  classCode    String
+  drivetrain   String?
+  year         Int?
+  isDlc        Boolean      @default(false)
+  dlcPack      String?
+  isRallycross Boolean      @default(false)
+  photoUrl     String?
+  times        TimeRecord[]
+}
+
+model TimeRecord {
+  id          String @id @default(cuid())
+  runnerId    String
+  runner      User   @relation("Runner", fields: [runnerId], references: [id])
+  registrarId String
+  registrar   User   @relation("Registrar", fields: [registrarId], references: [id])
+  stageId     String
+  stage       Stage  @relation(fields: [stageId], references: [id])
+  carId       String
+  car         Car    @relation(fields: [carId], references: [id])
+
+  timeMs    Int
+  penaltyMs Int     @default(0)
+  isDnf     Boolean @default(false)
+
+  weather   Weather   @default(DRY)
+  timeOfDay TimeOfDay @default(DAY)
+  notes     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([stageId, carId])
+  @@index([runnerId])
+}
+
+enum Weather {
+  DRY
+  WET
+  SNOW
+  ICE
+}
+
+enum TimeOfDay {
+  DAY
+  NIGHT
+  DUSK
+  DAWN
+}

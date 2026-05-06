@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgres:16
+    container_name: dirt-tracker-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: dirt
+      POSTGRES_PASSWORD: dirt
+      POSTGRES_DB: dirt_tracker
+    ports:
+      - '5435:5432'
+    volumes:
+      - dirt-tracker-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U dirt -d dirt_tracker']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  dirt-tracker-pgdata:
