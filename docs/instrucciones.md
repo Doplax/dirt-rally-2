@@ -336,16 +336,16 @@ enum TimeOfDay {
 
 ## ✅ Fase 5 — Layout autenticado con Sidebar
 
-- [ ] Crear grupo de rutas `(app)` con un layout que requiere sesión
-- [ ] Crear componente `Sidebar` con HeroUI:
+- [x] Crear grupo de rutas `(app)` con un layout que requiere sesión
+- [x] Crear componente `Sidebar` con HeroUI:
   - Logo / título "DiRT Tracker"
   - Avatar + username del logueado (con menú: ver perfil, cambiar pass, logout)
   - Items de menú con iconos: **Tiempos**, **Mapas**, **Coches**, **Usuarios**
   - "Usuarios" solo visible para admin
   - Indicador visual de ruta activa
   - Responsive: collapsible en móvil (drawer)
-- [ ] Crear placeholder en cada ruta para verificar navegación
-- [ ] Commit: `feat(ui): add app layout with responsive sidebar`
+- [x] Crear placeholder en cada ruta para verificar navegación
+- [x] Commit: `feat(ui): add app layout with responsive sidebar`
 
 ---
 
