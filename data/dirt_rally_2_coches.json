@@ -1,0 +1,183 @@
+{
+  "game": "DiRT Rally 2.0",
+  "edition": "Game of the Year Edition (Base + Seasons 1-4 + Colin McRae: FLAT OUT Pack)",
+  "total_cars_aprox": 79,
+  "rally_cars": {
+    "H1_FWD": {
+      "class_name": "Historic Rally H1 (FWD)",
+      "cars": [
+        { "name": "Citroën DS 21", "dlc": false },
+        { "name": "Lancia Fulvia HF", "dlc": false },
+        { "name": "Mini Cooper S", "dlc": false }
+      ]
+    },
+    "H2_FWD": {
+      "class_name": "Historic Rally H2 (FWD)",
+      "cars": [
+        { "name": "Peugeot 205 GTI", "dlc": false },
+        { "name": "Volkswagen Golf GTI 16V", "dlc": false }
+      ]
+    },
+    "H2_RWD": {
+      "class_name": "Historic Rally H2 (RWD)",
+      "cars": [
+        { "name": "Fiat 131 Abarth Rally", "dlc": false },
+        { "name": "Ford Escort Mk II", "dlc": false },
+        { "name": "Opel Kadett C GT/E", "dlc": false },
+        { "name": "Alpine Renault A110 1600 S", "dlc": false }
+      ]
+    },
+    "F2_KIT_CAR": {
+      "class_name": "F2 Kit Car",
+      "cars": [
+        { "name": "Peugeot 306 Maxi", "dlc": true, "dlc_pack": "Season 4" },
+        { "name": "SEAT Ibiza Kit Car", "dlc": true, "dlc_pack": "Season 4" },
+        { "name": "Volkswagen Golf IV Kit Car", "dlc": true, "dlc_pack": "Season 4" }
+      ]
+    },
+    "H3_RWD": {
+      "class_name": "Historic Rally H3 (RWD)",
+      "cars": [
+        { "name": "BMW E30 M3 Evo Rally", "dlc": false },
+        { "name": "Datsun 240Z", "dlc": false },
+        { "name": "Ford Sierra Cosworth RS500", "dlc": false },
+        { "name": "Lancia Stratos", "dlc": false },
+        { "name": "Opel Ascona 400", "dlc": false },
+        { "name": "Renault 5 Turbo", "dlc": false }
+      ]
+    },
+    "GROUP_B_4WD": {
+      "class_name": "Historic Rally Group B (4WD)",
+      "cars": [
+        { "name": "Audi Sport quattro S1 E2", "dlc": false },
+        { "name": "Ford RS200", "dlc": false },
+        { "name": "Lancia Delta S4", "dlc": false },
+        { "name": "MG Metro 6R4", "dlc": false },
+        { "name": "Peugeot 205 T16 Evo 2", "dlc": false }
+      ]
+    },
+    "GROUP_B_RWD": {
+      "class_name": "Historic Rally Group B (RWD)",
+      "cars": [
+        { "name": "BMW M1 Procar Rally", "dlc": true, "dlc_pack": "Season 3" },
+        { "name": "Lancia 037 Evo 2", "dlc": true, "dlc_pack": "Season 3" },
+        { "name": "Opel Manta 400", "dlc": true, "dlc_pack": "Season 3" },
+        { "name": "Porsche 911 SC RS", "dlc": true, "dlc_pack": "Season 3" }
+      ]
+    },
+    "GROUP_A": {
+      "class_name": "Modern Rally Group A",
+      "cars": [
+        { "name": "Ford Escort RS Cosworth", "dlc": false },
+        { "name": "Lancia Delta HF Integrale", "dlc": false },
+        { "name": "SUBARU Impreza 1995", "dlc": false },
+        { "name": "Mitsubishi Lancer Evolution VI", "dlc": false },
+        { "name": "SUBARU Impreza RS", "dlc": true },
+        { "name": "SUBARU Legacy RS", "dlc": true, "dlc_pack": "Colin McRae: FLAT OUT Pack" },
+        { "name": "SUBARU Impreza S4 Rally (1998 WRC98)", "dlc": true, "dlc_pack": "Colin McRae: FLAT OUT Pack" }
+      ]
+    },
+    "MODERN_GT": {
+      "class_name": "Modern Rally GT",
+      "cars": [
+        { "name": "Aston Martin V8 Vantage GT4", "dlc": false },
+        { "name": "BMW M2 Competition", "dlc": false },
+        { "name": "Chevrolet Camaro GT4.R", "dlc": false },
+        { "name": "Ford Mustang GT4", "dlc": false },
+        { "name": "Porsche 911 RGT Rally Spec", "dlc": true, "notes": "Pre-order bonus / DLC" }
+      ]
+    },
+    "R2": {
+      "class_name": "Modern Rally R2",
+      "cars": [
+        { "name": "Ford Fiesta R2", "dlc": false },
+        { "name": "Opel Adam R2", "dlc": false },
+        { "name": "Peugeot 208 R2", "dlc": false }
+      ]
+    },
+    "NR4_R4": {
+      "class_name": "Modern Rally NR4/R4",
+      "cars": [
+        { "name": "Mitsubishi Lancer Evolution X", "dlc": false },
+        { "name": "SUBARU WRX STI NR4", "dlc": false }
+      ]
+    },
+    "UP_TO_2000CC_4WD": {
+      "class_name": "Up to 2000cc (4WD)",
+      "cars": [
+        { "name": "Citroën C4 Rally", "dlc": true, "dlc_pack": "Season 1" },
+        { "name": "Ford Focus RS Rally 2001", "dlc": true, "dlc_pack": "Season 1" },
+        { "name": "Ford Focus RS Rally 2007", "dlc": true, "dlc_pack": "Season 2" },
+        { "name": "Peugeot 206 Rally", "dlc": true, "dlc_pack": "Season 1" },
+        { "name": "Skoda Fabia Rally 2005", "dlc": true, "dlc_pack": "Season 2" },
+        { "name": "SUBARU Impreza", "dlc": true, "dlc_pack": "Season 2" },
+        { "name": "SUBARU Impreza 2001", "dlc": true, "dlc_pack": "Season 1" },
+        { "name": "SUBARU Impreza S4 Rally 2008", "dlc": true, "dlc_pack": "Season 2" }
+      ]
+    },
+    "R5": {
+      "class_name": "Modern Rally R5",
+      "cars": [
+        { "name": "Citroën C3 R5", "dlc": false },
+        { "name": "Ford Fiesta R5", "dlc": false },
+        { "name": "Mitsubishi Space Star R5", "dlc": false },
+        { "name": "Peugeot 208 T16 R5", "dlc": false },
+        { "name": "Skoda Fabia R5", "dlc": false },
+        { "name": "Volkswagen Polo GTI R5", "dlc": false }
+      ]
+    }
+  },
+  "rallycross_cars": {
+    "CROSSKARTS": {
+      "class_name": "Crosskarts",
+      "cars": [
+        { "name": "Speedcar Xtrem", "dlc": false }
+      ]
+    },
+    "SUPER_1600": {
+      "class_name": "Super 1600",
+      "cars": [
+        { "name": "Opel Corsa Super 1600", "dlc": false },
+        { "name": "Renault Clio RS S1600", "dlc": false },
+        { "name": "Volkswagen Polo S1600", "dlc": false }
+      ]
+    },
+    "LITES": {
+      "class_name": "Lites",
+      "cars": [
+        { "name": "Ford Fiesta OMSE SuperCar Lites", "dlc": false }
+      ]
+    },
+    "GROUP_B_RX": {
+      "class_name": "Rallycross Group B",
+      "cars": [
+        { "name": "Lancia Delta S4 Rallycross", "dlc": true },
+        { "name": "Ford RS200 Evolution", "dlc": true },
+        { "name": "Peugeot 205 T16 Rallycross", "dlc": true },
+        { "name": "MG Metro 6R4 Rallycross", "dlc": true }
+      ]
+    },
+    "SUPERCARS": {
+      "class_name": "Rallycross Supercars (FIA World RX)",
+      "cars": [
+        { "name": "Audi S1 EKS RX quattro", "dlc": false },
+        { "name": "Ford Fiesta Rallycross (Mk7)", "dlc": false },
+        { "name": "Ford Fiesta Rallycross (Mk8)", "dlc": false },
+        { "name": "Peugeot 208 WRX", "dlc": false },
+        { "name": "Renault Mégane RS RX", "dlc": false },
+        { "name": "SUBARU WRX STI Rallycross", "dlc": false },
+        { "name": "Volkswagen Polo R Supercar", "dlc": false }
+      ]
+    },
+    "SUPERCARS_2019": {
+      "class_name": "Rallycross Supercars 2019 (FIA World RX 2019 season)",
+      "cars": [
+        { "name": "Renault Clio RS RX", "dlc": true, "dlc_pack": "Season 4" },
+        { "name": "Mini Cooper SX1", "dlc": true, "dlc_pack": "Season 4" },
+        { "name": "Ford Fiesta Rallycross (STARD)", "dlc": true, "dlc_pack": "Season 4" },
+        { "name": "Ford Fiesta RXS Evo 5", "dlc": true, "dlc_pack": "Season 4" },
+        { "name": "SEAT Ibiza RX", "dlc": true, "dlc_pack": "Season 4" }
+      ]
+    }
+  }
+}

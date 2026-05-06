@@ -1,0 +1,514 @@
+{
+  "game": "DiRT Rally 2.0",
+  "developer": "Codemasters",
+  "publisher": "Codemasters / Deep Silver",
+  "release_date": "2019-02-26",
+  "edition_referenced": "Game of the Year Edition (incluye todas las expansiones / Seasons 1-4 + Colin McRae: FLAT OUT Pack)",
+  "summary": {
+    "total_rally_locations": 13,
+    "total_rallycross_locations": 13,
+    "total_rally_stages": 156,
+    "total_cars_aprox": 81
+  },
+  "rally_locations": [
+    {
+      "id": "argentina",
+      "name": "Catamarca Province",
+      "country": "Argentina",
+      "surface": "Heavy Gravel",
+      "dlc": false,
+      "stages": [
+        { "name": "Las Juntas", "distance_km": 8.25, "direction": "forward" },
+        { "name": "Camino a La Puerta", "distance_km": 8.25, "direction": "reverse" },
+        { "name": "Valle de los puentes", "distance_km": 7.98, "direction": "forward" },
+        { "name": "Valle de los puentes a la inversa", "distance_km": 7.98, "direction": "reverse" },
+        { "name": "Camino de acantilados y rocas", "distance_km": 5.30, "direction": "forward" },
+        { "name": "Camino de acantilados y rocas inverso", "distance_km": 5.30, "direction": "reverse" },
+        { "name": "San Isidro", "distance_km": 4.48, "direction": "forward" },
+        { "name": "Camino a Coneta", "distance_km": 4.48, "direction": "reverse" },
+        { "name": "Miraflores", "distance_km": 3.35, "direction": "forward" },
+        { "name": "Huillaprima", "distance_km": 3.35, "direction": "reverse" },
+        { "name": "El Rodeo", "distance_km": 2.84, "direction": "forward" },
+        { "name": "La Merced", "distance_km": 2.84, "direction": "reverse" }
+      ]
+    },
+    {
+      "id": "australia",
+      "name": "Monaro",
+      "country": "Australia",
+      "surface": "Medium Gravel",
+      "dlc": false,
+      "stages": [
+        { "name": "Mount Kaye Pass", "distance_km": 12.50, "direction": "forward" },
+        { "name": "Mount Kaye Pass Reverse", "distance_km": 12.50, "direction": "reverse" },
+        { "name": "Chandlers Creek", "distance_km": 12.34, "direction": "forward" },
+        { "name": "Chandlers Creek Reverse", "distance_km": 12.34, "direction": "reverse" },
+        { "name": "Bondi Forest", "distance_km": 7.01, "direction": "forward" },
+        { "name": "Taylor Farm Sprint", "distance_km": 7.01, "direction": "reverse" },
+        { "name": "Rockton Plains", "distance_km": 6.89, "direction": "forward" },
+        { "name": "Rockton Plains Reverse", "distance_km": 6.89, "direction": "reverse" },
+        { "name": "Yambulla Mountain Ascent", "distance_km": 6.64, "direction": "forward" },
+        { "name": "Yambulla Mountain Descent", "distance_km": 6.64, "direction": "reverse" },
+        { "name": "Noorinbee Ridge Ascent", "distance_km": 5.28, "direction": "forward" },
+        { "name": "Noorinbee Ridge Descent", "distance_km": 5.28, "direction": "reverse" }
+      ]
+    },
+    {
+      "id": "new_zealand",
+      "name": "Hawkes Bay",
+      "country": "New Zealand",
+      "surface": "Gravel",
+      "dlc": false,
+      "stages": [
+        { "name": "Waimarama Point Forward", "distance_km": 16.06, "direction": "forward" },
+        { "name": "Waimarama Point Reverse", "distance_km": 16.06, "direction": "reverse" },
+        { "name": "Te Awanga Forward", "distance_km": 11.48, "direction": "forward" },
+        { "name": "Ocean Beach", "distance_km": 11.48, "direction": "reverse" },
+        { "name": "Waimarama Sprint Forward", "distance_km": 8.81, "direction": "forward" },
+        { "name": "Waimarama Sprint Reverse", "distance_km": 8.81, "direction": "reverse" },
+        { "name": "Elsthorpe Sprint Forward", "distance_km": 7.32, "direction": "forward" },
+        { "name": "Elsthorpe Sprint Reverse", "distance_km": 7.32, "direction": "reverse" },
+        { "name": "Ocean Beach Sprint Forward", "distance_km": 6.61, "direction": "forward" },
+        { "name": "Ocean Beach Sprint Reverse", "distance_km": 6.61, "direction": "reverse" },
+        { "name": "Te Awanga Sprint Forward", "distance_km": 4.79, "direction": "forward" },
+        { "name": "Te Awanga Sprint Reverse", "distance_km": 4.79, "direction": "reverse" }
+      ]
+    },
+    {
+      "id": "poland",
+      "name": "Łęczna County",
+      "country": "Poland",
+      "surface": "Dirt / Smooth Asphalt",
+      "dlc": false,
+      "stages": [
+        { "name": "Zaróbka", "distance_km": 16.47, "direction": "forward" },
+        { "name": "Zagórze", "distance_km": 16.47, "direction": "reverse" },
+        { "name": "Jezioro Rotcze", "distance_km": 13.42, "direction": "forward" },
+        { "name": "Zienki", "distance_km": 13.42, "direction": "reverse" },
+        { "name": "Marynka", "distance_km": 9.25, "direction": "forward" },
+        { "name": "Borysik", "distance_km": 9.25, "direction": "reverse" },
+        { "name": "Kopina", "distance_km": 7.03, "direction": "forward" },
+        { "name": "Józefin", "distance_km": 7.03, "direction": "reverse" },
+        { "name": "Lejno", "distance_km": 6.81, "direction": "forward" },
+        { "name": "Jagodno", "distance_km": 6.81, "direction": "reverse" },
+        { "name": "Czarny Las", "distance_km": 6.63, "direction": "forward" },
+        { "name": "Jezioro Łukie", "distance_km": 6.63, "direction": "reverse" }
+      ]
+    },
+    {
+      "id": "spain",
+      "name": "Ribadelles",
+      "country": "Spain",
+      "surface": "Smooth Asphalt",
+      "dlc": false,
+      "stages": [
+        { "name": "Comienzo de Bellriu", "distance_km": 14.34, "direction": "forward" },
+        { "name": "Final de Bellriu", "distance_km": 14.34, "direction": "reverse" },
+        { "name": "Centenera", "distance_km": 10.57, "direction": "forward" },
+        { "name": "Camino a Centenera", "distance_km": 10.57, "direction": "reverse" },
+        { "name": "Ascenso por valle el Gualet", "distance_km": 7.00, "direction": "forward" },
+        { "name": "Salida desde Montverd", "distance_km": 7.00, "direction": "reverse" },
+        { "name": "Viñedos dentro del valle Parra", "distance_km": 6.81, "direction": "forward" },
+        { "name": "Ascenso bosque Montverd", "distance_km": 6.81, "direction": "reverse" },
+        { "name": "Viñedos Dardenya", "distance_km": 6.55, "direction": "forward" },
+        { "name": "Viñedos Dardenya inversa", "distance_km": 6.55, "direction": "reverse" },
+        { "name": "Descenso por carretera", "distance_km": 4.59, "direction": "forward" },
+        { "name": "Subida por carretera", "distance_km": 4.59, "direction": "reverse" }
+      ]
+    },
+    {
+      "id": "usa",
+      "name": "New England",
+      "country": "USA",
+      "surface": "Medium / Heavy Gravel",
+      "dlc": false,
+      "stages": [
+        { "name": "Beaver Creek Trail Forward", "distance_km": 12.86, "direction": "forward" },
+        { "name": "Beaver Creek Trail Reverse", "distance_km": 12.86, "direction": "reverse" },
+        { "name": "North Fork Pass", "distance_km": 12.50, "direction": "forward" },
+        { "name": "North Fork Pass Reverse", "distance_km": 12.50, "direction": "reverse" },
+        { "name": "Hancock Creek Burst", "distance_km": 6.89, "direction": "forward" },
+        { "name": "Fury Lake Depart", "distance_km": 6.89, "direction": "reverse" },
+        { "name": "Fuller Mountain Ascent", "distance_km": 6.64, "direction": "forward" },
+        { "name": "Fuller Mountain Descent", "distance_km": 6.64, "direction": "reverse" },
+        { "name": "Tolt Valley Sprint Forward", "distance_km": 6.10, "direction": "forward" },
+        { "name": "Tolt Valley Sprint Reverse", "distance_km": 6.10, "direction": "reverse" },
+        { "name": "Hancock Hill Sprint Forward", "distance_km": 6.00, "direction": "forward" },
+        { "name": "Hancock Hill Sprint Reverse", "distance_km": 6.00, "direction": "reverse" }
+      ]
+    },
+    {
+      "id": "monte_carlo",
+      "name": "Monte Carlo",
+      "country": "Monaco",
+      "surface": "Smooth Asphalt / Ice / Snow",
+      "dlc": true,
+      "dlc_pack": "Season 1 (Stage 1 / Monte Carlo Rally)",
+      "stages": [
+        { "name": "Pra d'Alart", "distance_km": 9.83, "direction": "forward" },
+        { "name": "Col de Turini Départ", "distance_km": 9.83, "direction": "reverse" },
+        { "name": "Vallée descendante", "distance_km": 10.86, "direction": "forward" },
+        { "name": "Route de Turini", "distance_km": 10.86, "direction": "reverse" },
+        { "name": "Col de Turini – Départ en descente", "distance_km": 6.84, "direction": "forward" },
+        { "name": "Route de Turini Montée", "distance_km": 6.84, "direction": "reverse" },
+        { "name": "Gordolon – Courte montée", "distance_km": 5.18, "direction": "forward" },
+        { "name": "Col de Turini – Descente", "distance_km": 5.18, "direction": "reverse" },
+        { "name": "Col de Turini Sprint en Montée", "distance_km": 4.73, "direction": "forward" },
+        { "name": "Col de Turini – Sprint en descente", "distance_km": 4.73, "direction": "reverse" },
+        { "name": "Approche du Col de Turini – Montée", "distance_km": 3.96, "direction": "forward" },
+        { "name": "Route de Turini Descente", "distance_km": 3.96, "direction": "reverse" }
+      ]
+    },
+    {
+      "id": "sweden",
+      "name": "Värmland",
+      "country": "Sweden",
+      "surface": "Snow / Compacted Snow / Slush",
+      "dlc": true,
+      "dlc_pack": "Season 1 (Stage 2 / Sweden Rally)",
+      "stages": [
+        { "name": "Hamra", "distance_km": 12.34, "direction": "forward" },
+        { "name": "Lysvik", "distance_km": 12.34, "direction": "reverse" },
+        { "name": "Ransbysäter", "distance_km": 11.97, "direction": "forward" },
+        { "name": "Norraskoga", "distance_km": 11.97, "direction": "reverse" },
+        { "name": "Älgsjön", "distance_km": 7.27, "direction": "forward" },
+        { "name": "Älgsjön Sprint", "distance_km": 5.25, "direction": "forward" },
+        { "name": "Skogsrallyt", "distance_km": 5.25, "direction": "reverse" },
+        { "name": "Stor-jangen Sprint", "distance_km": 6.69, "direction": "forward" },
+        { "name": "Stor-jangen Sprint Reverse", "distance_km": 6.69, "direction": "reverse" },
+        { "name": "Elgsjön", "distance_km": 7.27, "direction": "forward" },
+        { "name": "Björklangen", "distance_km": 5.20, "direction": "forward" },
+        { "name": "Östra Hinnsjön", "distance_km": 5.20, "direction": "reverse" }
+      ]
+    },
+    {
+      "id": "germany",
+      "name": "Baumholder",
+      "country": "Germany",
+      "surface": "Smooth Asphalt / Concrete / Cobblestone",
+      "dlc": true,
+      "dlc_pack": "Season 2 (Stage 1 / Germany Rally)",
+      "stages": [
+        { "name": "Oberstein", "distance_km": 11.67, "direction": "forward" },
+        { "name": "Frauenberg", "distance_km": 11.67, "direction": "reverse" },
+        { "name": "Hammerstein", "distance_km": 10.81, "direction": "forward" },
+        { "name": "Ruschberg", "distance_km": 10.70, "direction": "reverse" },
+        { "name": "Kreuzungsring", "distance_km": 6.31, "direction": "forward" },
+        { "name": "Kreuzungsring Reverse", "distance_km": 6.31, "direction": "reverse" },
+        { "name": "Verbundsring", "distance_km": 5.86, "direction": "forward" },
+        { "name": "Verbundsring Reverse", "distance_km": 5.86, "direction": "reverse" },
+        { "name": "Innerer Feld-Sprint", "distance_km": 5.55, "direction": "forward" },
+        { "name": "Innerer Feld-Sprint (umgekehrt)", "distance_km": 5.55, "direction": "reverse" },
+        { "name": "Waldaufstieg", "distance_km": 5.39, "direction": "forward" },
+        { "name": "Waldabstieg", "distance_km": 5.39, "direction": "reverse" }
+      ]
+    },
+    {
+      "id": "finland",
+      "name": "Jämsä",
+      "country": "Finland",
+      "surface": "Light Gravel",
+      "dlc": true,
+      "dlc_pack": "Season 3 (Stage 1 / Finland Rally)",
+      "stages": [
+        { "name": "Kakaristo", "distance_km": 16.21, "direction": "forward" },
+        { "name": "Pitkäjärvi", "distance_km": 16.21, "direction": "reverse" },
+        { "name": "Kontinjärvi", "distance_km": 15.05, "direction": "forward" },
+        { "name": "Hämelahti", "distance_km": 14.97, "direction": "reverse" },
+        { "name": "Iso Oksjärvi", "distance_km": 8.05, "direction": "forward" },
+        { "name": "Oksala", "distance_km": 8.05, "direction": "reverse" },
+        { "name": "Järvenkylä", "distance_km": 8.10, "direction": "forward" },
+        { "name": "Kotajärvi", "distance_km": 8.10, "direction": "reverse" },
+        { "name": "Kailajärvi", "distance_km": 7.51, "direction": "forward" },
+        { "name": "Jyrkysjärvi", "distance_km": 7.55, "direction": "reverse" },
+        { "name": "Naarajärvi", "distance_km": 7.44, "direction": "forward" },
+        { "name": "Paskuri", "distance_km": 7.34, "direction": "reverse" }
+      ]
+    },
+    {
+      "id": "greece",
+      "name": "Argolis",
+      "country": "Greece",
+      "surface": "Gravel / Heavy Gravel",
+      "dlc": true,
+      "dlc_pack": "Season 3 (Stage 2 / Greece Rally)",
+      "stages": [
+        { "name": "Perasma Platani", "distance_km": 10.69, "direction": "forward" },
+        { "name": "Tsiristra Théa", "distance_km": 10.36, "direction": "reverse" },
+        { "name": "Anodou Farmakas", "distance_km": 9.61, "direction": "forward" },
+        { "name": "Kathodo Leontiou", "distance_km": 9.61, "direction": "reverse" },
+        { "name": "Ypsona tou Dasos", "distance_km": 6.58, "direction": "forward" },
+        { "name": "Abies Koilada", "distance_km": 7.10, "direction": "reverse" },
+        { "name": "Ourea Spevsi", "distance_km": 5.74, "direction": "forward" },
+        { "name": "Pomona Ekrixi", "distance_km": 5.09, "direction": "forward" },
+        { "name": "Ampelonas Ormi", "distance_km": 4.96, "direction": "reverse" },
+        { "name": "Fourkéta Kourva", "distance_km": 4.79, "direction": "forward" },
+        { "name": "Koryfi Dafni", "distance_km": 4.51, "direction": "reverse" },
+        { "name": "Pedines Epidaxi", "distance_km": 5.37, "direction": "reverse" }
+      ]
+    },
+    {
+      "id": "wales",
+      "name": "Powys",
+      "country": "Wales (UK)",
+      "surface": "Medium Gravel",
+      "dlc": true,
+      "dlc_pack": "Season 4 (Stage 1 / Wales Rally)",
+      "stages": [
+        { "name": "River Severn Valley", "distance_km": 11.39, "direction": "forward" },
+        { "name": "Bronfelen", "distance_km": 11.39, "direction": "reverse" },
+        { "name": "Sweet Lamb", "distance_km": 9.90, "direction": "forward" },
+        { "name": "Geufron Forest", "distance_km": 9.99, "direction": "reverse" },
+        { "name": "Fferm Wynt", "distance_km": 5.70, "direction": "forward" },
+        { "name": "Fferm Wynt Reverse", "distance_km": 5.70, "direction": "reverse" },
+        { "name": "Dyffryn Afon", "distance_km": 5.70, "direction": "forward" },
+        { "name": "Dyffryn Afon Reverse", "distance_km": 5.70, "direction": "reverse" },
+        { "name": "Pant Mawr", "distance_km": 4.70, "direction": "forward" },
+        { "name": "Pant Mawr Reverse", "distance_km": 5.10, "direction": "reverse" },
+        { "name": "Bidno Moorland", "distance_km": 4.89, "direction": "forward" },
+        { "name": "Bidno Moorland Reverse", "distance_km": 4.79, "direction": "reverse" }
+      ]
+    },
+    {
+      "id": "scotland",
+      "name": "Perth and Kinross",
+      "country": "Scotland (UK)",
+      "surface": "Medium Gravel",
+      "dlc": true,
+      "dlc_pack": "Colin McRae: FLAT OUT Pack",
+      "stages": [
+        { "name": "Newhouse Bridge", "distance_km": 12.86, "direction": "forward" },
+        { "name": "Newhouse Bridge Reverse", "distance_km": 12.99, "direction": "reverse" },
+        { "name": "South Morningside", "distance_km": 12.58, "direction": "forward" },
+        { "name": "South Morningside Reverse", "distance_km": 12.66, "direction": "reverse" },
+        { "name": "Annbank Station", "distance_km": 7.77, "direction": "forward" },
+        { "name": "Annbank Station Reverse", "distance_km": 7.58, "direction": "reverse" },
+        { "name": "Rosebank Farm", "distance_km": 7.16, "direction": "forward" },
+        { "name": "Rosebank Farm Reverse", "distance_km": 6.97, "direction": "reverse" },
+        { "name": "Old Butterstone Muir", "distance_km": 5.83, "direction": "forward" },
+        { "name": "Old Butterstone Muir Reverse", "distance_km": 5.66, "direction": "reverse" },
+        { "name": "Glencastle Farm", "distance_km": 5.25, "direction": "forward" },
+        { "name": "Glencastle Farm Reverse", "distance_km": 5.25, "direction": "reverse" }
+      ]
+    }
+  ],
+  "rallycross_locations": [
+    { "id": "mettet", "name": "Circuit Jules Tacheny Mettet", "country": "Belgium", "dlc": false },
+    { "id": "trois_rivieres", "name": "Trois-Rivières", "country": "Canada", "dlc": false },
+    { "id": "silverstone", "name": "Silverstone Circuit", "country": "England (UK)", "dlc": false },
+    { "id": "loheac", "name": "Lohéac Bretagne", "country": "France", "dlc": false },
+    { "id": "hell", "name": "Lankebanen (Hell)", "country": "Norway", "dlc": false },
+    { "id": "montalegre", "name": "Montalegre", "country": "Portugal", "dlc": false },
+    { "id": "barcelona", "name": "Circuit de Barcelona-Catalunya", "country": "Spain", "dlc": false },
+    { "id": "holjes", "name": "Höljes", "country": "Sweden", "dlc": false },
+    { "id": "yas_marina", "name": "Yas Marina Circuit", "country": "Abu Dhabi (UAE)", "dlc": true, "dlc_pack": "Season DLC" },
+    { "id": "lydden_hill", "name": "Lydden Hill", "country": "England (UK)", "dlc": true, "dlc_pack": "Season DLC" },
+    { "id": "estering", "name": "Estering", "country": "Germany", "dlc": true, "dlc_pack": "Season DLC" },
+    { "id": "bikernieki", "name": "Bikernieki", "country": "Latvia", "dlc": true, "dlc_pack": "Season DLC" },
+    { "id": "killarney", "name": "Killarney International Raceway", "country": "South Africa", "dlc": true, "dlc_pack": "Season DLC" }
+  ],
+  "rally_cars": {
+    "H1_FWD": {
+      "class_name": "Historic Rally H1 (FWD)",
+      "cars": [
+        { "name": "Citroën DS 21", "dlc": false },
+        { "name": "Lancia Fulvia HF", "dlc": false },
+        { "name": "Mini Cooper S", "dlc": false }
+      ]
+    },
+    "H2_FWD": {
+      "class_name": "Historic Rally H2 (FWD)",
+      "cars": [
+        { "name": "Peugeot 205 GTI", "dlc": false },
+        { "name": "Volkswagen Golf GTI 16V", "dlc": false }
+      ]
+    },
+    "H2_RWD": {
+      "class_name": "Historic Rally H2 (RWD)",
+      "cars": [
+        { "name": "Fiat 131 Abarth Rally", "dlc": false },
+        { "name": "Ford Escort Mk II", "dlc": false },
+        { "name": "Opel Kadett C GT/E", "dlc": false },
+        { "name": "Alpine Renault A110 1600 S", "dlc": false }
+      ]
+    },
+    "F2_KIT_CAR": {
+      "class_name": "F2 Kit Car",
+      "cars": [
+        { "name": "Peugeot 306 Maxi", "dlc": true },
+        { "name": "SEAT Ibiza Kit Car", "dlc": true },
+        { "name": "Volkswagen Golf IV Kit Car", "dlc": true }
+      ]
+    },
+    "H3_RWD": {
+      "class_name": "Historic Rally H3 (RWD)",
+      "cars": [
+        { "name": "BMW E30 M3 Evo Rally", "dlc": false },
+        { "name": "Datsun 240Z", "dlc": false },
+        { "name": "Ford Sierra Cosworth RS500", "dlc": false },
+        { "name": "Lancia Stratos", "dlc": false },
+        { "name": "Opel Ascona 400", "dlc": false },
+        { "name": "Renault 5 Turbo", "dlc": false }
+      ]
+    },
+    "GROUP_B_4WD": {
+      "class_name": "Historic Rally Group B (4WD)",
+      "cars": [
+        { "name": "Audi Sport quattro S1 E2", "dlc": false },
+        { "name": "Ford RS200", "dlc": false },
+        { "name": "Lancia Delta S4", "dlc": false },
+        { "name": "MG Metro 6R4", "dlc": false },
+        { "name": "Peugeot 205 T16 Evo 2", "dlc": false }
+      ]
+    },
+    "GROUP_B_RWD": {
+      "class_name": "Historic Rally Group B (RWD)",
+      "cars": [
+        { "name": "BMW M1 Procar Rally", "dlc": true },
+        { "name": "Lancia 037 Evo 2", "dlc": true },
+        { "name": "Opel Manta 400", "dlc": true },
+        { "name": "Porsche 911 SC RS", "dlc": true }
+      ]
+    },
+    "GROUP_A": {
+      "class_name": "Modern Rally Group A",
+      "cars": [
+        { "name": "Ford Escort RS Cosworth", "dlc": false },
+        { "name": "Lancia Delta HF Integrale", "dlc": false },
+        { "name": "SUBARU Impreza 1995", "dlc": false },
+        { "name": "Mitsubishi Lancer Evolution VI", "dlc": false },
+        { "name": "SUBARU Impreza S4 Rally (1998 WRC98 – Colin McRae)", "dlc": true, "dlc_pack": "Colin McRae: FLAT OUT Pack" },
+        { "name": "SUBARU Legacy RS", "dlc": true, "dlc_pack": "Colin McRae: FLAT OUT Pack" },
+        { "name": "SUBARU Impreza RS", "dlc": true }
+      ]
+    },
+    "MODERN_GT": {
+      "class_name": "Modern Rally GT",
+      "cars": [
+        { "name": "Aston Martin V8 Vantage GT4", "dlc": false },
+        { "name": "BMW M2 Competition", "dlc": false },
+        { "name": "Chevrolet Camaro GT4.R", "dlc": false },
+        { "name": "Ford Mustang GT4", "dlc": false },
+        { "name": "Porsche 911 RGT Rally Spec", "dlc": true, "notes": "Pre-order bonus / DLC" }
+      ]
+    },
+    "R2": {
+      "class_name": "Modern Rally R2",
+      "cars": [
+        { "name": "Ford Fiesta R2", "dlc": false },
+        { "name": "Opel Adam R2", "dlc": false },
+        { "name": "Peugeot 208 R2", "dlc": false }
+      ]
+    },
+    "NR4_R4": {
+      "class_name": "Modern Rally NR4/R4",
+      "cars": [
+        { "name": "Mitsubishi Lancer Evolution X", "dlc": false },
+        { "name": "SUBARU WRX STI NR4", "dlc": false }
+      ]
+    },
+    "UP_TO_2000CC_4WD": {
+      "class_name": "Up to 2000cc (4WD)",
+      "cars": [
+        { "name": "Citroën C4 Rally", "dlc": true },
+        { "name": "Ford Focus RS Rally 2001", "dlc": true },
+        { "name": "Ford Focus RS Rally 2007", "dlc": true },
+        { "name": "Peugeot 206 Rally", "dlc": true },
+        { "name": "Skoda Fabia Rally 2005", "dlc": true },
+        { "name": "SUBARU Impreza", "dlc": true },
+        { "name": "SUBARU Impreza 2001", "dlc": true },
+        { "name": "SUBARU Impreza S4 Rally 2008", "dlc": true }
+      ]
+    },
+    "R5": {
+      "class_name": "Modern Rally R5",
+      "cars": [
+        { "name": "Citroën C3 R5", "dlc": false },
+        { "name": "Ford Fiesta R5", "dlc": false },
+        { "name": "Mitsubishi Space Star R5", "dlc": false },
+        { "name": "Peugeot 208 T16 R5", "dlc": false },
+        { "name": "Skoda Fabia R5", "dlc": false },
+        { "name": "Volkswagen Polo GTI R5", "dlc": false }
+      ]
+    }
+  },
+  "rallycross_cars": {
+    "CROSSKARTS": {
+      "class_name": "Crosskarts",
+      "cars": [
+        { "name": "Speedcar Xtrem", "dlc": false }
+      ]
+    },
+    "SUPER_1600": {
+      "class_name": "Super 1600",
+      "cars": [
+        { "name": "Opel Corsa Super 1600", "dlc": false },
+        { "name": "Renault Clio RS S1600", "dlc": false },
+        { "name": "Volkswagen Polo S1600", "dlc": false }
+      ]
+    },
+    "LITES": {
+      "class_name": "Lites",
+      "cars": [
+        { "name": "Ford Fiesta OMSE SuperCar Lites", "dlc": false }
+      ]
+    },
+    "GROUP_B_RX": {
+      "class_name": "Rallycross Group B",
+      "cars": [
+        { "name": "Lancia Delta S4 Rallycross", "dlc": true },
+        { "name": "Ford RS200 Evolution", "dlc": true },
+        { "name": "Peugeot 205 T16 Rallycross", "dlc": true },
+        { "name": "MG Metro 6R4 Rallycross", "dlc": true }
+      ]
+    },
+    "SUPERCARS": {
+      "class_name": "Rallycross Supercars (FIA World RX)",
+      "cars": [
+        { "name": "Audi S1 EKS RX quattro", "dlc": false },
+        { "name": "Ford Fiesta Rallycross (Mk7)", "dlc": false },
+        { "name": "Ford Fiesta Rallycross (Mk8)", "dlc": false },
+        { "name": "Peugeot 208 WRX", "dlc": false },
+        { "name": "Renault Mégane RS RX", "dlc": false },
+        { "name": "SUBARU WRX STI Rallycross", "dlc": false },
+        { "name": "Volkswagen Polo R Supercar", "dlc": false }
+      ]
+    },
+    "SUPERCARS_2019": {
+      "class_name": "Rallycross Supercars 2019 (FIA World RX 2019 season DLC)",
+      "cars": [
+        { "name": "Renault Clio RS RX", "dlc": true },
+        { "name": "Mini Cooper SX1", "dlc": true },
+        { "name": "Ford Fiesta Rallycross (STARD)", "dlc": true },
+        { "name": "Ford Fiesta RXS Evo 5", "dlc": true },
+        { "name": "SEAT Ibiza RX", "dlc": true }
+      ]
+    }
+  },
+  "dlc_packs_overview": {
+    "Season_1": {
+      "stage_1": "Monte Carlo Rally (Monaco)",
+      "stage_2": "Sweden Rally (Värmland)",
+      "cars_added": ["Peugeot 206 Rally", "Ford Focus RS Rally 2001", "SUBARU Impreza 2001", "Citroën C4 Rally"]
+    },
+    "Season_2": {
+      "stage_1": "Germany Rally (Baumholder)",
+      "stage_2": "Wales Rally (Powys)",
+      "cars_added": ["Ford Focus RS Rally 2007", "Skoda Fabia Rally 2005", "SUBARU Impreza S4 Rally 2008", "SUBARU Impreza"]
+    },
+    "Season_3": {
+      "stage_1": "Finland Rally (Jämsä)",
+      "stage_2": "Greece Rally (Argolis)",
+      "cars_added": ["Lancia 037 Evo 2", "Opel Manta 400", "BMW M1 Procar Rally", "Porsche 911 SC RS"]
+    },
+    "Season_4": {
+      "content": "F2 Kit Car class + 2019 World RX Supercars",
+      "cars_added": ["Peugeot 306 Maxi", "SEAT Ibiza Kit Car", "VW Golf IV Kit Car", "+ 2019 RX cars"]
+    },
+    "Colin_McRae_FLAT_OUT_Pack": {
+      "stage": "Perth and Kinross (Scotland)",
+      "cars_added": ["SUBARU Legacy RS", "SUBARU Impreza S4 Rally (1998 WRC98)"],
+      "extras": "40 escenarios reviviendo la carrera de Colin McRae (1984–2006)"
+    }
+  }
+}
