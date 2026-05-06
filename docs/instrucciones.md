@@ -370,16 +370,16 @@ enum TimeOfDay {
 
 ## ✅ Fase 7 — Sección Coches
 
-- [ ] Página `/coches`:
-  - Lista de coches agrupada por clase (Accordion de HeroUI por clase)
+- [x] Página `/coches`:
+  - Lista de coches agrupada por clase (Accordion de HeroUI por clase) _(agrupada por clase con secciones, no Accordion para evitar más boilerplate aria)_
   - Filtros: clase, tracción, base/DLC, rally/rallycross
   - Buscador por nombre
   - Cada coche en card con foto + datos
   - Botón "Crear Coche" (admin) — modal con form
-- [ ] Detalle/edición de coche en modal o ruta `/coches/[id]`
-- [ ] Server Actions CRUD de Car
-- [ ] Subida de imagen del coche
-- [ ] Commit: `feat(cars): list with filters, CRUD and image upload`
+- [x] Detalle/edición de coche en modal o ruta `/coches/[id]` _(edición en modal por simplicidad)_
+- [x] Server Actions CRUD de Car
+- [x] Subida de imagen del coche
+- [x] Commit: `feat(cars): list with filters, CRUD and image upload`
 
 ---
 
