@@ -261,13 +261,13 @@ enum TimeOfDay {
 
 ## ✅ Fase 0 — Bootstrap del proyecto
 
-- [ ] Crear proyecto Next.js con TypeScript: `npx create-next-app@latest dirt-tracker --typescript --tailwind --app --eslint`
-- [ ] Inicializar git y hacer primer commit: `chore: initial commit`
-- [ ] Crear este `SPEC.md` en la raíz del proyecto
-- [ ] Crear carpeta `data/` y mover los dos JSON (`dirt_rally_2_mapas.json` y `dirt_rally_2_coches.json`) ahí
-- [ ] Configurar `.gitignore` con `.env*.local`, `public/uploads/*`, etc.
-- [ ] Configurar Prettier + ESLint con reglas razonables
-- [ ] Commit: `chore: bootstrap project structure`
+- [x] Crear proyecto Next.js con TypeScript: `npx create-next-app@latest dirt-tracker --typescript --tailwind --app --eslint`
+- [x] Inicializar git y hacer primer commit: `chore: initial commit`
+- [x] Crear este `SPEC.md` en la raíz del proyecto _(vive en `docs/instrucciones.md`)_
+- [x] Crear carpeta `data/` y mover los dos JSON (`dirt_rally_2_mapas.json` y `dirt_rally_2_coches.json`) ahí
+- [x] Configurar `.gitignore` con `.env*.local`, `public/uploads/*`, etc.
+- [x] Configurar Prettier + ESLint con reglas razonables
+- [x] Commit: `chore: bootstrap project structure`
 
 > ⚠️ **El JSON actual `dirt_rally_2_data.json` que el usuario tiene contiene mapas + coches juntos**. Hay que separarlo en dos archivos y renombrarlos a `dirt_rally_2_mapas.json` y `dirt_rally_2_coches.json` antes de continuar.
 

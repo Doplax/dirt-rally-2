@@ -1,12 +1,14 @@
 {
-  "name": "dirt-tracker-bootstrap",
+  "name": "dirt-tracker",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "next": "16.2.5",
@@ -20,6 +22,9 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.5",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.4.2",
+    "prettier-plugin-tailwindcss": "^0.6.11",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
