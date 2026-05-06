@@ -385,11 +385,11 @@ enum TimeOfDay {
 
 ## ✅ Fase 8 — Sección Tiempos (la importante)
 
-- [ ] Página `/tiempos`:
+- [x] Página `/tiempos`:
   - Buscador / selector de Location (con thumbnail)
   - Al seleccionar location → grid o lista de Stages
   - Click en stage → vista detalle del tramo
-- [ ] Página `/tiempos/[stageId]`:
+- [x] Página `/tiempos/[stageId]`:
   - Header con nombre, distancia, dirección, location, superficie
   - **Leaderboard**: tabla ordenada por mejor tiempo (timeMs + penaltyMs), con:
     - Posición, runner (avatar+nombre), coche, tiempo, sanción, total, fecha
@@ -398,18 +398,18 @@ enum TimeOfDay {
     - Toggle "incluir DNF" (off por defecto)
   - Botón **"Registrar tiempo"** → modal con form:
     - Selector de **runner** (todos los users) — por defecto el de la sesión, pero cambiable
-    - Selector de **coche** (con autocomplete, agrupado por clase)
-    - Input de **tiempo**: componente custom que acepte `MM:SS.mmm` o tres inputs (min/seg/ms)
+    - Selector de **coche** (con autocomplete, agrupado por clase) _(select nativo agrupado por clase en el label)_
+    - Input de **tiempo**: componente custom que acepte `MM:SS.mmm` o tres inputs (min/seg/ms) _(input único `MM:SS.mmm` con parser tolerante)_
     - Input de **sanción** (opcional, default 0)
     - Checkbox **DNF** (si está marcado, deshabilita el input de tiempo)
     - Selector **clima** (Dry, Wet, Snow, Ice)
     - Selector **hora del día** (Day, Night, Dusk, Dawn)
     - Textarea **notas** (opcional)
-  - Cada fila del leaderboard tiene menú "..." con: Editar, Borrar
-- [ ] Helper `src/lib/time-format.ts` con funciones `msToString(ms)` y `stringToMs(str)`
-- [ ] Server Actions: `createTimeRecord`, `updateTimeRecord`, `deleteTimeRecord`
-- [ ] **`registrarId` siempre es el user de la sesión, `runnerId` viene del form**
-- [ ] Commit: `feat(times): stage leaderboard, time input and CRUD`
+  - Cada fila del leaderboard tiene menú "..." con: Editar, Borrar _(botones inline en lugar de menú "...")_
+- [x] Helper `src/lib/time-format.ts` con funciones `msToString(ms)` y `stringToMs(str)` _(verificado con assertions)_
+- [x] Server Actions: `createTimeRecord`, `updateTimeRecord`, `deleteTimeRecord`
+- [x] **`registrarId` siempre es el user de la sesión, `runnerId` viene del form**
+- [x] Commit: `feat(times): stage leaderboard, time input and CRUD`
 
 ---
 
