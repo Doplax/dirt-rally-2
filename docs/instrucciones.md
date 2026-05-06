@@ -351,18 +351,20 @@ enum TimeOfDay {
 
 ## ✅ Fase 6 — Sección Mapas
 
-- [ ] Página `/mapas` (admin):
+- [x] Página `/mapas` (admin):
   - Lista de Locations en cards con HeroUI
   - Filtro por: país, superficie, base/DLC
   - Botón "Crear Location" (modal con form) — solo admin
   - Click en una location → detalle con sus tramos
-- [ ] Página `/mapas/[id]`:
+- [x] Página `/mapas/[id]`:
   - Imagen del mapa (si existe)
   - Lista de Stages (tabla HeroUI con nombre, distancia, dirección)
   - Admin puede editar la location, subir foto, añadir/editar/borrar Stages
-- [ ] Server Actions para CRUD de Location y Stage (con validación Zod y check de rol admin)
-- [ ] Componente para subir imagen (input file → guardar en `public/uploads/locations/<id>.<ext>` en dev)
-- [ ] Commit: `feat(maps): list, detail, CRUD and image upload for locations and stages`
+- [x] Server Actions para CRUD de Location y Stage (con validación Zod y check de rol admin)
+- [x] Componente para subir imagen (input file → guardar en `public/uploads/locations/<id>.<ext>` en dev)
+- [x] Commit: `feat(maps): list, detail, CRUD and image upload for locations and stages`
+
+> Notas: para tablas se usó `<table>` HTML estilizada con Tailwind (la tabla de HeroUI v3 está construida sobre react-aria-components y exige más boilerplate del necesario aquí). Los selects de filtro usan un `NativeSelect` propio sobre `<select>` nativo por la misma razón.
 
 ---
 
