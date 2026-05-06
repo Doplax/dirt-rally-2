@@ -291,13 +291,13 @@ enum TimeOfDay {
 
 ## ✅ Fase 2 — Seed de datos
 
-- [ ] Crear `prisma/seed.ts` que:
+- [x] Crear `prisma/seed.ts` que:
   - Cree los 5 usuarios con `P@ssw0rd` hasheada y `mustChangePassword: true`
   - Lea `data/dirt_rally_2_mapas.json` e inserte Locations + Stages
   - Lea `data/dirt_rally_2_coches.json` e inserte Cars (con `classCode` correcto y `isRallycross`)
-- [ ] Configurar el script en `package.json`: `"prisma": { "seed": "tsx prisma/seed.ts" }`
-- [ ] Ejecutar `npx prisma db seed` y verificar con `npx prisma studio`
-- [ ] Commit: `feat(db): seed initial users, locations, stages and cars`
+- [x] Configurar el script en `package.json`: `"prisma": { "seed": "tsx prisma/seed.ts" }`
+- [x] Ejecutar `npx prisma db seed` y verificar con `npx prisma studio` _(verificado vía `psql`: 5 users, 13 locations, 156 stages, 79 cars)_
+- [x] Commit: `feat(db): seed initial users, locations, stages and cars`
 
 ---
 
