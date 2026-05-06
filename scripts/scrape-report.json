@@ -1,0 +1,854 @@
+{
+  "generatedAt": "2026-05-06T23:14:15.691Z",
+  "source": "IGCD.net",
+  "cars": {
+    "success": [
+      {
+        "name": "Lancia Fulvia HF",
+        "file": "lancia-fulvia-hf.jpg",
+        "igcdName": "1972 Lancia Fulvia Coupé",
+        "igcdYear": 1972,
+        "sourceUrl": "http://www.igcd.net/images/174/413.jpg",
+        "bytes": 79083
+      },
+      {
+        "name": "Porsche 911 RGT Rally Spec",
+        "file": "porsche-911-rgt-rally-spec.jpg",
+        "igcdName": "2010 Porsche 911 GT3 RS",
+        "igcdYear": 2010,
+        "sourceUrl": "http://www.igcd.net/images/165/747.jpg",
+        "bytes": 61061
+      }
+    ],
+    "failed": [],
+    "skipped": [
+      {
+        "name": "Citroën DS 21",
+        "file": "citroen-ds-21.jpg"
+      },
+      {
+        "name": "Mini Cooper S",
+        "file": "mini-cooper-s.jpg"
+      },
+      {
+        "name": "Peugeot 205 GTI",
+        "file": "peugeot-205-gti.jpg"
+      },
+      {
+        "name": "Volkswagen Golf GTI 16V",
+        "file": "volkswagen-golf-gti-16v.jpg"
+      },
+      {
+        "name": "Fiat 131 Abarth Rally",
+        "file": "fiat-131-abarth-rally.jpg"
+      },
+      {
+        "name": "Ford Escort Mk II",
+        "file": "ford-escort-mk-ii.jpg"
+      },
+      {
+        "name": "Opel Kadett C GT/E",
+        "file": "opel-kadett-c-gt-e.jpg"
+      },
+      {
+        "name": "Alpine Renault A110 1600 S",
+        "file": "alpine-renault-a110-1600-s.jpg"
+      },
+      {
+        "name": "Peugeot 306 Maxi",
+        "file": "peugeot-306-maxi.jpg"
+      },
+      {
+        "name": "SEAT Ibiza Kit Car",
+        "file": "seat-ibiza-kit-car.jpg"
+      },
+      {
+        "name": "Volkswagen Golf IV Kit Car",
+        "file": "volkswagen-golf-iv-kit-car.jpg"
+      },
+      {
+        "name": "BMW E30 M3 Evo Rally",
+        "file": "bmw-e30-m3-evo-rally.jpg"
+      },
+      {
+        "name": "Datsun 240Z",
+        "file": "datsun-240z.jpg"
+      },
+      {
+        "name": "Ford Sierra Cosworth RS500",
+        "file": "ford-sierra-cosworth-rs500.jpg"
+      },
+      {
+        "name": "Lancia Stratos",
+        "file": "lancia-stratos.jpg"
+      },
+      {
+        "name": "Opel Ascona 400",
+        "file": "opel-ascona-400.jpg"
+      },
+      {
+        "name": "Renault 5 Turbo",
+        "file": "renault-5-turbo.jpg"
+      },
+      {
+        "name": "Audi Sport quattro S1 E2",
+        "file": "audi-sport-quattro-s1-e2.jpg"
+      },
+      {
+        "name": "Ford RS200",
+        "file": "ford-rs200.jpg"
+      },
+      {
+        "name": "Lancia Delta S4",
+        "file": "lancia-delta-s4.jpg"
+      },
+      {
+        "name": "MG Metro 6R4",
+        "file": "mg-metro-6r4.jpg"
+      },
+      {
+        "name": "Peugeot 205 T16 Evo 2",
+        "file": "peugeot-205-t16-evo-2.jpg"
+      },
+      {
+        "name": "BMW M1 Procar Rally",
+        "file": "bmw-m1-procar-rally.jpg"
+      },
+      {
+        "name": "Lancia 037 Evo 2",
+        "file": "lancia-037-evo-2.jpg"
+      },
+      {
+        "name": "Opel Manta 400",
+        "file": "opel-manta-400.jpg"
+      },
+      {
+        "name": "Porsche 911 SC RS",
+        "file": "porsche-911-sc-rs.jpg"
+      },
+      {
+        "name": "Ford Escort RS Cosworth",
+        "file": "ford-escort-rs-cosworth.jpg"
+      },
+      {
+        "name": "Lancia Delta HF Integrale",
+        "file": "lancia-delta-hf-integrale.jpg"
+      },
+      {
+        "name": "SUBARU Impreza 1995",
+        "file": "subaru-impreza-1995.jpg"
+      },
+      {
+        "name": "Mitsubishi Lancer Evolution VI",
+        "file": "mitsubishi-lancer-evolution-vi.jpg"
+      },
+      {
+        "name": "SUBARU Impreza RS",
+        "file": "subaru-impreza-rs.jpg"
+      },
+      {
+        "name": "SUBARU Legacy RS",
+        "file": "subaru-legacy-rs.jpg"
+      },
+      {
+        "name": "SUBARU Impreza S4 Rally (1998 WRC98)",
+        "file": "subaru-impreza-s4-rally-1998-wrc98.jpg"
+      },
+      {
+        "name": "Aston Martin V8 Vantage GT4",
+        "file": "aston-martin-v8-vantage-gt4.jpg"
+      },
+      {
+        "name": "BMW M2 Competition",
+        "file": "bmw-m2-competition.jpg"
+      },
+      {
+        "name": "Chevrolet Camaro GT4.R",
+        "file": "chevrolet-camaro-gt4-r.jpg"
+      },
+      {
+        "name": "Ford Mustang GT4",
+        "file": "ford-mustang-gt4.jpg"
+      },
+      {
+        "name": "Ford Fiesta R2",
+        "file": "ford-fiesta-r2.jpg"
+      },
+      {
+        "name": "Opel Adam R2",
+        "file": "opel-adam-r2.jpg"
+      },
+      {
+        "name": "Peugeot 208 R2",
+        "file": "peugeot-208-r2.jpg"
+      },
+      {
+        "name": "Mitsubishi Lancer Evolution X",
+        "file": "mitsubishi-lancer-evolution-x.jpg"
+      },
+      {
+        "name": "SUBARU WRX STI NR4",
+        "file": "subaru-wrx-sti-nr4.jpg"
+      },
+      {
+        "name": "Citroën C4 Rally",
+        "file": "citroen-c4-rally.jpg"
+      },
+      {
+        "name": "Ford Focus RS Rally 2001",
+        "file": "ford-focus-rs-rally-2001.jpg"
+      },
+      {
+        "name": "Ford Focus RS Rally 2007",
+        "file": "ford-focus-rs-rally-2007.jpg"
+      },
+      {
+        "name": "Peugeot 206 Rally",
+        "file": "peugeot-206-rally.jpg"
+      },
+      {
+        "name": "Skoda Fabia Rally 2005",
+        "file": "skoda-fabia-rally-2005.jpg"
+      },
+      {
+        "name": "SUBARU Impreza",
+        "file": "subaru-impreza.jpg"
+      },
+      {
+        "name": "SUBARU Impreza 2001",
+        "file": "subaru-impreza-2001.jpg"
+      },
+      {
+        "name": "SUBARU Impreza S4 Rally 2008",
+        "file": "subaru-impreza-s4-rally-2008.jpg"
+      },
+      {
+        "name": "Citroën C3 R5",
+        "file": "citroen-c3-r5.jpg"
+      },
+      {
+        "name": "Ford Fiesta R5",
+        "file": "ford-fiesta-r5.jpg"
+      },
+      {
+        "name": "Mitsubishi Space Star R5",
+        "file": "mitsubishi-space-star-r5.jpg"
+      },
+      {
+        "name": "Peugeot 208 T16 R5",
+        "file": "peugeot-208-t16-r5.jpg"
+      },
+      {
+        "name": "Skoda Fabia R5",
+        "file": "skoda-fabia-r5.jpg"
+      },
+      {
+        "name": "Volkswagen Polo GTI R5",
+        "file": "volkswagen-polo-gti-r5.jpg"
+      },
+      {
+        "name": "Speedcar Xtrem",
+        "file": "speedcar-xtrem.jpg"
+      },
+      {
+        "name": "Opel Corsa Super 1600",
+        "file": "opel-corsa-super-1600.jpg"
+      },
+      {
+        "name": "Renault Clio RS S1600",
+        "file": "renault-clio-rs-s1600.jpg"
+      },
+      {
+        "name": "Volkswagen Polo S1600",
+        "file": "volkswagen-polo-s1600.jpg"
+      },
+      {
+        "name": "Ford Fiesta OMSE SuperCar Lites",
+        "file": "ford-fiesta-omse-supercar-lites.jpg"
+      },
+      {
+        "name": "Lancia Delta S4 Rallycross",
+        "file": "lancia-delta-s4-rallycross.jpg"
+      },
+      {
+        "name": "Ford RS200 Evolution",
+        "file": "ford-rs200-evolution.jpg"
+      },
+      {
+        "name": "Peugeot 205 T16 Rallycross",
+        "file": "peugeot-205-t16-rallycross.jpg"
+      },
+      {
+        "name": "MG Metro 6R4 Rallycross",
+        "file": "mg-metro-6r4-rallycross.jpg"
+      },
+      {
+        "name": "Audi S1 EKS RX quattro",
+        "file": "audi-s1-eks-rx-quattro.jpg"
+      },
+      {
+        "name": "Ford Fiesta Rallycross (Mk7)",
+        "file": "ford-fiesta-rallycross-mk7.jpg"
+      },
+      {
+        "name": "Ford Fiesta Rallycross (Mk8)",
+        "file": "ford-fiesta-rallycross-mk8.jpg"
+      },
+      {
+        "name": "Peugeot 208 WRX",
+        "file": "peugeot-208-wrx.jpg"
+      },
+      {
+        "name": "Renault Mégane RS RX",
+        "file": "renault-megane-rs-rx.jpg"
+      },
+      {
+        "name": "SUBARU WRX STI Rallycross",
+        "file": "subaru-wrx-sti-rallycross.jpg"
+      },
+      {
+        "name": "Volkswagen Polo R Supercar",
+        "file": "volkswagen-polo-r-supercar.jpg"
+      },
+      {
+        "name": "Renault Clio RS RX",
+        "file": "renault-clio-rs-rx.jpg"
+      },
+      {
+        "name": "Mini Cooper SX1",
+        "file": "mini-cooper-sx1.jpg"
+      },
+      {
+        "name": "Ford Fiesta Rallycross (STARD)",
+        "file": "ford-fiesta-rallycross-stard.jpg"
+      },
+      {
+        "name": "Ford Fiesta RXS Evo 5",
+        "file": "ford-fiesta-rxs-evo-5.jpg"
+      },
+      {
+        "name": "SEAT Ibiza RX",
+        "file": "seat-ibiza-rx.jpg"
+      }
+    ]
+  },
+  "locations": {
+    "success": [],
+    "failed": [],
+    "skipped": [
+      {
+        "name": "Catamarca Province",
+        "file": "catamarca-province.jpg"
+      },
+      {
+        "name": "Monaro",
+        "file": "monaro.jpg"
+      },
+      {
+        "name": "Hawkes Bay",
+        "file": "hawkes-bay.jpg"
+      },
+      {
+        "name": "Łęczna County",
+        "file": "leczna-county.jpg"
+      },
+      {
+        "name": "Ribadelles",
+        "file": "ribadelles.jpg"
+      },
+      {
+        "name": "New England",
+        "file": "new-england.jpg"
+      },
+      {
+        "name": "Monte Carlo",
+        "file": "monte-carlo.jpg"
+      },
+      {
+        "name": "Värmland",
+        "file": "varmland.jpg"
+      },
+      {
+        "name": "Baumholder",
+        "file": "baumholder.jpg"
+      },
+      {
+        "name": "Jämsä",
+        "file": "jamsa.jpg"
+      },
+      {
+        "name": "Argolis",
+        "file": "argolis.jpg"
+      },
+      {
+        "name": "Powys",
+        "file": "powys.jpg"
+      },
+      {
+        "name": "Perth and Kinross",
+        "file": "perth-and-kinross.jpg"
+      },
+      {
+        "name": "Circuit Jules Tacheny Mettet",
+        "file": "circuit-jules-tacheny-mettet.jpg"
+      },
+      {
+        "name": "Trois-Rivières",
+        "file": "trois-rivieres.jpg"
+      },
+      {
+        "name": "Silverstone Circuit",
+        "file": "silverstone-circuit.jpg"
+      },
+      {
+        "name": "Lohéac Bretagne",
+        "file": "loheac-bretagne.jpg"
+      },
+      {
+        "name": "Lankebanen (Hell)",
+        "file": "lankebanen-hell.jpg"
+      },
+      {
+        "name": "Montalegre",
+        "file": "montalegre.jpg"
+      },
+      {
+        "name": "Circuit de Barcelona-Catalunya",
+        "file": "circuit-de-barcelona-catalunya.jpg"
+      },
+      {
+        "name": "Höljes",
+        "file": "holjes.jpg"
+      },
+      {
+        "name": "Yas Marina Circuit",
+        "file": "yas-marina-circuit.jpg"
+      },
+      {
+        "name": "Lydden Hill",
+        "file": "lydden-hill.jpg"
+      },
+      {
+        "name": "Estering",
+        "file": "estering.jpg"
+      },
+      {
+        "name": "Bikernieki",
+        "file": "bikernieki.jpg"
+      },
+      {
+        "name": "Killarney International Raceway",
+        "file": "killarney-international-raceway.jpg"
+      }
+    ]
+  },
+  "stages": {
+    "success": [
+      {
+        "location": "Monte Carlo",
+        "name": "Col de Turini Sprint en Montée",
+        "file": "monte-carlo__col-de-turini-sprint-en-montee.jpg",
+        "sourceUrl": "http://www.igcd.net/images1/015/785.jpg",
+        "bytes": 189023
+      },
+      {
+        "location": "Värmland",
+        "name": "Stor-jangen Sprint",
+        "file": "varmland__stor-jangen-sprint.jpg",
+        "sourceUrl": "http://www.igcd.net/images1/015/797.jpg",
+        "bytes": 174002
+      },
+      {
+        "location": "Powys",
+        "name": "Dyffryn Afon",
+        "file": "powys__dyffryn-afon.jpg",
+        "sourceUrl": "http://www.igcd.net/images1/015/806.jpg",
+        "bytes": 109565
+      }
+    ],
+    "failed": [
+      {
+        "location": "Monaro",
+        "name": "Bondi Forest",
+        "reason": "no IGCD match"
+      },
+      {
+        "location": "Monte Carlo",
+        "name": "Vallée descendante",
+        "reason": "no IGCD match"
+      },
+      {
+        "location": "Jämsä",
+        "name": "Järvenkylä",
+        "reason": "no IGCD match"
+      },
+      {
+        "location": "Argolis",
+        "name": "Ypsona tou Dasos",
+        "reason": "no IGCD match"
+      }
+    ],
+    "skipped": [
+      {
+        "location": "Catamarca Province",
+        "name": "Las Juntas",
+        "file": "catamarca-province__las-juntas.jpg"
+      },
+      {
+        "location": "Catamarca Province",
+        "name": "Valle de los puentes",
+        "file": "catamarca-province__valle-de-los-puentes.jpg"
+      },
+      {
+        "location": "Catamarca Province",
+        "name": "Camino de acantilados y rocas",
+        "file": "catamarca-province__camino-de-acantilados-y-rocas.jpg"
+      },
+      {
+        "location": "Catamarca Province",
+        "name": "San Isidro",
+        "file": "catamarca-province__san-isidro.jpg"
+      },
+      {
+        "location": "Catamarca Province",
+        "name": "Miraflores",
+        "file": "catamarca-province__miraflores.jpg"
+      },
+      {
+        "location": "Catamarca Province",
+        "name": "El Rodeo",
+        "file": "catamarca-province__el-rodeo.jpg"
+      },
+      {
+        "location": "Monaro",
+        "name": "Mount Kaye Pass",
+        "file": "monaro__mount-kaye-pass.jpg"
+      },
+      {
+        "location": "Monaro",
+        "name": "Chandlers Creek",
+        "file": "monaro__chandlers-creek.jpg"
+      },
+      {
+        "location": "Monaro",
+        "name": "Rockton Plains",
+        "file": "monaro__rockton-plains.jpg"
+      },
+      {
+        "location": "Monaro",
+        "name": "Yambulla Mountain Ascent",
+        "file": "monaro__yambulla-mountain-ascent.jpg"
+      },
+      {
+        "location": "Monaro",
+        "name": "Noorinbee Ridge Ascent",
+        "file": "monaro__noorinbee-ridge-ascent.jpg"
+      },
+      {
+        "location": "Hawkes Bay",
+        "name": "Waimarama Point Forward",
+        "file": "hawkes-bay__waimarama-point-forward.jpg"
+      },
+      {
+        "location": "Hawkes Bay",
+        "name": "Te Awanga Forward",
+        "file": "hawkes-bay__te-awanga-forward.jpg"
+      },
+      {
+        "location": "Hawkes Bay",
+        "name": "Waimarama Sprint Forward",
+        "file": "hawkes-bay__waimarama-sprint-forward.jpg"
+      },
+      {
+        "location": "Hawkes Bay",
+        "name": "Elsthorpe Sprint Forward",
+        "file": "hawkes-bay__elsthorpe-sprint-forward.jpg"
+      },
+      {
+        "location": "Hawkes Bay",
+        "name": "Ocean Beach Sprint Forward",
+        "file": "hawkes-bay__ocean-beach-sprint-forward.jpg"
+      },
+      {
+        "location": "Hawkes Bay",
+        "name": "Te Awanga Sprint Forward",
+        "file": "hawkes-bay__te-awanga-sprint-forward.jpg"
+      },
+      {
+        "location": "Łęczna County",
+        "name": "Zaróbka",
+        "file": "leczna-county__zarobka.jpg"
+      },
+      {
+        "location": "Łęczna County",
+        "name": "Jezioro Rotcze",
+        "file": "leczna-county__jezioro-rotcze.jpg"
+      },
+      {
+        "location": "Łęczna County",
+        "name": "Marynka",
+        "file": "leczna-county__marynka.jpg"
+      },
+      {
+        "location": "Łęczna County",
+        "name": "Kopina",
+        "file": "leczna-county__kopina.jpg"
+      },
+      {
+        "location": "Łęczna County",
+        "name": "Lejno",
+        "file": "leczna-county__lejno.jpg"
+      },
+      {
+        "location": "Łęczna County",
+        "name": "Czarny Las",
+        "file": "leczna-county__czarny-las.jpg"
+      },
+      {
+        "location": "Ribadelles",
+        "name": "Comienzo de Bellriu",
+        "file": "ribadelles__comienzo-de-bellriu.jpg"
+      },
+      {
+        "location": "Ribadelles",
+        "name": "Centenera",
+        "file": "ribadelles__centenera.jpg"
+      },
+      {
+        "location": "Ribadelles",
+        "name": "Ascenso por valle el Gualet",
+        "file": "ribadelles__ascenso-por-valle-el-gualet.jpg"
+      },
+      {
+        "location": "Ribadelles",
+        "name": "Viñedos dentro del valle Parra",
+        "file": "ribadelles__vinedos-dentro-del-valle-parra.jpg"
+      },
+      {
+        "location": "Ribadelles",
+        "name": "Viñedos Dardenya",
+        "file": "ribadelles__vinedos-dardenya.jpg"
+      },
+      {
+        "location": "Ribadelles",
+        "name": "Descenso por carretera",
+        "file": "ribadelles__descenso-por-carretera.jpg"
+      },
+      {
+        "location": "New England",
+        "name": "Beaver Creek Trail Forward",
+        "file": "new-england__beaver-creek-trail-forward.jpg"
+      },
+      {
+        "location": "New England",
+        "name": "North Fork Pass",
+        "file": "new-england__north-fork-pass.jpg"
+      },
+      {
+        "location": "New England",
+        "name": "Hancock Creek Burst",
+        "file": "new-england__hancock-creek-burst.jpg"
+      },
+      {
+        "location": "New England",
+        "name": "Fuller Mountain Ascent",
+        "file": "new-england__fuller-mountain-ascent.jpg"
+      },
+      {
+        "location": "New England",
+        "name": "Tolt Valley Sprint Forward",
+        "file": "new-england__tolt-valley-sprint-forward.jpg"
+      },
+      {
+        "location": "New England",
+        "name": "Hancock Hill Sprint Forward",
+        "file": "new-england__hancock-hill-sprint-forward.jpg"
+      },
+      {
+        "location": "Monte Carlo",
+        "name": "Pra d'Alart",
+        "file": "monte-carlo__pra-d-alart.jpg"
+      },
+      {
+        "location": "Monte Carlo",
+        "name": "Col de Turini – Départ en descente",
+        "file": "monte-carlo__col-de-turini-depart-en-descente.jpg"
+      },
+      {
+        "location": "Monte Carlo",
+        "name": "Gordolon – Courte montée",
+        "file": "monte-carlo__gordolon-courte-montee.jpg"
+      },
+      {
+        "location": "Monte Carlo",
+        "name": "Approche du Col de Turini – Montée",
+        "file": "monte-carlo__approche-du-col-de-turini-montee.jpg"
+      },
+      {
+        "location": "Värmland",
+        "name": "Hamra",
+        "file": "varmland__hamra.jpg"
+      },
+      {
+        "location": "Värmland",
+        "name": "Ransbysäter",
+        "file": "varmland__ransbysater.jpg"
+      },
+      {
+        "location": "Värmland",
+        "name": "Älgsjön",
+        "file": "varmland__algsjon.jpg"
+      },
+      {
+        "location": "Värmland",
+        "name": "Älgsjön Sprint",
+        "file": "varmland__algsjon-sprint.jpg"
+      },
+      {
+        "location": "Värmland",
+        "name": "Elgsjön",
+        "file": "varmland__elgsjon.jpg"
+      },
+      {
+        "location": "Värmland",
+        "name": "Björklangen",
+        "file": "varmland__bjorklangen.jpg"
+      },
+      {
+        "location": "Baumholder",
+        "name": "Oberstein",
+        "file": "baumholder__oberstein.jpg"
+      },
+      {
+        "location": "Baumholder",
+        "name": "Hammerstein",
+        "file": "baumholder__hammerstein.jpg"
+      },
+      {
+        "location": "Baumholder",
+        "name": "Kreuzungsring",
+        "file": "baumholder__kreuzungsring.jpg"
+      },
+      {
+        "location": "Baumholder",
+        "name": "Verbundsring",
+        "file": "baumholder__verbundsring.jpg"
+      },
+      {
+        "location": "Baumholder",
+        "name": "Innerer Feld-Sprint",
+        "file": "baumholder__innerer-feld-sprint.jpg"
+      },
+      {
+        "location": "Baumholder",
+        "name": "Waldaufstieg",
+        "file": "baumholder__waldaufstieg.jpg"
+      },
+      {
+        "location": "Jämsä",
+        "name": "Kakaristo",
+        "file": "jamsa__kakaristo.jpg"
+      },
+      {
+        "location": "Jämsä",
+        "name": "Kontinjärvi",
+        "file": "jamsa__kontinjarvi.jpg"
+      },
+      {
+        "location": "Jämsä",
+        "name": "Iso Oksjärvi",
+        "file": "jamsa__iso-oksjarvi.jpg"
+      },
+      {
+        "location": "Jämsä",
+        "name": "Kailajärvi",
+        "file": "jamsa__kailajarvi.jpg"
+      },
+      {
+        "location": "Jämsä",
+        "name": "Naarajärvi",
+        "file": "jamsa__naarajarvi.jpg"
+      },
+      {
+        "location": "Argolis",
+        "name": "Perasma Platani",
+        "file": "argolis__perasma-platani.jpg"
+      },
+      {
+        "location": "Argolis",
+        "name": "Anodou Farmakas",
+        "file": "argolis__anodou-farmakas.jpg"
+      },
+      {
+        "location": "Argolis",
+        "name": "Ourea Spevsi",
+        "file": "argolis__ourea-spevsi.jpg"
+      },
+      {
+        "location": "Argolis",
+        "name": "Pomona Ekrixi",
+        "file": "argolis__pomona-ekrixi.jpg"
+      },
+      {
+        "location": "Argolis",
+        "name": "Fourkéta Kourva",
+        "file": "argolis__fourketa-kourva.jpg"
+      },
+      {
+        "location": "Powys",
+        "name": "River Severn Valley",
+        "file": "powys__river-severn-valley.jpg"
+      },
+      {
+        "location": "Powys",
+        "name": "Sweet Lamb",
+        "file": "powys__sweet-lamb.jpg"
+      },
+      {
+        "location": "Powys",
+        "name": "Fferm Wynt",
+        "file": "powys__fferm-wynt.jpg"
+      },
+      {
+        "location": "Powys",
+        "name": "Pant Mawr",
+        "file": "powys__pant-mawr.jpg"
+      },
+      {
+        "location": "Powys",
+        "name": "Bidno Moorland",
+        "file": "powys__bidno-moorland.jpg"
+      },
+      {
+        "location": "Perth and Kinross",
+        "name": "Newhouse Bridge",
+        "file": "perth-and-kinross__newhouse-bridge.jpg"
+      },
+      {
+        "location": "Perth and Kinross",
+        "name": "South Morningside",
+        "file": "perth-and-kinross__south-morningside.jpg"
+      },
+      {
+        "location": "Perth and Kinross",
+        "name": "Annbank Station",
+        "file": "perth-and-kinross__annbank-station.jpg"
+      },
+      {
+        "location": "Perth and Kinross",
+        "name": "Rosebank Farm",
+        "file": "perth-and-kinross__rosebank-farm.jpg"
+      },
+      {
+        "location": "Perth and Kinross",
+        "name": "Old Butterstone Muir",
+        "file": "perth-and-kinross__old-butterstone-muir.jpg"
+      },
+      {
+        "location": "Perth and Kinross",
+        "name": "Glencastle Farm",
+        "file": "perth-and-kinross__glencastle-farm.jpg"
+      }
+    ]
+  }
+}

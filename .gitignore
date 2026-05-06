@@ -43,7 +43,6 @@ yarn-error.log*
 next-env.d.ts
 
 # user uploads (dev)
-/public/uploads/*
 !/public/uploads/.gitkeep
 
 # IDE / editor

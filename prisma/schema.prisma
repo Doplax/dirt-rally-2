@@ -46,6 +46,7 @@ model Stage {
   direction  Direction
   locationId String
   location   Location     @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  photoUrl   String?
   times      TimeRecord[]
 
   @@unique([name, locationId])
