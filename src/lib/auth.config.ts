@@ -6,6 +6,11 @@ import type { NextAuthConfig } from 'next-auth';
  * only loaded inside the Node runtime. This config is consumed by middleware.
  */
 export const authConfig = {
+  // Auth.js v5 dropped NEXTAUTH_URL as the trust signal. Without trustHost
+  // (or AUTH_TRUST_HOST=true) self-hosted and `npm run start` deployments
+  // reject the request with UntrustedHost. Vercel auto-trusts, so this is
+  // effectively a no-op there.
+  trustHost: true,
   pages: {
     signIn: '/login',
   },

@@ -14,7 +14,7 @@ export default auth((req) => {
   const isPublic = PUBLIC_PATHS.includes(pathname);
   const isChangePasswordPage = pathname === CHANGE_PASSWORD_PATH;
 
-  if (!session) {
+  if (!session?.user) {
     if (isPublic) return NextResponse.next();
     const url = req.nextUrl.clone();
     url.pathname = '/login';
