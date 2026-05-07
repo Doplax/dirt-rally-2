@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Card } from '@heroui/react';
+import { Button } from '@heroui/react';
 import { Plus } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -92,37 +92,41 @@ export default function LocationsBrowser({
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((loc) => (
-            <Link key={loc.id} href={`/mapas/${loc.id}`} className="group">
-              <Card className="overflow-hidden transition-shadow group-hover:shadow-lg">
-                <div className="bg-foreground/5 relative aspect-[16/9] overflow-hidden">
-                  {loc.photoUrl ? (
-                    <Image
-                      src={loc.photoUrl}
-                      alt={loc.name}
-                      fill
-                      sizes="(max-width: 640px) 100vw, 33vw"
-                      className="object-cover"
-                    />
-                  ) : (
-                    <div className="text-foreground/30 flex h-full items-center justify-center text-4xl">
-                      🗺️
-                    </div>
-                  )}
-                  {loc.isDlc ? (
-                    <span className="bg-primary text-primary-foreground absolute top-2 right-2 rounded px-2 py-0.5 text-xs font-medium">
-                      DLC
-                    </span>
-                  ) : null}
-                </div>
-                <div className="p-4">
-                  <div className="text-foreground/60 text-xs">{loc.country}</div>
-                  <div className="text-lg font-semibold">{loc.name}</div>
-                  <div className="text-foreground/60 mt-1 flex justify-between text-sm">
-                    <span>{loc.surface}</span>
-                    <span>{loc.stagesCount} tramos</span>
+            <Link
+              key={loc.id}
+              href={`/mapas/${loc.id}`}
+              className="group border-foreground/10 hover:border-foreground/25 bg-foreground/[0.02] flex flex-col overflow-hidden rounded-xl border transition-all hover:shadow-lg"
+            >
+              <div className="bg-foreground/5 relative aspect-[16/9]">
+                {loc.photoUrl ? (
+                  <Image
+                    src={loc.photoUrl}
+                    alt={loc.name}
+                    fill
+                    sizes="(max-width: 640px) 100vw, 33vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                  />
+                ) : (
+                  <div className="text-foreground/30 flex h-full items-center justify-center text-4xl">
+                    🗺️
                   </div>
+                )}
+                {loc.isDlc ? (
+                  <span className="bg-primary text-primary-foreground absolute top-2 right-2 rounded px-2 py-0.5 text-xs font-medium">
+                    DLC
+                  </span>
+                ) : null}
+              </div>
+              <div className="flex flex-col gap-0.5 px-3 pt-2 pb-2.5 leading-tight">
+                <div className="text-foreground/55 text-[11px] uppercase tracking-wide">
+                  {loc.country}
                 </div>
-              </Card>
+                <div className="text-base font-semibold">{loc.name}</div>
+                <div className="text-foreground/55 mt-0.5 flex items-center justify-between gap-2 text-xs">
+                  <span className="truncate">{loc.surface}</span>
+                  <span className="shrink-0 tabular-nums">{loc.stagesCount} tramos</span>
+                </div>
+              </div>
             </Link>
           ))}
         </div>

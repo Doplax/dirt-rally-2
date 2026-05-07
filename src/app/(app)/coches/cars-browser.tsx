@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Card } from '@heroui/react';
+import { Button } from '@heroui/react';
 import { Pencil, Plus, Search, Trash2, Upload } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -177,7 +177,7 @@ function CarCard({ car, isAdmin }: { car: CarItem; isAdmin: boolean }) {
   };
 
   return (
-    <Card className="overflow-hidden">
+    <div className="border-foreground/10 hover:border-foreground/25 bg-foreground/[0.02] group flex flex-col overflow-hidden rounded-xl border transition-all hover:shadow-lg">
       <div className="bg-foreground/5 relative aspect-[16/10]">
         {car.photoUrl ? (
           <Image
@@ -185,7 +185,7 @@ function CarCard({ car, isAdmin }: { car: CarItem; isAdmin: boolean }) {
             alt={car.name}
             fill
             sizes="(max-width: 640px) 100vw, 25vw"
-            className="object-cover"
+            className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
           />
         ) : (
           <div className="text-foreground/30 flex h-full items-center justify-center text-3xl">
@@ -198,9 +198,9 @@ function CarCard({ car, isAdmin }: { car: CarItem; isAdmin: boolean }) {
           </span>
         ) : null}
       </div>
-      <div className="flex flex-col gap-2 p-4">
-        <div className="font-semibold">{car.name}</div>
-        <div className="text-foreground/60 flex flex-wrap gap-2 text-xs">
+      <div className="flex flex-col gap-1.5 px-3 pt-2 pb-2.5 leading-tight">
+        <div className="text-sm font-semibold">{car.name}</div>
+        <div className="text-foreground/60 flex flex-wrap gap-1 text-[11px]">
           {car.drivetrain ? (
             <span className="border-foreground/15 rounded border px-1.5 py-0.5">
               {car.drivetrain}
@@ -214,7 +214,7 @@ function CarCard({ car, isAdmin }: { car: CarItem; isAdmin: boolean }) {
           ) : null}
         </div>
         {isAdmin ? (
-          <div className="border-foreground/10 mt-2 flex flex-wrap gap-1.5 border-t pt-2">
+          <div className="border-foreground/10 mt-1 flex flex-wrap items-center gap-1.5 border-t pt-1.5">
             <CarFormModal
               initial={car}
               trigger={
@@ -253,6 +253,6 @@ function CarCard({ car, isAdmin }: { car: CarItem; isAdmin: boolean }) {
           </div>
         ) : null}
       </div>
-    </Card>
+    </div>
   );
 }
