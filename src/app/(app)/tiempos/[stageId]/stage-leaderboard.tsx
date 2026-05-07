@@ -1,6 +1,6 @@
 'use client';
 
-import { Avatar, Button, Card } from '@heroui/react';
+import { Avatar, Button } from '@heroui/react';
 import { ChevronDown, Pencil, Plus, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState, useTransition } from 'react';
@@ -106,36 +106,42 @@ export default function StageLeaderboard({
 
   return (
     <div className="flex flex-col gap-4">
-      <Card className="flex flex-col p-1">
+      <div className="border-foreground/10 overflow-hidden rounded-xl border">
         <button
           type="button"
           onClick={() => setFormOpen((o) => !o)}
           aria-expanded={formOpen}
           aria-controls="registrar-tiempo-form"
-          className="hover:bg-foreground/5 flex items-center justify-between gap-3 rounded-md px-2 py-1.5 text-left"
+          className="hover:bg-foreground/5 group flex w-full items-center justify-between gap-3 px-4 py-3 text-left transition-colors"
         >
-          <span className="flex items-center gap-2">
-            <Plus
-              size={14}
-              className={[
-                'text-foreground/60 transition-transform duration-300',
-                formOpen ? 'rotate-45' : '',
-              ].join(' ')}
-            />
-            <span className="text-sm font-semibold">Registrar tiempo</span>
+          <span className="flex items-center gap-3">
             <span
               className={[
-                'text-foreground/50 hidden text-xs transition-opacity duration-200 sm:inline',
-                formOpen ? 'opacity-100' : 'opacity-0',
+                'flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors duration-300',
+                formOpen ? 'bg-primary/15 text-primary' : 'bg-foreground/10 text-foreground/70',
               ].join(' ')}
             >
-              · Coche, clima y hora se mantienen entre envíos
+              <Plus
+                size={16}
+                className={[
+                  'transition-transform duration-300',
+                  formOpen ? 'rotate-45' : '',
+                ].join(' ')}
+              />
+            </span>
+            <span className="flex flex-col">
+              <span className="text-sm font-semibold">Registrar tiempo</span>
+              <span className="text-foreground/50 text-xs">
+                {formOpen
+                  ? 'Coche, clima y hora se mantienen entre envíos'
+                  : 'Pulsa para añadir un nuevo tiempo a este tramo'}
+              </span>
             </span>
           </span>
           <ChevronDown
-            size={16}
+            size={18}
             className={[
-              'text-foreground/60 transition-transform duration-300',
+              'text-foreground/60 shrink-0 transition-transform duration-300',
               formOpen ? 'rotate-180' : '',
             ].join(' ')}
           />
@@ -143,13 +149,13 @@ export default function StageLeaderboard({
         <div
           id="registrar-tiempo-form"
           className={[
-            'grid transition-[grid-template-rows,opacity] duration-300 ease-in-out',
-            formOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0',
+            'grid transition-[grid-template-rows] duration-300 ease-in-out',
+            formOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]',
           ].join(' ')}
           aria-hidden={!formOpen}
         >
           <div className="overflow-hidden">
-            <div className="px-2 pt-3 pb-2">
+            <div className="border-foreground/10 border-t px-4 pt-4 pb-4">
               <TimeRecordForm
                 stageId={stage.id}
                 currentUserId={currentUserId}
@@ -159,7 +165,7 @@ export default function StageLeaderboard({
             </div>
           </div>
         </div>
-      </Card>
+      </div>
 
       <div className="flex flex-wrap items-end gap-3">
         <NativeSelect

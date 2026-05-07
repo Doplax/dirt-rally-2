@@ -1,10 +1,11 @@
-import { ArrowDown, ArrowLeft, ArrowUp } from 'lucide-react';
+import { ArrowDown, ArrowLeft, ArrowUp, Trophy } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Direction } from '@prisma/client';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/db';
+import { msToString } from '@/lib/time-format';
 import StageLeaderboard from './stage-leaderboard';
 
 export const metadata = { title: 'Leaderboard · DiRT Tracker' };
@@ -53,6 +54,11 @@ export default async function StageDetailPage({
   if (!stage) notFound();
 
   const heroPhoto = stage.photoUrl ?? stage.location.photoUrl;
+
+  const bestEntry = times
+    .filter((t) => !t.isDnf)
+    .map((t) => ({ ...t, totalMs: t.timeMs + t.penaltyMs }))
+    .sort((a, b) => a.totalMs - b.totalMs)[0];
 
   return (
     <section className="flex flex-col gap-6">
@@ -103,6 +109,35 @@ export default async function StageDetailPage({
             </span>
             <span>{stage.distanceKm.toFixed(2)} km</span>
             <span>{stage.location.surface}</span>
+          </div>
+
+          <div className="mt-auto">
+            {bestEntry ? (
+              <div className="from-amber-500/10 to-amber-500/0 ring-amber-500/20 flex items-center gap-3 rounded-lg bg-gradient-to-r p-3 ring-1">
+                <span className="bg-amber-500/20 ring-amber-500/40 flex h-10 w-10 shrink-0 items-center justify-center rounded-full ring-1">
+                  <Trophy size={18} className="fill-amber-300 text-amber-400" />
+                </span>
+                <div className="flex min-w-0 flex-1 flex-col">
+                  <span className="text-amber-300/80 text-[10px] font-semibold uppercase tracking-wider">
+                    Mejor tiempo
+                  </span>
+                  <span className="truncate font-semibold">
+                    {bestEntry.runner.username}
+                  </span>
+                  <span className="text-foreground/60 truncate text-xs">
+                    {bestEntry.car.name}
+                  </span>
+                </div>
+                <span className="font-mono text-lg font-bold tabular-nums text-amber-200">
+                  {msToString(bestEntry.totalMs)}
+                </span>
+              </div>
+            ) : (
+              <div className="border-foreground/10 text-foreground/50 flex items-center gap-3 rounded-lg border border-dashed p-3 text-sm">
+                <Trophy size={18} className="text-foreground/30" />
+                Sin tiempos registrados todavía.
+              </div>
+            )}
           </div>
         </header>
       </div>
