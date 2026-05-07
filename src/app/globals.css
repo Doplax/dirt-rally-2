@@ -9,10 +9,19 @@
 /* Rally-friendly orange accent for both themes */
 :root {
   --accent: oklch(0.74 0.18 50);
+
+  /* HeroUI ships fields with no border (`--field-border-width: 0`) and a
+   * transparent border colour, so empty inputs visually disappear into the
+   * page until they have content or focus. Force a visible 1px border using
+   * the existing theme border token — applies to Input, TextField, etc. */
+  --field-border: var(--border);
+  --field-border-width: 1px;
 }
 
 html.dark {
   --accent: oklch(0.78 0.19 55);
+  --field-border: var(--border);
+  --field-border-width: 1px;
 }
 
 body {
