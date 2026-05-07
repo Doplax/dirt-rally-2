@@ -1,12 +1,12 @@
 'use client';
 
-import { Avatar, Button } from '@heroui/react';
+import { Button } from '@heroui/react';
 import { ChevronDown, Pencil, Plus, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState, useTransition } from 'react';
-import { TimeOfDay, Weather } from '@prisma/client';
+import { Weather } from '@prisma/client';
 import { NativeSelect } from '@/components/ui/native-select';
-import { msToString } from '@/lib/time-format';
+import { TimesTable, type TimesTableEntry } from '@/components/shared/times-table';
 import {
   TimeRecordForm,
   TimeRecordFormModal,
@@ -23,18 +23,8 @@ export type LeaderboardCar = {
   photoUrl: string | null;
 };
 
-export type LeaderboardEntry = {
-  id: string;
-  runner: LeaderboardUser;
-  registrar: { id: string; username: string };
-  car: LeaderboardCar;
-  timeMs: number;
-  penaltyMs: number;
-  isDnf: boolean;
-  weather: Weather;
-  timeOfDay: TimeOfDay;
-  notes: string | null;
-  createdAt: string;
+export type LeaderboardEntry = TimesTableEntry & {
+  car: TimesTableEntry['car'] & { classCode: string };
 };
 
 const WEATHER_LABEL: Record<Weather, string> = {
@@ -42,13 +32,6 @@ const WEATHER_LABEL: Record<Weather, string> = {
   WET: 'Mojado',
   SNOW: 'Nieve',
   ICE: 'Hielo',
-};
-
-const TIME_OF_DAY_LABEL: Record<TimeOfDay, string> = {
-  DAY: 'Día',
-  NIGHT: 'Noche',
-  DUSK: 'Atardecer',
-  DAWN: 'Amanecer',
 };
 
 export default function StageLeaderboard({
@@ -71,7 +54,6 @@ export default function StageLeaderboard({
   const [includeDnf, setIncludeDnf] = useState(false);
   const [formOpen, setFormOpen] = useState(true);
 
-  // Persist the form panel's open/closed preference across visits.
   useEffect(() => {
     const stored = localStorage.getItem('tiempos.formOpen');
     if (stored !== null) setFormOpen(stored === '1');
@@ -96,7 +78,6 @@ export default function StageLeaderboard({
         if (weatherFilter && t.weather !== weatherFilter) return false;
         return true;
       })
-      .map((t) => ({ ...t, totalMs: t.timeMs + t.penaltyMs }))
       .sort((a, b) => {
         if (a.isDnf && !b.isDnf) return 1;
         if (!a.isDnf && b.isDnf) return -1;
@@ -197,92 +178,28 @@ export default function StageLeaderboard({
         </label>
       </div>
 
-      <div className="border-foreground/10 overflow-x-auto rounded-lg border">
-        <table className="w-full text-sm">
-          <thead className="bg-foreground/5 text-foreground/70 text-left text-xs uppercase">
-            <tr>
-              <th className="px-3 py-3 font-medium">#</th>
-              <th className="px-3 py-3 font-medium">Piloto</th>
-              <th className="px-3 py-3 font-medium">Coche</th>
-              <th className="px-3 py-3 text-right font-medium">Tiempo</th>
-              <th className="px-3 py-3 text-right font-medium">Sanción</th>
-              <th className="px-3 py-3 text-right font-medium">Total</th>
-              <th className="px-3 py-3 font-medium">Cond.</th>
-              <th className="px-3 py-3 font-medium">Fecha</th>
-              <th className="px-3 py-3 text-right font-medium">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.length === 0 ? (
-              <tr>
-                <td colSpan={9} className="text-foreground/60 p-8 text-center">
-                  Aún no hay tiempos. ¡Sé el primero!
-                </td>
-              </tr>
-            ) : (
-              filtered.map((entry, index) => (
-                <tr key={entry.id} className="border-foreground/10 border-t">
-                  <td className="px-3 py-2.5 font-mono text-xs">
-                    {entry.isDnf ? <span className="text-danger">DNF</span> : index + 1}
-                  </td>
-                  <td className="px-3 py-2.5">
-                    <div className="flex items-center gap-2">
-                      <Avatar size="sm">
-                        {entry.runner.photoUrl ? (
-                          <Avatar.Image src={entry.runner.photoUrl} alt={entry.runner.username} />
-                        ) : null}
-                        <Avatar.Fallback>
-                          {entry.runner.username.slice(0, 2).toUpperCase()}
-                        </Avatar.Fallback>
-                      </Avatar>
-                      <div className="flex flex-col">
-                        <span className="font-medium">{entry.runner.username}</span>
-                        {entry.registrar.id !== entry.runner.id ? (
-                          <span className="text-foreground/50 text-xs">
-                            por {entry.registrar.username}
-                          </span>
-                        ) : null}
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-3 py-2.5">
-                    <div className="flex flex-col">
-                      <span>{entry.car.name}</span>
-                      <span className="text-foreground/50 text-xs">{entry.car.className}</span>
-                    </div>
-                  </td>
-                  <td className="px-3 py-2.5 text-right font-mono">
-                    {entry.isDnf ? '—' : msToString(entry.timeMs)}
-                  </td>
-                  <td className="px-3 py-2.5 text-right font-mono">
-                    {entry.penaltyMs > 0 ? `+${msToString(entry.penaltyMs)}` : '—'}
-                  </td>
-                  <td className="px-3 py-2.5 text-right font-mono font-semibold">
-                    {entry.isDnf ? '—' : msToString(entry.totalMs)}
-                  </td>
-                  <td className="px-3 py-2.5 text-foreground/70 whitespace-nowrap text-xs">
-                    {WEATHER_LABEL[entry.weather]} · {TIME_OF_DAY_LABEL[entry.timeOfDay]}
-                  </td>
-                  <td className="px-3 py-2.5 text-foreground/70 whitespace-nowrap text-xs">
-                    {new Date(entry.createdAt).toLocaleDateString('es-ES', {
-                      day: '2-digit',
-                      month: '2-digit',
-                      year: '2-digit',
-                    })}
-                  </td>
-                  <td className="px-3 py-2.5">
-                    <RowActions
-                      stageId={stage.id}
-                      entry={entry}
-                      selections={formSelections}
-                    />
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
+      <TimesTable
+        entries={filtered}
+        columns={[
+          'rank',
+          'runner',
+          'car',
+          'time',
+          'penalty',
+          'total',
+          'conditions',
+          'date',
+          'actions',
+        ]}
+        renderActions={(entry) => (
+          <RowActions
+            stageId={stage.id}
+            entry={entry as LeaderboardEntry}
+            selections={formSelections}
+          />
+        )}
+        emptyMessage="Aún no hay tiempos. ¡Sé el primero!"
+      />
     </div>
   );
 }
@@ -311,7 +228,7 @@ function RowActions({
   };
 
   return (
-    <div className="flex items-center justify-end gap-1">
+    <>
       <TimeRecordFormModal
         stageId={stageId}
         currentUserId={entry.runner.id}
@@ -334,6 +251,6 @@ function RowActions({
         <Trash2 size={14} />
       </Button>
       {error ? <span className="text-danger text-xs">{error}</span> : null}
-    </div>
+    </>
   );
 }

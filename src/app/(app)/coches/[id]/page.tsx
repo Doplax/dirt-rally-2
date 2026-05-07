@@ -4,8 +4,8 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/db';
+import { TimesTable } from '@/components/shared/times-table';
 import { CarAdminPanel } from './car-admin-panel';
-import { CarTimesTable } from './car-times-table';
 import { FavoriteToggle } from './favorite-toggle';
 
 export const metadata = { title: 'Detalle de coche · DiRT Tracker' };
@@ -28,7 +28,9 @@ export default async function CarDetailPage({ params }: { params: Promise<{ id: 
             name: true,
             distanceKm: true,
             direction: true,
-            location: { select: { id: true, name: true, country: true } },
+            location: {
+              select: { id: true, name: true, country: true, photoUrl: true },
+            },
           },
         },
       },
@@ -131,8 +133,8 @@ export default async function CarDetailPage({ params }: { params: Promise<{ id: 
         </header>
       </div>
 
-      <CarTimesTable
-        times={sortedTimes.map((t) => ({
+      <TimesTable
+        entries={sortedTimes.map((t) => ({
           id: t.id,
           totalMs: t.totalMs,
           timeMs: t.timeMs,
@@ -141,9 +143,18 @@ export default async function CarDetailPage({ params }: { params: Promise<{ id: 
           weather: t.weather,
           timeOfDay: t.timeOfDay,
           createdAt: t.createdAt.toISOString(),
+          href: `/tiempos/${t.stage.id}`,
           runner: t.runner,
+          car: {
+            id: car.id,
+            name: car.name,
+            className: car.className,
+            photoUrl: car.photoUrl,
+          },
           stage: t.stage,
         }))}
+        columns={['rank', 'stage', 'runner', 'time', 'penalty', 'total', 'conditions', 'date']}
+        emptyMessage="Aún no hay tiempos registrados con este coche."
       />
     </section>
   );

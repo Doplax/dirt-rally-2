@@ -17,14 +17,24 @@ const usernameSchema = z
   .max(32, 'Máximo 32 caracteres')
   .regex(/^[A-Za-z0-9_-]+$/, 'Solo letras, números, guiones y guion bajo');
 
+const emailSchema = z
+  .union([
+    z.literal('').transform(() => null),
+    z.string().email('Email no válido').max(190),
+  ])
+  .optional()
+  .nullable();
+
 const createUserSchema = z.object({
   username: usernameSchema,
   role: z.nativeEnum(Role),
+  email: emailSchema,
 });
 
 const updateUserSchema = z.object({
   username: usernameSchema,
   role: z.nativeEnum(Role),
+  email: emailSchema,
 });
 
 const profileSchema = z.object({
@@ -53,6 +63,7 @@ export async function createUser(formData: FormData): Promise<ActionResult> {
     const parsed = createUserSchema.parse({
       username: formData.get('username'),
       role: formData.get('role'),
+      email: formData.get('email'),
     });
 
     const passwordHash = await bcrypt.hash(DEFAULT_PASSWORD, 12);
@@ -60,6 +71,7 @@ export async function createUser(formData: FormData): Promise<ActionResult> {
       data: {
         username: parsed.username,
         role: parsed.role,
+        email: parsed.email ?? null,
         passwordHash,
         mustChangePassword: true,
       },
@@ -77,13 +89,36 @@ export async function updateUser(id: string, formData: FormData): Promise<Action
     const parsed = updateUserSchema.parse({
       username: formData.get('username'),
       role: formData.get('role'),
+      email: formData.get('email'),
     });
 
     await prisma.user.update({
       where: { id },
-      data: parsed,
+      data: {
+        username: parsed.username,
+        role: parsed.role,
+        email: parsed.email ?? null,
+      },
     });
     revalidatePath('/usuarios');
+    revalidatePath(`/usuarios/${id}`);
+    return { ok: true };
+  } catch (err) {
+    return fail(err);
+  }
+}
+
+export async function uploadUserPhoto(id: string, formData: FormData): Promise<ActionResult> {
+  try {
+    await requireAdmin();
+    const file = formData.get('file');
+    if (!(file instanceof File) || file.size === 0) {
+      return { ok: false, error: 'Selecciona un archivo' };
+    }
+    const photoUrl = await saveUpload(file, 'users');
+    await prisma.user.update({ where: { id }, data: { photoUrl } });
+    revalidatePath('/usuarios');
+    revalidatePath(`/usuarios/${id}`);
     return { ok: true };
   } catch (err) {
     return fail(err);

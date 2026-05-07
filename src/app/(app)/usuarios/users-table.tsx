@@ -1,23 +1,19 @@
 'use client';
 
 import { Avatar, Button } from '@heroui/react';
-import { KeyRound, Pencil, Plus, Trash2 } from 'lucide-react';
+import { KeyRound, Plus, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState, useTransition, type ReactNode } from 'react';
 import { Role } from '@prisma/client';
 import { Field } from '@/components/ui/field';
 import { FormModal } from '@/components/ui/form-modal';
 import { NativeSelect } from '@/components/ui/native-select';
-import {
-  createUser,
-  deleteUser,
-  resetUserPassword,
-  updateUser,
-} from '@/server/actions/users';
+import { createUser, deleteUser, resetUserPassword } from '@/server/actions/users';
 
 export type UserRow = {
   id: string;
   username: string;
+  email: string | null;
   role: Role;
   photoUrl: string | null;
   mustChangePassword: boolean;
@@ -33,10 +29,11 @@ export default function UsersTable({
   users: UserRow[];
   currentUserId: string;
 }) {
+  const router = useRouter();
   return (
     <div className="flex flex-col gap-3">
       <div className="flex justify-end">
-        <UserFormModal
+        <UserCreateModal
           trigger={
             <Button variant="primary">
               <Plus size={16} /> Crear usuario
@@ -49,16 +46,20 @@ export default function UsersTable({
           <thead className="bg-foreground/5 text-foreground/70 text-left text-xs uppercase">
             <tr>
               <th className="px-3 py-3 font-medium">Usuario</th>
+              <th className="px-3 py-3 font-medium">Email</th>
               <th className="px-3 py-3 font-medium">Rol</th>
-              <th className="px-3 py-3 font-medium">Tiempos (corredor)</th>
-              <th className="px-3 py-3 font-medium">Tiempos (registró)</th>
+              <th className="px-3 py-3 font-medium">Tiempos</th>
               <th className="px-3 py-3 font-medium">Alta</th>
               <th className="px-3 py-3 text-right font-medium">Acciones</th>
             </tr>
           </thead>
           <tbody>
             {users.map((user) => (
-              <tr key={user.id} className="border-foreground/10 border-t">
+              <tr
+                key={user.id}
+                onClick={() => router.push(`/usuarios/${user.id}`)}
+                className="border-foreground/10 hover:bg-foreground/5 cursor-pointer border-t transition-colors"
+              >
                 <td className="px-3 py-2.5">
                   <div className="flex items-center gap-2">
                     <Avatar size="sm">
@@ -79,6 +80,9 @@ export default function UsersTable({
                     </div>
                   </div>
                 </td>
+                <td className="text-foreground/70 px-3 py-2.5 text-xs">
+                  {user.email ?? <span className="text-foreground/40">—</span>}
+                </td>
                 <td className="px-3 py-2.5">
                   <span
                     className={
@@ -90,12 +94,13 @@ export default function UsersTable({
                     {user.role === 'ADMIN' ? 'Admin' : 'Piloto'}
                   </span>
                 </td>
-                <td className="px-3 py-2.5">{user.timesAsRunner}</td>
-                <td className="px-3 py-2.5">{user.timesAsRegistrar}</td>
-                <td className="px-3 py-2.5 text-foreground/70 whitespace-nowrap text-xs">
+                <td className="text-foreground/70 px-3 py-2.5 text-xs">
+                  {user.timesAsRunner} / {user.timesAsRegistrar}
+                </td>
+                <td className="text-foreground/70 px-3 py-2.5 whitespace-nowrap text-xs">
                   {new Date(user.createdAt).toLocaleDateString('es-ES')}
                 </td>
-                <td className="px-3 py-2.5">
+                <td className="px-3 py-2.5" onClick={(e) => e.stopPropagation()}>
                   <RowActions user={user} isSelf={user.id === currentUserId} />
                 </td>
               </tr>
@@ -103,6 +108,10 @@ export default function UsersTable({
           </tbody>
         </table>
       </div>
+      <p className="text-foreground/50 text-xs">
+        Tiempos: <span className="font-mono">corredor / registrador</span>. Pulsa la fila para
+        ver el detalle del usuario.
+      </p>
     </div>
   );
 }
@@ -135,14 +144,6 @@ function RowActions({ user, isSelf }: { user: UserRow; isSelf: boolean }) {
 
   return (
     <div className="flex items-center justify-end gap-1">
-      <UserFormModal
-        initial={user}
-        trigger={
-          <Button variant="ghost" size="sm" isIconOnly aria-label="Editar usuario">
-            <Pencil size={14} />
-          </Button>
-        }
-      />
       <Button
         variant="ghost"
         size="sm"
@@ -170,35 +171,19 @@ function RowActions({ user, isSelf }: { user: UserRow; isSelf: boolean }) {
   );
 }
 
-function UserFormModal({
-  trigger,
-  initial,
-}: {
-  trigger: ReactNode;
-  initial?: { id: string; username: string; role: Role };
-}) {
+function UserCreateModal({ trigger }: { trigger: ReactNode }) {
   return (
     <FormModal
       trigger={trigger}
-      title={initial ? 'Editar usuario' : 'Crear usuario'}
-      description={
-        initial
-          ? 'Cambia username o rol. La contraseña se gestiona desde "Resetear".'
-          : 'Se creará con la contraseña por defecto "P@ssw0rd" y el flag de cambio obligatorio.'
-      }
+      title="Crear usuario"
+      description='Se creará con la contraseña por defecto "P@ssw0rd" y el flag de cambio obligatorio.'
     >
-      {(close) => <UserForm initial={initial} onSuccess={close} />}
+      {(close) => <UserCreateForm onSuccess={close} />}
     </FormModal>
   );
 }
 
-function UserForm({
-  initial,
-  onSuccess,
-}: {
-  initial?: { id: string; username: string; role: Role };
-  onSuccess: () => void;
-}) {
+function UserCreateForm({ onSuccess }: { onSuccess: () => void }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
@@ -208,9 +193,7 @@ function UserForm({
     setError(null);
     const formData = new FormData(event.currentTarget);
     startTransition(async () => {
-      const result = initial
-        ? await updateUser(initial.id, formData)
-        : await createUser(formData);
+      const result = await createUser(formData);
       if (!result.ok) {
         setError(result.error);
         return;
@@ -222,16 +205,17 @@ function UserForm({
 
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-4">
+      <Field label="Usuario" name="username" isRequired />
       <Field
-        label="Usuario"
-        name="username"
-        defaultValue={initial?.username ?? ''}
-        isRequired
+        label="Email"
+        name="email"
+        type="email"
+        inputProps={{ autoComplete: 'email', placeholder: 'Opcional' }}
       />
       <NativeSelect
         label="Rol"
         name="role"
-        defaultValue={initial?.role ?? Role.USER}
+        defaultValue={Role.USER}
         options={[
           { value: Role.USER, label: 'Piloto' },
           { value: Role.ADMIN, label: 'Admin' },
@@ -239,7 +223,7 @@ function UserForm({
       />
       {error ? <p className="text-danger text-sm">{error}</p> : null}
       <Button type="submit" variant="primary" isDisabled={pending} fullWidth>
-        {pending ? 'Guardando…' : initial ? 'Guardar cambios' : 'Crear'}
+        {pending ? 'Guardando…' : 'Crear'}
       </Button>
     </form>
   );

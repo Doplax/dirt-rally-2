@@ -156,9 +156,22 @@ export default async function StageDetailPage({
         favoriteCarIds={Array.from(favoriteCarIds)}
         times={times.map((t) => ({
           id: t.id,
+          totalMs: t.timeMs + t.penaltyMs,
           runner: t.runner,
           registrar: t.registrar,
           car: t.car,
+          stage: {
+            id: stage.id,
+            name: stage.name,
+            distanceKm: stage.distanceKm,
+            direction: stage.direction,
+            location: {
+              id: stage.location.id,
+              name: stage.location.name,
+              country: stage.location.country,
+              photoUrl: stage.location.photoUrl,
+            },
+          },
           timeMs: t.timeMs,
           penaltyMs: t.penaltyMs,
           isDnf: t.isDnf,

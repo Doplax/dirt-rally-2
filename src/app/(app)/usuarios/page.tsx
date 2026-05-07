@@ -16,6 +16,18 @@ export default async function UsuariosPage() {
     },
   });
 
+  const userPayload = users.map((u) => ({
+    id: u.id,
+    username: u.username,
+    email: u.email,
+    role: u.role,
+    photoUrl: u.photoUrl,
+    mustChangePassword: u.mustChangePassword,
+    createdAt: u.createdAt.toISOString(),
+    timesAsRunner: u._count.timesAsRunner,
+    timesAsRegistrar: u._count.timesAsRegistrar,
+  }));
+
   return (
     <section className="flex flex-col gap-6">
       <header className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
@@ -25,19 +37,7 @@ export default async function UsuariosPage() {
         </div>
       </header>
 
-      <UsersTable
-        currentUserId={session.user.id}
-        users={users.map((u) => ({
-          id: u.id,
-          username: u.username,
-          role: u.role,
-          photoUrl: u.photoUrl,
-          mustChangePassword: u.mustChangePassword,
-          createdAt: u.createdAt.toISOString(),
-          timesAsRunner: u._count.timesAsRunner,
-          timesAsRegistrar: u._count.timesAsRegistrar,
-        }))}
-      />
+      <UsersTable currentUserId={session.user.id} users={userPayload} />
     </section>
   );
 }

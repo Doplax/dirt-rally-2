@@ -11,10 +11,14 @@
       "Bash(grep -E \"^\\(sharp|png-to-ico|to-ico|jimp\\)$\")",
       "Bash(python3 -c \"from PIL import Image; print\\('PIL ok'\\)\")",
       "Bash(python3 -)",
-      "Bash(mkdir -p /home/doplax/Personal/dirt-rally-2/src/app/\\\\\\(app\\\\\\)/coches/\\\\[id\\\\])"
+      "Bash(mkdir -p /home/doplax/Personal/dirt-rally-2/src/app/\\\\\\(app\\\\\\)/coches/\\\\[id\\\\])",
+      "Bash(rm /home/doplax/Personal/dirt-rally-2/src/app/\\\\\\(app\\\\\\)/coches/\\\\[id\\\\]/car-times-table.tsx)",
+      "Bash(mkdir -p /home/doplax/Personal/dirt-rally-2/src/app/\\\\\\(app\\\\\\)/usuarios/\\\\[id\\\\])"
     ],
     "additionalDirectories": [
-      "/home/doplax/Personal/dirt-rally-2/src/app/(app)/coches"
+      "/home/doplax/Personal/dirt-rally-2/src/app/(app)/coches",
+      "/home/doplax/Personal/dirt-rally-2/src/app/(app)/coches/[id]",
+      "/home/doplax/Personal/dirt-rally-2/src/app/(app)/usuarios"
     ]
   }
 }
