@@ -58,10 +58,7 @@ export function CountryFlag({ country, variant = 'framed' }: Props) {
   }
 
   return (
-    <span
-      className="bg-foreground/5 flex h-9 w-12 shrink-0 items-center justify-center overflow-hidden rounded"
-      aria-hidden
-    >
+    <span className="flex h-9 w-12 shrink-0 items-center justify-center" aria-hidden>
       {src ? (
         <span className="relative h-6 w-9 overflow-hidden rounded-[2px] shadow-sm ring-1 ring-black/10">
           <Image src={src} alt={country} fill sizes="36px" className="object-cover" />

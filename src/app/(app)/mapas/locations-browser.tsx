@@ -188,15 +188,20 @@ export default function LocationsBrowser({
                   </span>
                 ) : null}
               </div>
-              <div className="flex flex-col gap-0.5 px-3 pt-2 pb-2.5 leading-tight">
-                <div className="text-foreground/55 flex items-center gap-1.5 text-[11px] uppercase tracking-wide">
-                  <CountryFlag country={loc.country} variant="inline" />
-                  {loc.country}
+              <div className="flex items-center gap-3 px-3 pt-2.5 pb-2.5 leading-tight">
+                <div className="flex min-w-0 flex-1 flex-col gap-1">
+                  <div className="text-base font-semibold">{loc.name}</div>
+                  <div className="text-foreground/55 flex items-center gap-2 text-xs">
+                    <span className="tabular-nums">{loc.stagesCount} tramos</span>
+                    <span className="text-foreground/30">·</span>
+                    <span className="truncate">{loc.surface}</span>
+                  </div>
                 </div>
-                <div className="text-base font-semibold">{loc.name}</div>
-                <div className="text-foreground/55 mt-0.5 flex items-center justify-between gap-2 text-xs">
-                  <span className="truncate">{loc.surface}</span>
-                  <span className="shrink-0 tabular-nums">{loc.stagesCount} tramos</span>
+                <div className="flex shrink-0 flex-col items-center gap-1.5">
+                  <CountryFlag country={loc.country} />
+                  <span className="text-foreground/55 text-[10px] uppercase tracking-wide leading-none">
+                    {loc.country}
+                  </span>
                 </div>
               </div>
             </Link>
