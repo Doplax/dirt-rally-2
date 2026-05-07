@@ -1,13 +1,13 @@
 'use client';
 
-import { Button } from '@heroui/react';
+import { Avatar, Button } from '@heroui/react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useState, useTransition, type ReactNode } from 'react';
+import { useMemo, useState, useTransition, type ReactNode } from 'react';
 import { TimeOfDay, Weather } from '@prisma/client';
-import { CarCombobox } from '@/components/ui/car-combobox';
 import { Field } from '@/components/ui/field';
 import { FormModal } from '@/components/ui/form-modal';
-import { NativeSelect } from '@/components/ui/native-select';
+import { IconCombobox, type ComboOption } from '@/components/ui/icon-combobox';
 import { msToString } from '@/lib/time-format';
 import { createTimeRecord, updateTimeRecord } from '@/server/actions/times';
 import type { LeaderboardCar, LeaderboardEntry, LeaderboardUser } from './stage-leaderboard';
@@ -17,19 +17,19 @@ export type TimeFormSelections = {
   cars: LeaderboardCar[];
 };
 
-const WEATHER_OPTIONS: { value: Weather; label: string }[] = [
-  { value: 'DRY', label: 'Seco' },
-  { value: 'WET', label: 'Mojado' },
-  { value: 'SNOW', label: 'Nieve' },
-  { value: 'ICE', label: 'Hielo' },
-];
+const WEATHER_META: Record<Weather, { label: string; icon: string }> = {
+  DRY: { label: 'Seco', icon: '/icons/weather/dry.svg' },
+  WET: { label: 'Mojado', icon: '/icons/weather/wet.svg' },
+  SNOW: { label: 'Nieve', icon: '/icons/weather/snow.svg' },
+  ICE: { label: 'Hielo', icon: '/icons/weather/ice.svg' },
+};
 
-const TIME_OF_DAY_OPTIONS: { value: TimeOfDay; label: string }[] = [
-  { value: 'DAY', label: 'Día' },
-  { value: 'NIGHT', label: 'Noche' },
-  { value: 'DUSK', label: 'Atardecer' },
-  { value: 'DAWN', label: 'Amanecer' },
-];
+const TIME_OF_DAY_META: Record<TimeOfDay, { label: string; icon: string }> = {
+  DAY: { label: 'Día', icon: '/icons/time-of-day/day.svg' },
+  NIGHT: { label: 'Noche', icon: '/icons/time-of-day/night.svg' },
+  DUSK: { label: 'Atardecer', icon: '/icons/time-of-day/dusk.svg' },
+  DAWN: { label: 'Amanecer', icon: '/icons/time-of-day/dawn.svg' },
+};
 
 export function TimeRecordFormModal({
   trigger,
@@ -102,6 +102,47 @@ export function TimeRecordForm({
   const [notes, setNotes] = useState(initial?.notes ?? '');
   const [isDnf, setIsDnf] = useState(initial?.isDnf ?? false);
 
+  const userOptions = useMemo<ComboOption[]>(
+    () =>
+      selections.users.map((u) => ({
+        id: u.id,
+        label: u.username,
+        visual: <UserVisual user={u} />,
+      })),
+    [selections.users],
+  );
+
+  const carOptions = useMemo<ComboOption[]>(
+    () =>
+      selections.cars.map((c) => ({
+        id: c.id,
+        label: c.name,
+        sublabel: c.className,
+        visual: <CarVisual car={c} />,
+      })),
+    [selections.cars],
+  );
+
+  const weatherOptions = useMemo<ComboOption[]>(
+    () =>
+      (Object.keys(WEATHER_META) as Weather[]).map((w) => ({
+        id: w,
+        label: WEATHER_META[w].label,
+        visual: <SvgVisual src={WEATHER_META[w].icon} alt={WEATHER_META[w].label} />,
+      })),
+    [],
+  );
+
+  const timeOfDayOptions = useMemo<ComboOption[]>(
+    () =>
+      (Object.keys(TIME_OF_DAY_META) as TimeOfDay[]).map((t) => ({
+        id: t,
+        label: TIME_OF_DAY_META[t].label,
+        visual: <SvgVisual src={TIME_OF_DAY_META[t].icon} alt={TIME_OF_DAY_META[t].label} />,
+      })),
+    [],
+  );
+
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError(null);
@@ -137,18 +178,20 @@ export function TimeRecordForm({
 
   return (
     <form onSubmit={onSubmit} className="grid grid-cols-2 gap-3 lg:grid-cols-12">
-      <NativeSelect
+      <IconCombobox
         label="Piloto"
+        options={userOptions}
         value={runnerId}
-        onChange={(e) => setRunnerId(e.target.value)}
-        options={selections.users.map((u) => ({ value: u.id, label: u.username }))}
+        onChange={setRunnerId}
+        searchable
         className="col-span-2 lg:col-span-3"
       />
-      <CarCombobox
+      <IconCombobox
         label="Coche"
-        cars={selections.cars}
+        options={carOptions}
         value={carId}
         onChange={setCarId}
+        searchable
         className="col-span-2 lg:col-span-4"
       />
       <Field
@@ -167,18 +210,18 @@ export function TimeRecordForm({
         className="lg:col-span-2"
       />
 
-      <NativeSelect
+      <IconCombobox
         label="Clima"
+        options={weatherOptions}
         value={weather}
-        onChange={(e) => setWeather(e.target.value as Weather)}
-        options={WEATHER_OPTIONS}
+        onChange={(id) => setWeather(id as Weather)}
         className="col-span-1 lg:col-span-2"
       />
-      <NativeSelect
+      <IconCombobox
         label="Hora"
+        options={timeOfDayOptions}
         value={timeOfDay}
-        onChange={(e) => setTimeOfDay(e.target.value as TimeOfDay)}
-        options={TIME_OF_DAY_OPTIONS}
+        onChange={(id) => setTimeOfDay(id as TimeOfDay)}
         className="col-span-1 lg:col-span-2"
       />
       <Field
@@ -209,5 +252,36 @@ export function TimeRecordForm({
         {pending ? 'Guardando…' : initial ? 'Guardar cambios' : 'Registrar tiempo'}
       </Button>
     </form>
+  );
+}
+
+function UserVisual({ user }: { user: LeaderboardUser }) {
+  return (
+    <Avatar size="sm" className="shrink-0">
+      {user.photoUrl ? <Avatar.Image src={user.photoUrl} alt={user.username} /> : null}
+      <Avatar.Fallback>{user.username.slice(0, 2).toUpperCase()}</Avatar.Fallback>
+    </Avatar>
+  );
+}
+
+function CarVisual({ car }: { car: LeaderboardCar }) {
+  return (
+    <span className="bg-foreground/5 relative h-9 w-12 shrink-0 overflow-hidden rounded">
+      {car.photoUrl ? (
+        <Image src={car.photoUrl} alt={car.name} fill sizes="48px" className="object-cover" />
+      ) : (
+        <span className="text-foreground/30 absolute inset-0 flex items-center justify-center text-sm">
+          🏎️
+        </span>
+      )}
+    </span>
+  );
+}
+
+function SvgVisual({ src, alt }: { src: string; alt: string }) {
+  return (
+    <span className="bg-foreground/5 relative flex h-9 w-9 shrink-0 items-center justify-center rounded">
+      <Image src={src} alt={alt} width={22} height={22} />
+    </span>
   );
 }

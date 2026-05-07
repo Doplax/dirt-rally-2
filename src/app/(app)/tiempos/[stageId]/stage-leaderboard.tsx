@@ -1,7 +1,7 @@
 'use client';
 
 import { Avatar, Button, Card } from '@heroui/react';
-import { ChevronDown, ChevronUp, Pencil, Plus, Trash2 } from 'lucide-react';
+import { ChevronDown, Pencil, Plus, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState, useTransition } from 'react';
 import { TimeOfDay, Weather } from '@prisma/client';
@@ -106,7 +106,7 @@ export default function StageLeaderboard({
 
   return (
     <div className="flex flex-col gap-4">
-      <Card className={['flex flex-col gap-3', formOpen ? 'p-3' : 'p-1'].join(' ')}>
+      <Card className="flex flex-col p-1">
         <button
           type="button"
           onClick={() => setFormOpen((o) => !o)}
@@ -115,30 +115,50 @@ export default function StageLeaderboard({
           className="hover:bg-foreground/5 flex items-center justify-between gap-3 rounded-md px-2 py-1.5 text-left"
         >
           <span className="flex items-center gap-2">
-            <Plus size={14} className="text-foreground/60" />
-            <span className="text-sm font-semibold">Registrar tiempo</span>
-            {formOpen ? (
-              <span className="text-foreground/50 hidden text-xs sm:inline">
-                · Coche, clima y hora se mantienen entre envíos
-              </span>
-            ) : null}
-          </span>
-          {formOpen ? (
-            <ChevronUp size={16} className="text-foreground/60" />
-          ) : (
-            <ChevronDown size={16} className="text-foreground/60" />
-          )}
-        </button>
-        {formOpen ? (
-          <div id="registrar-tiempo-form">
-            <TimeRecordForm
-              stageId={stage.id}
-              currentUserId={currentUserId}
-              selections={formSelections}
-              resetClearableOnSuccess
+            <Plus
+              size={14}
+              className={[
+                'text-foreground/60 transition-transform duration-300',
+                formOpen ? 'rotate-45' : '',
+              ].join(' ')}
             />
+            <span className="text-sm font-semibold">Registrar tiempo</span>
+            <span
+              className={[
+                'text-foreground/50 hidden text-xs transition-opacity duration-200 sm:inline',
+                formOpen ? 'opacity-100' : 'opacity-0',
+              ].join(' ')}
+            >
+              · Coche, clima y hora se mantienen entre envíos
+            </span>
+          </span>
+          <ChevronDown
+            size={16}
+            className={[
+              'text-foreground/60 transition-transform duration-300',
+              formOpen ? 'rotate-180' : '',
+            ].join(' ')}
+          />
+        </button>
+        <div
+          id="registrar-tiempo-form"
+          className={[
+            'grid transition-[grid-template-rows,opacity] duration-300 ease-in-out',
+            formOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0',
+          ].join(' ')}
+          aria-hidden={!formOpen}
+        >
+          <div className="overflow-hidden">
+            <div className="px-2 pt-3 pb-2">
+              <TimeRecordForm
+                stageId={stage.id}
+                currentUserId={currentUserId}
+                selections={formSelections}
+                resetClearableOnSuccess
+              />
+            </div>
           </div>
-        ) : null}
+        </div>
       </Card>
 
       <div className="flex flex-wrap items-end gap-3">
