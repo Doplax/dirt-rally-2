@@ -41,6 +41,60 @@ export async function getDatabaseUsage(): Promise<ActionResult<DatabaseUsage>> {
   }
 }
 
+export type TableUsage = {
+  name: string;
+  /** pg_total_relation_size — table heap + indexes + toast. */
+  totalBytes: number;
+  /** pg_relation_size — heap only. */
+  dataBytes: number;
+  /** pg_indexes_size — sum of indexes on the table. */
+  indexBytes: number;
+  /** Estimated row count from pg_class.reltuples (refreshed by ANALYZE). */
+  rowEstimate: number;
+};
+
+export async function getTableSizes(): Promise<ActionResult<TableUsage[]>> {
+  try {
+    await requireAdmin();
+    // pg_class is the system catalog of tables/indexes/etc. We restrict to
+    // user tables in the public schema (relkind 'r') so internal Postgres
+    // bookkeeping isn't surfaced to the admin UI.
+    const rows = await prisma.$queryRaw<
+      Array<{
+        name: string;
+        total_bytes: bigint;
+        data_bytes: bigint;
+        index_bytes: bigint;
+        row_estimate: number;
+      }>
+    >`
+      SELECT
+        c.relname                          AS name,
+        pg_total_relation_size(c.oid)      AS total_bytes,
+        pg_relation_size(c.oid)            AS data_bytes,
+        pg_indexes_size(c.oid)             AS index_bytes,
+        c.reltuples::float8                AS row_estimate
+      FROM pg_class c
+      JOIN pg_namespace n ON n.oid = c.relnamespace
+      WHERE n.nspname = 'public'
+        AND c.relkind = 'r'
+      ORDER BY pg_total_relation_size(c.oid) DESC
+    `;
+    return {
+      ok: true,
+      data: rows.map((r) => ({
+        name: r.name,
+        totalBytes: Number(r.total_bytes),
+        dataBytes: Number(r.data_bytes),
+        indexBytes: Number(r.index_bytes),
+        rowEstimate: Math.max(0, Math.round(r.row_estimate)),
+      })),
+    };
+  } catch (err) {
+    return fail(err) as ActionResult<TableUsage[]>;
+  }
+}
+
 const BACKUP_VERSION = 1;
 
 export type BackupPayload = {
