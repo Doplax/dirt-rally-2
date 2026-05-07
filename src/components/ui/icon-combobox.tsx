@@ -2,6 +2,7 @@
 
 import { ChevronDown, Search, X } from 'lucide-react';
 import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from 'react';
+import { createPortal } from 'react-dom';
 
 export type ComboOption = {
   id: string;
@@ -39,7 +40,14 @@ export function IconCombobox({
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
+  const [popoverRect, setPopoverRect] = useState<{
+    top: number;
+    left: number;
+    width: number;
+  } | null>(null);
   const rootRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const popoverRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const listId = useId();
 
@@ -61,10 +69,33 @@ export function IconCombobox({
   useEffect(() => {
     if (!open) return;
     const onClick = (e: MouseEvent) => {
-      if (!rootRef.current?.contains(e.target as Node)) setOpen(false);
+      const target = e.target as Node;
+      if (rootRef.current?.contains(target)) return;
+      if (popoverRef.current?.contains(target)) return;
+      setOpen(false);
     };
     document.addEventListener('mousedown', onClick);
     return () => document.removeEventListener('mousedown', onClick);
+  }, [open]);
+
+  // Track trigger position so the portal can render the popover anchored to
+  // it. Recompute on scroll/resize so the popover stays attached.
+  useEffect(() => {
+    if (!open) {
+      setPopoverRect(null);
+      return;
+    }
+    const update = () => {
+      const rect = triggerRef.current?.getBoundingClientRect();
+      if (rect) setPopoverRect({ top: rect.bottom, left: rect.left, width: rect.width });
+    };
+    update();
+    window.addEventListener('resize', update);
+    window.addEventListener('scroll', update, true);
+    return () => {
+      window.removeEventListener('resize', update);
+      window.removeEventListener('scroll', update, true);
+    };
   }, [open]);
 
   useEffect(() => {
@@ -102,6 +133,7 @@ export function IconCombobox({
     >
       {label ? <span className="text-foreground/80">{label}</span> : null}
       <button
+        ref={triggerRef}
         type="button"
         onClick={() => setOpen((o) => !o)}
         aria-haspopup="listbox"
@@ -127,70 +159,83 @@ export function IconCombobox({
         <ChevronDown size={16} className="text-foreground/50 shrink-0" />
       </button>
 
-      {open ? (
-        <div className="border-foreground/15 bg-background absolute top-full z-50 mt-1 w-full rounded-md border shadow-lg">
-          {searchable ? (
-            <div className="border-foreground/10 flex items-center gap-2 border-b px-3 py-2">
-              <Search size={14} className="text-foreground/50" />
-              <input
-                ref={inputRef}
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                onKeyDown={onKeyDown}
-                placeholder={placeholder}
-                className="flex-1 bg-transparent outline-none"
-              />
-              {query ? (
-                <button
-                  type="button"
-                  onClick={() => setQuery('')}
-                  aria-label="Limpiar búsqueda"
-                  className="text-foreground/50 hover:text-foreground"
-                >
-                  <X size={14} />
-                </button>
-              ) : null}
-            </div>
-          ) : null}
-          <ul id={listId} role="listbox" className="max-h-72 overflow-y-auto py-1">
-            {filtered.length === 0 ? (
-              <li className="text-foreground/50 px-3 py-2 text-sm">Sin resultados</li>
-            ) : (
-              filtered.map((opt, i) => {
-                const isSelected = opt.id === value;
-                const isActive = i === activeIndex;
-                return (
-                  <li key={opt.id} role="option" aria-selected={isSelected}>
+      {open && popoverRect && typeof document !== 'undefined'
+        ? createPortal(
+            <div
+              ref={popoverRef}
+              style={{
+                position: 'fixed',
+                top: popoverRect.top + 4,
+                left: popoverRect.left,
+                width: popoverRect.width,
+                zIndex: 60,
+              }}
+              className="border-foreground/15 bg-background rounded-md border shadow-lg"
+            >
+              {searchable ? (
+                <div className="border-foreground/10 flex items-center gap-2 border-b px-3 py-2">
+                  <Search size={14} className="text-foreground/50" />
+                  <input
+                    ref={inputRef}
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    onKeyDown={onKeyDown}
+                    placeholder={placeholder}
+                    className="flex-1 bg-transparent outline-none"
+                  />
+                  {query ? (
                     <button
                       type="button"
-                      onMouseEnter={() => setActiveIndex(i)}
-                      onClick={() => {
-                        onChange(opt.id);
-                        setOpen(false);
-                      }}
-                      className={[
-                        'flex w-full items-center gap-2 px-3 py-2 text-left',
-                        isActive ? 'bg-foreground/5' : '',
-                        isSelected ? 'text-primary' : '',
-                      ].join(' ')}
+                      onClick={() => setQuery('')}
+                      aria-label="Limpiar búsqueda"
+                      className="text-foreground/50 hover:text-foreground"
                     >
-                      {opt.visual}
-                      <span className="flex min-w-0 flex-1 flex-col">
-                        {opt.sublabel ? (
-                          <span className="text-foreground/50 truncate text-xs">
-                            {opt.sublabel}
-                          </span>
-                        ) : null}
-                        <span className="truncate font-medium">{opt.label}</span>
-                      </span>
+                      <X size={14} />
                     </button>
-                  </li>
-                );
-              })
-            )}
-          </ul>
-        </div>
-      ) : null}
+                  ) : null}
+                </div>
+              ) : null}
+              <ul id={listId} role="listbox" className="max-h-72 overflow-y-auto py-1">
+                {filtered.length === 0 ? (
+                  <li className="text-foreground/50 px-3 py-2 text-sm">Sin resultados</li>
+                ) : (
+                  filtered.map((opt, i) => {
+                    const isSelected = opt.id === value;
+                    const isActive = i === activeIndex;
+                    return (
+                      <li key={opt.id} role="option" aria-selected={isSelected}>
+                        <button
+                          type="button"
+                          onMouseEnter={() => setActiveIndex(i)}
+                          onClick={() => {
+                            onChange(opt.id);
+                            setOpen(false);
+                          }}
+                          className={[
+                            'flex w-full items-center gap-2 px-3 py-2 text-left',
+                            isActive ? 'bg-foreground/5' : '',
+                            isSelected ? 'text-primary' : '',
+                          ].join(' ')}
+                        >
+                          {opt.visual}
+                          <span className="flex min-w-0 flex-1 flex-col">
+                            {opt.sublabel ? (
+                              <span className="text-foreground/50 truncate text-xs">
+                                {opt.sublabel}
+                              </span>
+                            ) : null}
+                            <span className="truncate font-medium">{opt.label}</span>
+                          </span>
+                        </button>
+                      </li>
+                    );
+                  })
+                )}
+              </ul>
+            </div>,
+            document.body,
+          )
+        : null}
     </div>
   );
 }

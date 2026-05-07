@@ -124,8 +124,21 @@ export function MaskedTimeField({
 
   const onBlurPad = (idx: 0 | 1 | 2) => () => {
     const seg = segs[idx];
-    if (!seg) return;
-    const padded = seg.padStart(SEGMENTS[idx].maxLen, '0');
+    const max = SEGMENTS[idx].maxLen;
+
+    if (!seg) {
+      // Only fill an empty segment with zeros if the user has actually
+      // started entering a time elsewhere. A pristine field stays empty so
+      // we don't render "00:00.000" the moment the user tabs through.
+      const otherFilled = segs.some((s, i) => i !== idx && s !== '');
+      if (!otherFilled) return;
+      const next: [string, string, string] = [...segs];
+      next[idx] = '0'.repeat(max);
+      setSegs(next);
+      return;
+    }
+
+    const padded = seg.padStart(max, '0');
     if (padded === seg) return;
     const next: [string, string, string] = [...segs];
     next[idx] = padded;
@@ -136,6 +149,11 @@ export function MaskedTimeField({
   const onFocusSelect = (e: React.FocusEvent<HTMLInputElement>) => {
     e.currentTarget.select();
   };
+
+  // Show placeholder hints (00 / 00 / 000) only on a fully untouched field.
+  // Once the user has typed in any segment, empty siblings render blank so the
+  // form doesn't look like every input has been filled with zeros.
+  const isPristine = segs.every((s) => s === '');
 
   const inputBase =
     'w-[2ch] bg-transparent text-center font-mono text-base tabular-nums leading-none outline-none placeholder:text-foreground/30';
@@ -163,7 +181,7 @@ export function MaskedTimeField({
           inputMode="numeric"
           autoComplete="off"
           aria-label={`${label} (minutos)`}
-          placeholder={SEGMENTS[0].placeholder}
+          placeholder={isPristine ? SEGMENTS[0].placeholder : ''}
           value={segs[0]}
           onChange={(e) => update(0, e.target.value)}
           onKeyDown={onKeyDown(0)}
@@ -181,7 +199,7 @@ export function MaskedTimeField({
           inputMode="numeric"
           autoComplete="off"
           aria-label={`${label} (segundos)`}
-          placeholder={SEGMENTS[1].placeholder}
+          placeholder={isPristine ? SEGMENTS[1].placeholder : ''}
           value={segs[1]}
           onChange={(e) => update(1, e.target.value)}
           onKeyDown={onKeyDown(1)}
@@ -198,7 +216,7 @@ export function MaskedTimeField({
           inputMode="numeric"
           autoComplete="off"
           aria-label={`${label} (milisegundos)`}
-          placeholder={SEGMENTS[2].placeholder}
+          placeholder={isPristine ? SEGMENTS[2].placeholder : ''}
           value={segs[2]}
           onChange={(e) => update(2, e.target.value)}
           onKeyDown={onKeyDown(2)}
