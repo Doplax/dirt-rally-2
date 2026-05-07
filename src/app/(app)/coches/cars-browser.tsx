@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useMemo, useState, useTransition } from 'react';
 import { Field } from '@/components/ui/field';
 import { IconCombobox, type ComboOption } from '@/components/ui/icon-combobox';
+import { SwitchField } from '@/components/ui/switch-field';
 import { CarFormModal } from './car-form-modal';
 import { toggleFavoriteCar } from '@/server/actions/cars';
 
@@ -224,14 +225,11 @@ export default function CarsBrowser({ cars, isAdmin }: { cars: CarItem[]; isAdmi
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <label className="text-foreground/80 flex items-center gap-2 text-sm">
-          <input
-            type="checkbox"
-            checked={onlyFavorites}
-            onChange={(e) => setOnlyFavorites(e.target.checked)}
-          />
-          Solo favoritos
-        </label>
+        <SwitchField
+          label="Solo favoritos"
+          isSelected={onlyFavorites}
+          onChange={setOnlyFavorites}
+        />
         {isAdmin ? (
           <CarFormModal
             trigger={

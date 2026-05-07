@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useState, useTransition, type ReactNode } from 'react';
 import { Field } from '@/components/ui/field';
 import { FormModal } from '@/components/ui/form-modal';
+import { SwitchField } from '@/components/ui/switch-field';
 import { createLocation, updateLocation } from '@/server/actions/locations';
 
 export type LocationFormValues = {
@@ -89,14 +90,7 @@ function LocationForm({
         defaultValue={initial?.surface ?? ''}
         isRequired
       />
-      <label className="flex items-center gap-2 text-sm">
-        <input
-          type="checkbox"
-          checked={isDlc}
-          onChange={(e) => setIsDlc(e.target.checked)}
-        />
-        Es DLC
-      </label>
+      <SwitchField label="Es DLC" isSelected={isDlc} onChange={setIsDlc} />
       {isDlc ? (
         <Field
           label="Pack DLC"

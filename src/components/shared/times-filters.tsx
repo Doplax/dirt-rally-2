@@ -11,6 +11,7 @@ import {
 } from 'react';
 import { Weather } from '@prisma/client';
 import { IconCombobox, type ComboOption } from '@/components/ui/icon-combobox';
+import { SwitchField } from '@/components/ui/switch-field';
 import type { TimesTableEntry } from './times-table';
 
 const WEATHER_LABEL: Record<Weather, string> = {
@@ -353,15 +354,13 @@ export function TimesFilters({
                   />
                 ) : null}
                 {showDnf ? (
-                  <label className="text-foreground/80 col-span-2 flex items-center gap-2 text-sm lg:col-span-12">
-                    <input
-                      type="checkbox"
-                      checked={includeDnf}
-                      onChange={(e) => setIncludeDnf(e.target.checked)}
-                      className="h-4 w-4"
-                    />
-                    Incluir DNF
-                  </label>
+                  <SwitchField
+                    label="Incluir DNF"
+                    description="Mostrar tiempos no terminados"
+                    isSelected={includeDnf}
+                    onChange={setIncludeDnf}
+                    className="col-span-2 lg:col-span-12"
+                  />
                 ) : null}
               </div>
             </div>

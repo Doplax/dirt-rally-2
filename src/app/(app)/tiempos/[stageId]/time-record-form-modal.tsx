@@ -9,6 +9,7 @@ import { TimeOfDay, Weather } from '@prisma/client';
 import { Field } from '@/components/ui/field';
 import { FormModal } from '@/components/ui/form-modal';
 import { IconCombobox, type ComboOption } from '@/components/ui/icon-combobox';
+import { SwitchField } from '@/components/ui/switch-field';
 import { msToString } from '@/lib/time-format';
 import { createTimeRecord, updateTimeRecord } from '@/server/actions/times';
 import type { LeaderboardCar, LeaderboardEntry, LeaderboardUser } from './stage-leaderboard';
@@ -258,15 +259,12 @@ export function TimeRecordForm({
         inputProps={{ placeholder: 'Opcional' }}
         className="col-span-2 lg:col-span-5"
       />
-      <label className="text-foreground/80 col-span-2 flex items-center gap-2 text-sm sm:items-end sm:pb-2 lg:col-span-3">
-        <input
-          type="checkbox"
-          checked={isDnf}
-          onChange={(e) => setIsDnf(e.target.checked)}
-          className="h-4 w-4"
-        />
-        DNF (no terminado)
-      </label>
+      <SwitchField
+        label="DNF (no terminado)"
+        isSelected={isDnf}
+        onChange={setIsDnf}
+        className="col-span-2 lg:col-span-3"
+      />
 
       {error ? <p className="text-danger col-span-full text-sm">{error}</p> : null}
 

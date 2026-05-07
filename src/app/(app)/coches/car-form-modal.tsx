@@ -6,6 +6,7 @@ import { useState, useTransition, type ReactNode } from 'react';
 import { Field } from '@/components/ui/field';
 import { FormModal } from '@/components/ui/form-modal';
 import { NativeSelect } from '@/components/ui/native-select';
+import { SwitchField } from '@/components/ui/switch-field';
 import { createCar, updateCar } from '@/server/actions/cars';
 
 export type CarFormValues = {
@@ -106,19 +107,13 @@ function CarForm({ initial, onSuccess }: { initial?: CarFormValues; onSuccess: (
           { value: '4WD', label: '4WD' },
         ]}
       />
-      <div className="flex flex-col gap-3 self-end">
-        <label className="flex items-center gap-2 text-sm">
-          <input
-            type="checkbox"
-            checked={isRallycross}
-            onChange={(e) => setIsRallycross(e.target.checked)}
-          />
-          Coche de Rallycross
-        </label>
-        <label className="flex items-center gap-2 text-sm">
-          <input type="checkbox" checked={isDlc} onChange={(e) => setIsDlc(e.target.checked)} />
-          Es DLC
-        </label>
+      <div className="flex flex-col gap-2 self-end">
+        <SwitchField
+          label="Coche de Rallycross"
+          isSelected={isRallycross}
+          onChange={setIsRallycross}
+        />
+        <SwitchField label="Es DLC" isSelected={isDlc} onChange={setIsDlc} />
       </div>
       {isDlc ? (
         <Field
