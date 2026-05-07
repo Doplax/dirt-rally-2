@@ -188,13 +188,16 @@ function Cell({
               <span className="text-foreground/55 truncate text-xs">
                 {entry.stage.location.country} · {entry.stage.location.name}
               </span>
-              <span className="flex items-center gap-1 truncate font-medium">
+              <span className="flex items-center gap-1 font-medium">
                 {entry.stage.direction === Direction.FORWARD ? (
                   <ArrowUp size={12} className="text-foreground/50 shrink-0" />
                 ) : (
                   <ArrowDown size={12} className="text-foreground/50 shrink-0" />
                 )}
                 <span className="truncate">{entry.stage.name}</span>
+                <span className="text-foreground/50 shrink-0 text-xs font-normal">
+                  · {entry.stage.distanceKm.toFixed(2)} km
+                </span>
               </span>
             </div>
           </div>
