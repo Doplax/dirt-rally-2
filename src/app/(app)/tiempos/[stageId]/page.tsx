@@ -6,6 +6,7 @@ import { Direction } from '@prisma/client';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/db';
 import { msToString } from '@/lib/time-format';
+import { CountryFlag } from '@/components/ui/country-flag';
 import StageLeaderboard from './stage-leaderboard';
 
 export const metadata = { title: 'Leaderboard · DR2 Tracker' };
@@ -93,8 +94,9 @@ export default async function StageDetailPage({
         <header className="flex flex-col gap-3">
           <Link
             href={`/mapas/${stage.location.id}`}
-            className="text-foreground/60 hover:text-foreground text-sm"
+            className="text-foreground/60 hover:text-foreground inline-flex items-center gap-1.5 text-sm"
           >
+            <CountryFlag country={stage.location.country} variant="inline" />
             {stage.location.country} · {stage.location.name}
           </Link>
           <h1 className="text-3xl font-bold">{stage.name}</h1>
