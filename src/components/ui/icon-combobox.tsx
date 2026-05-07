@@ -21,6 +21,12 @@ type Props = {
   placeholder?: string;
   searchable?: boolean;
   className?: string;
+  /**
+   * When true, the trigger itself is a text input — focus opens the popover
+   * and typing filters the list directly, no extra search step. Useful for
+   * typeahead-style pickers (e.g. "Buscar tramo"). Implies `searchable`.
+   */
+  triggerAsInput?: boolean;
 };
 
 /**
@@ -36,7 +42,9 @@ export function IconCombobox({
   placeholder = 'Seleccionar…',
   searchable = false,
   className,
+  triggerAsInput = false,
 }: Props) {
+  const isSearchable = searchable || triggerAsInput;
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
@@ -46,7 +54,7 @@ export function IconCombobox({
     width: number;
   } | null>(null);
   const rootRef = useRef<HTMLDivElement>(null);
-  const triggerRef = useRef<HTMLButtonElement>(null);
+  const triggerRef = useRef<HTMLElement | null>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const listId = useId();
@@ -54,7 +62,7 @@ export function IconCombobox({
   const selected = options.find((o) => o.id === value) ?? null;
 
   const filtered = useMemo(() => {
-    if (!searchable) return options;
+    if (!isSearchable) return options;
     const q = query.trim().toLowerCase();
     if (!q) return options;
     return options.filter((o) => {
@@ -64,7 +72,7 @@ export function IconCombobox({
         .toLowerCase();
       return hay.includes(q);
     });
-  }, [options, query, searchable]);
+  }, [options, query, isSearchable]);
 
   useEffect(() => {
     if (!open) return;
@@ -99,9 +107,12 @@ export function IconCombobox({
   }, [open]);
 
   useEffect(() => {
-    if (open && searchable) inputRef.current?.focus();
+    // In trigger-as-input mode, focus already lives in the trigger so we
+    // skip the auto-focus step. Otherwise focus the popover's search input
+    // when the dropdown opens.
+    if (open && searchable && !triggerAsInput) inputRef.current?.focus();
     if (!open) setQuery('');
-  }, [open, searchable]);
+  }, [open, searchable, triggerAsInput]);
 
   useEffect(() => {
     setActiveIndex(0);
@@ -120,6 +131,7 @@ export function IconCombobox({
       if (opt) {
         onChange(opt.id);
         setOpen(false);
+        if (triggerAsInput) setQuery('');
       }
     } else if (e.key === 'Escape') {
       setOpen(false);
@@ -132,32 +144,71 @@ export function IconCombobox({
       className={['relative flex flex-col gap-1 text-sm', className ?? ''].join(' ')}
     >
       {label ? <span className="text-foreground/80">{label}</span> : null}
-      <button
-        ref={triggerRef}
-        type="button"
-        onClick={() => setOpen((o) => !o)}
-        aria-haspopup="listbox"
-        aria-expanded={open}
-        aria-controls={listId}
-        className="border-foreground/15 bg-background hover:bg-foreground/5 flex min-h-[42px] items-center gap-2 rounded-md border px-3 py-1.5 text-left"
-      >
-        {selected ? (
-          <>
-            {selected.visual}
-            <span className="flex min-w-0 flex-1 flex-col">
-              {selected.sublabel ? (
-                <span className="text-foreground/50 truncate text-xs">
-                  {selected.sublabel}
-                </span>
-              ) : null}
-              <span className="truncate font-medium">{selected.label}</span>
-            </span>
-          </>
-        ) : (
-          <span className="text-foreground/50 flex-1">{placeholder}</span>
-        )}
-        <ChevronDown size={16} className="text-foreground/50 shrink-0" />
-      </button>
+      {triggerAsInput ? (
+        <div
+          ref={(el) => {
+            triggerRef.current = el;
+          }}
+          className="border-foreground/15 bg-background focus-within:border-primary focus-within:ring-primary/30 flex min-h-[42px] items-center gap-2 rounded-md border px-3 py-1.5 focus-within:ring-2"
+        >
+          <Search size={14} className="text-foreground/50 shrink-0" />
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              if (!open) setOpen(true);
+            }}
+            onFocus={() => setOpen(true)}
+            onKeyDown={onKeyDown}
+            placeholder={placeholder}
+            aria-haspopup="listbox"
+            aria-expanded={open}
+            aria-controls={listId}
+            autoComplete="off"
+            className="placeholder:text-foreground/50 flex-1 bg-transparent outline-none"
+          />
+          {query ? (
+            <button
+              type="button"
+              onClick={() => setQuery('')}
+              aria-label="Limpiar búsqueda"
+              className="text-foreground/50 hover:text-foreground shrink-0"
+            >
+              <X size={14} />
+            </button>
+          ) : null}
+        </div>
+      ) : (
+        <button
+          ref={(el) => {
+            triggerRef.current = el;
+          }}
+          type="button"
+          onClick={() => setOpen((o) => !o)}
+          aria-haspopup="listbox"
+          aria-expanded={open}
+          aria-controls={listId}
+          className="border-foreground/15 bg-background hover:bg-foreground/5 flex min-h-[42px] items-center gap-2 rounded-md border px-3 py-1.5 text-left"
+        >
+          {selected ? (
+            <>
+              {selected.visual}
+              <span className="flex min-w-0 flex-1 flex-col">
+                {selected.sublabel ? (
+                  <span className="text-foreground/50 truncate text-xs">
+                    {selected.sublabel}
+                  </span>
+                ) : null}
+                <span className="truncate font-medium">{selected.label}</span>
+              </span>
+            </>
+          ) : (
+            <span className="text-foreground/50 flex-1">{placeholder}</span>
+          )}
+          <ChevronDown size={16} className="text-foreground/50 shrink-0" />
+        </button>
+      )}
 
       {open && popoverRect && typeof document !== 'undefined'
         ? createPortal(
@@ -172,7 +223,7 @@ export function IconCombobox({
               }}
               className="border-foreground/15 bg-background rounded-md border shadow-lg"
             >
-              {searchable ? (
+              {searchable && !triggerAsInput ? (
                 <div className="border-foreground/10 flex items-center gap-2 border-b px-3 py-2">
                   <Search size={14} className="text-foreground/50" />
                   <input
@@ -210,6 +261,7 @@ export function IconCombobox({
                           onClick={() => {
                             onChange(opt.id);
                             setOpen(false);
+                            if (triggerAsInput) setQuery('');
                           }}
                           className={[
                             'flex w-full items-center gap-2 px-3 py-2 text-left',

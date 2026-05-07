@@ -95,7 +95,7 @@ export default function StagesBrowser({ stages }: { stages: StageItem[] }) {
           onChange={(id) => {
             if (id) router.push(`/tiempos/${id}`);
           }}
-          searchable
+          triggerAsInput
           placeholder="Las Juntas, Wales…"
         />
         <IconCombobox
