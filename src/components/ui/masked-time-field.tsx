@@ -16,9 +16,11 @@ type Props = {
 
 /**
  * Time input with right-to-left digit entry. Untyped leading digits render in
- * a muted color so the user can see at a glance which positions still hold the
- * placeholder zeros vs. the digits they've entered. Visually mimics the
- * project's `Field` component.
+ * a muted color so the user can see at a glance which positions still hold
+ * placeholder zeros vs. digits they've entered. Visually mimics the project's
+ * `Field` component but the visible text is composed of two real spans (the
+ * grey prefix and the typed suffix), with an invisible `<input>` overlaid on
+ * top of just the typed portion to handle keyboard input and the caret.
  */
 export function MaskedTimeField({
   label,
@@ -31,12 +33,7 @@ export function MaskedTimeField({
   const inputRef = useRef<HTMLInputElement>(null);
   const id = useId();
 
-  const value = formatDigits(digits);
   const { gray, white } = splitParts(digits);
-
-  const handleChange = (raw: string) => {
-    onChangeDigits(extractDigits(raw));
-  };
 
   return (
     <label
@@ -50,36 +47,47 @@ export function MaskedTimeField({
       <div
         onClick={() => inputRef.current?.focus()}
         className={[
-          'border-foreground/15 bg-background relative flex min-h-[42px] items-center rounded-md border px-3 py-1.5 cursor-text',
+          'border-foreground/15 bg-background relative flex min-h-[42px] items-center rounded-md border px-3 py-1.5 cursor-text font-mono text-base tabular-nums leading-none',
           'focus-within:border-primary focus-within:ring-primary/30 focus-within:ring-2',
           isDisabled ? 'opacity-60 pointer-events-none' : '',
         ].join(' ')}
       >
-        <span
-          aria-hidden
-          className="pointer-events-none font-mono text-base tabular-nums leading-none"
-        >
-          {digits ? (
-            <>
-              <span className="text-foreground/30">{gray}</span>
-              <span className="text-foreground">{white}</span>
-            </>
-          ) : (
-            <span className="text-foreground/30">{PLACEHOLDER}</span>
-          )}
-        </span>
+        {digits ? (
+          <>
+            <span className="text-foreground/30">{gray}</span>
+            <span className="text-foreground">{white}</span>
+          </>
+        ) : (
+          <span className="text-foreground/30">{PLACEHOLDER}</span>
+        )}
         <input
           ref={inputRef}
           id={id}
           type="text"
-          value={value}
-          onChange={(e) => handleChange(e.target.value)}
+          // Mirror the visible content so the native caret lands at the end of
+          // the typed digits.
+          value={digits ? gray + white : ''}
+          onChange={(e) => onChangeDigits(extractDigits(e.target.value))}
+          onKeyDown={(e) => {
+            if (e.key === 'Backspace' && digits) {
+              e.preventDefault();
+              onChangeDigits(digits.slice(0, -1));
+            }
+          }}
           disabled={isDisabled}
           required={isRequired}
           inputMode="numeric"
           autoComplete="off"
           aria-label={label}
-          className="absolute inset-0 w-full bg-transparent px-3 font-mono text-base tabular-nums leading-none text-transparent caret-current outline-none selection:bg-transparent"
+          // Hide the input's own glyph rendering on every browser (Webkit
+          // honours -webkit-text-fill-color over `color`), but keep the caret
+          // visible in the foreground color.
+          style={{
+            color: 'transparent',
+            WebkitTextFillColor: 'transparent',
+            caretColor: 'var(--foreground)',
+          }}
+          className="absolute inset-0 w-full bg-transparent px-3 font-mono text-base tabular-nums leading-none outline-none selection:bg-transparent"
         />
       </div>
     </label>
