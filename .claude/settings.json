@@ -2,7 +2,11 @@
   "permissions": {
     "allow": [
       "Bash(PGPASSWORD=dirt psql -h localhost -p 5435 -U dirt -d dirt_tracker -c \"SELECT 'cars' AS kind, COUNT\\(*\\) total, COUNT\\(\\\\\"photoUrl\\\\\"\\) with_photo FROM \\\\\"Car\\\\\" UNION ALL SELECT 'locations', COUNT\\(*\\), COUNT\\(\\\\\"photoUrl\\\\\"\\) FROM \\\\\"Location\\\\\" UNION ALL SELECT 'stages', COUNT\\(*\\), COUNT\\(\\\\\"photoUrl\\\\\"\\) FROM \\\\\"Stage\\\\\";\")",
-      "Bash(npx tsx *)"
+      "Bash(npx tsx *)",
+      "Bash(git remote *)",
+      "Bash(git push *)",
+      "Bash(echo \"exit=$?\")",
+      "Bash(npx next *)"
     ]
   }
 }

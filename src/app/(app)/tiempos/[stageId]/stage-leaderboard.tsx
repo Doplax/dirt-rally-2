@@ -1,17 +1,27 @@
 'use client';
 
-import { Avatar, Button } from '@heroui/react';
-import { Pencil, Plus, Trash2 } from 'lucide-react';
+import { Avatar, Button, Card } from '@heroui/react';
+import { Pencil, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState, useTransition } from 'react';
 import { TimeOfDay, Weather } from '@prisma/client';
 import { NativeSelect } from '@/components/ui/native-select';
 import { msToString } from '@/lib/time-format';
-import { TimeRecordFormModal, type TimeFormSelections } from './time-record-form-modal';
+import {
+  TimeRecordForm,
+  TimeRecordFormModal,
+  type TimeFormSelections,
+} from './time-record-form-modal';
 import { deleteTimeRecord } from '@/server/actions/times';
 
 export type LeaderboardUser = { id: string; username: string; photoUrl: string | null };
-export type LeaderboardCar = { id: string; name: string; className: string; classCode: string };
+export type LeaderboardCar = {
+  id: string;
+  name: string;
+  className: string;
+  classCode: string;
+  photoUrl: string | null;
+};
 
 export type LeaderboardEntry = {
   id: string;
@@ -86,6 +96,22 @@ export default function StageLeaderboard({
 
   return (
     <div className="flex flex-col gap-4">
+      <Card className="flex flex-col gap-4 p-4">
+        <div className="flex flex-col gap-1">
+          <h2 className="text-lg font-semibold">Registrar tiempo</h2>
+          <p className="text-foreground/60 text-sm">
+            Coche, clima y hora se mantienen entre envíos. Solo cambia el piloto y el tiempo
+            para registrar a otro corredor.
+          </p>
+        </div>
+        <TimeRecordForm
+          stageId={stage.id}
+          currentUserId={currentUserId}
+          selections={formSelections}
+          resetClearableOnSuccess
+        />
+      </Card>
+
       <div className="flex flex-wrap items-end gap-3">
         <NativeSelect
           label="Clase"
@@ -112,18 +138,6 @@ export default function StageLeaderboard({
           />
           Incluir DNF
         </label>
-        <div className="ml-auto">
-          <TimeRecordFormModal
-            stageId={stage.id}
-            currentUserId={currentUserId}
-            selections={formSelections}
-            trigger={
-              <Button variant="primary">
-                <Plus size={16} /> Registrar tiempo
-              </Button>
-            }
-          />
-        </div>
       </div>
 
       <div className="border-foreground/10 overflow-x-auto rounded-lg border">

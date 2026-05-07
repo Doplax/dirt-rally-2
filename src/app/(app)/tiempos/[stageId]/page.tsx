@@ -33,6 +33,7 @@ export default async function StageDetailPage({
         name: true,
         className: true,
         classCode: true,
+        photoUrl: true,
       },
     }),
     prisma.timeRecord.findMany({
@@ -40,7 +41,9 @@ export default async function StageDetailPage({
       include: {
         runner: { select: { id: true, username: true, photoUrl: true } },
         registrar: { select: { id: true, username: true } },
-        car: { select: { id: true, name: true, className: true, classCode: true } },
+        car: {
+          select: { id: true, name: true, className: true, classCode: true, photoUrl: true },
+        },
       },
       orderBy: { createdAt: 'desc' },
     }),
