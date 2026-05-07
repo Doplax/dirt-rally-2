@@ -1,13 +1,26 @@
 'use client';
 
 import { Avatar, Button } from '@heroui/react';
-import { Car, Clock, KeyRound, LogOut, Map, Menu, Users, X } from 'lucide-react';
+import {
+  Car,
+  ChevronLeft,
+  ChevronRight,
+  Clock,
+  KeyRound,
+  LogOut,
+  Map,
+  Menu,
+  Users,
+  X,
+} from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { logout } from '@/server/actions/password';
 import type { Role } from '@prisma/client';
+
+const SIDEBAR_COLLAPSED_STORAGE_KEY = 'dr2:sidebar:desktop-collapsed';
 
 type NavItem = {
   href: string;
@@ -31,6 +44,28 @@ type SidebarUser = {
 
 export function Sidebar({ user }: { user: SidebarUser }) {
   const [open, setOpen] = useState(false);
+  const [desktopCollapsed, setDesktopCollapsed] = useState(false);
+
+  useEffect(() => {
+    try {
+      if (window.localStorage.getItem(SIDEBAR_COLLAPSED_STORAGE_KEY) === '1') {
+        setDesktopCollapsed(true);
+      }
+    } catch {
+      // localStorage no disponible (modo privado, etc.)
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(
+        SIDEBAR_COLLAPSED_STORAGE_KEY,
+        desktopCollapsed ? '1' : '0',
+      );
+    } catch {
+      // ignorar
+    }
+  }, [desktopCollapsed]);
 
   return (
     <>
@@ -71,27 +106,50 @@ export function Sidebar({ user }: { user: SidebarUser }) {
 
       <aside
         className={[
-          'border-foreground/10 bg-background fixed top-0 left-0 z-40 h-screen w-64 shrink-0 border-r p-4 transition-transform',
+          'border-foreground/10 bg-background fixed top-0 left-0 z-40 h-screen w-64 shrink-0 border-r transition-[width,transform] duration-200',
           'md:sticky md:top-0 md:translate-x-0',
           open ? 'translate-x-0' : '-translate-x-full md:translate-x-0',
+          desktopCollapsed ? 'md:w-16' : 'md:w-64',
         ].join(' ')}
       >
-        <SidebarContent user={user} onNavigate={() => setOpen(false)} />
+        <SidebarContent
+          user={user}
+          collapsed={desktopCollapsed}
+          onNavigate={() => setOpen(false)}
+          onToggleCollapsed={() => setDesktopCollapsed((v) => !v)}
+        />
       </aside>
     </>
   );
 }
 
-function SidebarContent({ user, onNavigate }: { user: SidebarUser; onNavigate: () => void }) {
+function SidebarContent({
+  user,
+  collapsed,
+  onNavigate,
+  onToggleCollapsed,
+}: {
+  user: SidebarUser;
+  collapsed: boolean;
+  onNavigate: () => void;
+  onToggleCollapsed: () => void;
+}) {
   const pathname = usePathname();
   const visibleItems = NAV_ITEMS.filter((item) => !item.adminOnly || user.role === 'ADMIN');
 
+  const labelHiddenWhenCollapsed = collapsed ? 'md:hidden' : '';
+  const justifyWhenCollapsed = collapsed ? 'md:justify-center' : '';
+
   return (
-    <div className="flex h-full flex-col">
+    <div className={['flex h-full flex-col p-4', collapsed ? 'md:p-2' : ''].join(' ')}>
       <Link
         href="/"
-        className="mb-6 flex items-center gap-2 text-xl font-bold"
+        className={[
+          'mb-6 flex items-center gap-2 text-xl font-bold',
+          justifyWhenCollapsed,
+        ].join(' ')}
         onClick={onNavigate}
+        aria-label="DR2 Tracker"
       >
         <Image
           src="/logo.png"
@@ -101,7 +159,7 @@ function SidebarContent({ user, onNavigate }: { user: SidebarUser; onNavigate: (
           priority
           className="h-8 w-auto"
         />
-        <span>DR2 Tracker</span>
+        <span className={labelHiddenWhenCollapsed}>DR2 Tracker</span>
       </Link>
 
       <nav className="flex flex-1 flex-col gap-1">
@@ -113,27 +171,31 @@ function SidebarContent({ user, onNavigate }: { user: SidebarUser; onNavigate: (
               key={item.href}
               href={item.href}
               onClick={onNavigate}
+              title={collapsed ? item.label : undefined}
               className={[
                 'flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors',
+                justifyWhenCollapsed,
                 active
                   ? 'bg-foreground/10 text-foreground font-medium'
                   : 'text-foreground/70 hover:bg-foreground/5',
               ].join(' ')}
             >
               <Icon size={18} />
-              {item.label}
+              <span className={labelHiddenWhenCollapsed}>{item.label}</span>
             </Link>
           );
         })}
       </nav>
 
       <div className="border-foreground/10 mt-4 border-t pt-4">
-        <div className="mb-3 flex items-center gap-3">
+        <div
+          className={['mb-3 flex items-center gap-3', justifyWhenCollapsed].join(' ')}
+        >
           <Avatar>
             {user.photoUrl ? <Avatar.Image src={user.photoUrl} alt={user.username} /> : null}
             <Avatar.Fallback>{user.username.slice(0, 2).toUpperCase()}</Avatar.Fallback>
           </Avatar>
-          <div className="min-w-0">
+          <div className={['min-w-0', labelHiddenWhenCollapsed].join(' ')}>
             <div className="truncate text-sm font-medium">{user.username}</div>
             <div className="text-foreground/60 text-xs">
               {user.role === 'ADMIN' ? 'Administrador' : 'Piloto'}
@@ -144,18 +206,41 @@ function SidebarContent({ user, onNavigate }: { user: SidebarUser; onNavigate: (
           <Link
             href="/perfil"
             onClick={onNavigate}
-            className="text-foreground/70 hover:bg-foreground/5 flex items-center gap-2 rounded-md px-3 py-2 text-sm"
+            title={collapsed ? 'Mi perfil' : undefined}
+            className={[
+              'text-foreground/70 hover:bg-foreground/5 flex items-center gap-2 rounded-md px-3 py-2 text-sm',
+              justifyWhenCollapsed,
+            ].join(' ')}
           >
-            <KeyRound size={16} /> Mi perfil
+            <KeyRound size={16} />
+            <span className={labelHiddenWhenCollapsed}>Mi perfil</span>
           </Link>
           <form action={logout}>
             <button
               type="submit"
-              className="text-foreground/70 hover:bg-foreground/5 flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm"
+              title={collapsed ? 'Cerrar sesión' : undefined}
+              className={[
+                'text-foreground/70 hover:bg-foreground/5 flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm',
+                justifyWhenCollapsed,
+              ].join(' ')}
             >
-              <LogOut size={16} /> Cerrar sesión
+              <LogOut size={16} />
+              <span className={labelHiddenWhenCollapsed}>Cerrar sesión</span>
             </button>
           </form>
+        </div>
+
+        <div className="border-foreground/10 mt-2 hidden border-t pt-2 md:block">
+          <Button
+            variant="light"
+            isIconOnly
+            size="sm"
+            aria-label={collapsed ? 'Expandir barra lateral' : 'Colapsar barra lateral'}
+            onPress={onToggleCollapsed}
+            className="w-full"
+          >
+            {collapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
+          </Button>
         </div>
       </div>
     </div>
