@@ -9,6 +9,7 @@ import { TimeOfDay, Weather } from '@prisma/client';
 import { Field } from '@/components/ui/field';
 import { FormModal } from '@/components/ui/form-modal';
 import { IconCombobox, type ComboOption } from '@/components/ui/icon-combobox';
+import { MaskedTimeField } from '@/components/ui/masked-time-field';
 import { SwitchField } from '@/components/ui/switch-field';
 import { msToString } from '@/lib/time-format';
 import { createTimeRecord, updateTimeRecord } from '@/server/actions/times';
@@ -187,9 +188,6 @@ export function TimeRecordForm({
     });
   };
 
-  const onChangeTime = (val: string) => setTimeDigits(extractDigits(val));
-  const onChangePenalty = (val: string) => setPenaltyDigits(extractDigits(val));
-
   return (
     <form
       onSubmit={onSubmit}
@@ -211,30 +209,18 @@ export function TimeRecordForm({
         searchable
         className="col-span-2 lg:col-span-4"
       />
-      <Field
+      <MaskedTimeField
         label="Tiempo"
-        value={time}
-        onChange={onChangeTime}
-        inputProps={{
-          placeholder: '00:00.000',
-          disabled: isDnf,
-          inputMode: 'numeric',
-          autoComplete: 'off',
-          className: 'font-mono tabular-nums',
-        }}
+        digits={timeDigits}
+        onChangeDigits={setTimeDigits}
         isRequired={!isDnf}
+        isDisabled={isDnf}
         className="col-span-2 sm:col-span-1 lg:col-span-3"
       />
-      <Field
+      <MaskedTimeField
         label="Sanción"
-        value={penalty}
-        onChange={onChangePenalty}
-        inputProps={{
-          placeholder: '00:00.000',
-          inputMode: 'numeric',
-          autoComplete: 'off',
-          className: 'font-mono tabular-nums',
-        }}
+        digits={penaltyDigits}
+        onChangeDigits={setPenaltyDigits}
         className="col-span-2 sm:col-span-1 lg:col-span-2"
       />
 
@@ -324,10 +310,6 @@ function SvgVisual({ src, alt }: { src: string; alt: string }) {
  * first and shifts left as digits are added (3 → "00:00.003", 1234 →
  * "00:01.234", 423567 → "04:23.567").
  */
-function extractDigits(input: string): string {
-  return input.replace(/\D/g, '').slice(-7);
-}
-
 function timeDigitsToString(digits: string): string {
   if (!digits) return '';
   const padded = digits.padStart(7, '0');

@@ -19,7 +19,13 @@
       "Bash(awk '/\\\\.button--ghost|\\\\.button--tertiary/,/^}$/' /home/doplax/Personal/dirt-rally-2/node_modules/@heroui/styles/dist/components/button.css)",
       "Bash(awk '/^\\\\.button {/,/^}$/' /home/doplax/Personal/dirt-rally-2/node_modules/@heroui/styles/dist/components/button.css)",
       "Bash(npx eslint *)",
-      "Bash(grep -oE \"\\\\.switch[^{,]*\\\\{[^}]+\\\\}\" /home/doplax/Personal/dirt-rally-2/node_modules/@heroui/styles/dist/heroui.min.css)"
+      "Bash(grep -oE \"\\\\.switch[^{,]*\\\\{[^}]+\\\\}\" /home/doplax/Personal/dirt-rally-2/node_modules/@heroui/styles/dist/heroui.min.css)",
+      "Bash(grep -oE \"\\\\.field[^{,]*\\\\{[^}]+\\\\}\" /home/doplax/Personal/dirt-rally-2/node_modules/@heroui/styles/dist/heroui.min.css)",
+      "Bash(grep -oE \"\\\\.input[^{,]*\\\\{[^}]+\\\\}\" /home/doplax/Personal/dirt-rally-2/node_modules/@heroui/styles/dist/heroui.min.css)",
+      "Bash(grep -oE \"\\\\.text-field[^{,]*\\\\{[^}]{0,200}\\\\}\" /home/doplax/Personal/dirt-rally-2/node_modules/@heroui/styles/dist/heroui.min.css)",
+      "Bash(grep -oE \"\\\\.input[a-z_-]*\\\\{[^}]{0,200}\\\\}\" /home/doplax/Personal/dirt-rally-2/node_modules/@heroui/styles/dist/heroui.min.css)",
+      "Bash(grep -oE \"\\\\.input\\([:[][^{]*\\)?\\\\{[^}]{0,400}\\\\}\" /home/doplax/Personal/dirt-rally-2/node_modules/@heroui/styles/dist/heroui.min.css)",
+      "Bash(grep -oE \"\\\\.input[^,{]*\\\\{[^}]{0,300}\\\\}\" /home/doplax/Personal/dirt-rally-2/node_modules/@heroui/styles/dist/heroui.min.css)"
     ],
     "additionalDirectories": [
       "/home/doplax/Personal/dirt-rally-2/src/app/(app)/coches",
