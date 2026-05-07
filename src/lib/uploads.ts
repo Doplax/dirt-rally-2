@@ -3,7 +3,9 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const ALLOWED_MIME = new Set(['image/png', 'image/jpeg', 'image/webp', 'image/gif']);
-const MAX_SIZE = 5 * 1024 * 1024; // 5MB
+// Aligned with `serverActions.bodySizeLimit` in next.config.ts. Update both
+// together if you change either.
+const MAX_SIZE = 50 * 1024 * 1024; // 50 MB
 
 const EXTS: Record<string, string> = {
   'image/png': '.png',
@@ -27,7 +29,7 @@ export async function saveUpload(file: File, category: UploadCategory): Promise<
     throw new UploadError('Formato no soportado (usa PNG, JPG, WEBP o GIF)');
   }
   if (file.size > MAX_SIZE) {
-    throw new UploadError('La imagen no puede superar 5 MB');
+    throw new UploadError('La imagen no puede superar 50 MB');
   }
 
   const ext = EXTS[file.type];
