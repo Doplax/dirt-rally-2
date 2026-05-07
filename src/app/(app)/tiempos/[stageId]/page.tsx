@@ -19,7 +19,7 @@ export default async function StageDetailPage({
   const session = await auth();
   if (!session) return null;
 
-  const [stage, users, cars, times] = await Promise.all([
+  const [stage, users, cars, times, favoriteCarIds] = await Promise.all([
     prisma.stage.findUnique({
       where: { id: stageId },
       include: { location: true },
@@ -49,6 +49,9 @@ export default async function StageDetailPage({
       },
       orderBy: { createdAt: 'desc' },
     }),
+    prisma.favoriteCar
+      .findMany({ where: { userId: session.user.id }, select: { carId: true } })
+      .then((rows) => new Set(rows.map((r) => r.carId))),
   ]);
 
   if (!stage) notFound();
@@ -150,6 +153,7 @@ export default async function StageDetailPage({
         currentUserId={session.user.id}
         users={users.map((u) => ({ id: u.id, username: u.username, photoUrl: u.photoUrl }))}
         cars={cars}
+        favoriteCarIds={Array.from(favoriteCarIds)}
         times={times.map((t) => ({
           id: t.id,
           runner: t.runner,

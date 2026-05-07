@@ -56,12 +56,14 @@ export default function StageLeaderboard({
   currentUserId,
   users,
   cars,
+  favoriteCarIds,
   times,
 }: {
   stage: { id: string; name: string };
   currentUserId: string;
   users: LeaderboardUser[];
   cars: LeaderboardCar[];
+  favoriteCarIds: string[];
   times: LeaderboardEntry[];
 }) {
   const [classFilter, setClassFilter] = useState('');
@@ -102,7 +104,7 @@ export default function StageLeaderboard({
       });
   }, [times, classFilter, weatherFilter, includeDnf]);
 
-  const formSelections: TimeFormSelections = { users, cars };
+  const formSelections: TimeFormSelections = { users, cars, favoriteCarIds };
 
   return (
     <div className="flex flex-col gap-4">

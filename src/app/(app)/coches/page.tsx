@@ -8,9 +8,16 @@ export default async function CochesPage() {
   const session = await auth();
   const isAdmin = session?.user.role === 'ADMIN';
 
-  const cars = await prisma.car.findMany({
-    orderBy: [{ isRallycross: 'asc' }, { className: 'asc' }, { name: 'asc' }],
-  });
+  const [cars, favoriteCarIds] = await Promise.all([
+    prisma.car.findMany({
+      orderBy: [{ isRallycross: 'asc' }, { className: 'asc' }, { name: 'asc' }],
+    }),
+    session
+      ? prisma.favoriteCar
+          .findMany({ where: { userId: session.user.id }, select: { carId: true } })
+          .then((rows) => new Set(rows.map((r) => r.carId)))
+      : Promise.resolve(new Set<string>()),
+  ]);
 
   return (
     <section className="flex flex-col gap-6">
@@ -33,6 +40,7 @@ export default async function CochesPage() {
           dlcPack: c.dlcPack,
           isRallycross: c.isRallycross,
           photoUrl: c.photoUrl,
+          isFavorite: favoriteCarIds.has(c.id),
         }))}
       />
     </section>

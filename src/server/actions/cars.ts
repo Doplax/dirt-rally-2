@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { prisma } from '@/lib/db';
-import { AuthError, requireAdmin } from '@/lib/permissions';
+import { AuthError, requireAdmin, requireSession } from '@/lib/permissions';
 import { UploadError, saveUpload } from '@/lib/uploads';
 import type { ActionResult } from '@/server/actions/locations';
 
@@ -76,6 +76,31 @@ export async function deleteCar(id: string): Promise<ActionResult> {
     await prisma.car.delete({ where: { id } });
     revalidatePath('/coches');
     return { ok: true };
+  } catch (err) {
+    return fail(err);
+  }
+}
+
+export async function toggleFavoriteCar(
+  carId: string,
+): Promise<ActionResult<{ favorited: boolean }>> {
+  try {
+    const user = await requireSession();
+    const existing = await prisma.favoriteCar.findUnique({
+      where: { userId_carId: { userId: user.id, carId } },
+    });
+    if (existing) {
+      await prisma.favoriteCar.delete({
+        where: { userId_carId: { userId: user.id, carId } },
+      });
+      revalidatePath('/coches');
+      revalidatePath(`/coches/${carId}`);
+      return { ok: true, data: { favorited: false } };
+    }
+    await prisma.favoriteCar.create({ data: { userId: user.id, carId } });
+    revalidatePath('/coches');
+    revalidatePath(`/coches/${carId}`);
+    return { ok: true, data: { favorited: true } };
   } catch (err) {
     return fail(err);
   }

@@ -1,14 +1,15 @@
 'use client';
 
 import { Button } from '@heroui/react';
-import { Pencil, Plus, Search, Trash2, Upload } from 'lucide-react';
+import { Heart, Plus, Search } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState, useTransition } from 'react';
 import { Field } from '@/components/ui/field';
 import { NativeSelect } from '@/components/ui/native-select';
 import { CarFormModal } from './car-form-modal';
-import { deleteCar, uploadCarPhoto } from '@/server/actions/cars';
+import { toggleFavoriteCar } from '@/server/actions/cars';
 
 export type CarItem = {
   id: string;
@@ -21,6 +22,7 @@ export type CarItem = {
   dlcPack: string | null;
   isRallycross: boolean;
   photoUrl: string | null;
+  isFavorite: boolean;
 };
 
 export default function CarsBrowser({ cars, isAdmin }: { cars: CarItem[]; isAdmin: boolean }) {
@@ -29,6 +31,7 @@ export default function CarsBrowser({ cars, isAdmin }: { cars: CarItem[]; isAdmi
   const [drivetrain, setDrivetrain] = useState('');
   const [dlc, setDlc] = useState<'' | 'base' | 'dlc'>('');
   const [discipline, setDiscipline] = useState<'' | 'rally' | 'rallycross'>('');
+  const [onlyFavorites, setOnlyFavorites] = useState(false);
 
   const classOptions = useMemo(() => {
     const seen = new Map<string, string>();
@@ -52,6 +55,7 @@ export default function CarsBrowser({ cars, isAdmin }: { cars: CarItem[]; isAdmi
     if (dlc === 'dlc' && !c.isDlc) return false;
     if (discipline === 'rally' && c.isRallycross) return false;
     if (discipline === 'rallycross' && !c.isRallycross) return false;
+    if (onlyFavorites && !c.isFavorite) return false;
     return true;
   });
 
@@ -113,8 +117,16 @@ export default function CarsBrowser({ cars, isAdmin }: { cars: CarItem[]; isAdmi
         />
       </div>
 
-      {isAdmin ? (
-        <div className="flex justify-end">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <label className="text-foreground/80 flex items-center gap-2 text-sm">
+          <input
+            type="checkbox"
+            checked={onlyFavorites}
+            onChange={(e) => setOnlyFavorites(e.target.checked)}
+          />
+          Solo favoritos
+        </label>
+        {isAdmin ? (
           <CarFormModal
             trigger={
               <Button variant="primary">
@@ -122,8 +134,8 @@ export default function CarsBrowser({ cars, isAdmin }: { cars: CarItem[]; isAdmi
               </Button>
             }
           />
-        </div>
-      ) : null}
+        ) : null}
+      </div>
 
       {grouped.length === 0 ? (
         <p className="text-foreground/60 flex items-center justify-center gap-2 py-12 text-center">
@@ -136,7 +148,7 @@ export default function CarsBrowser({ cars, isAdmin }: { cars: CarItem[]; isAdmi
               <h2 className="text-foreground/80 text-lg font-semibold">{group.className}</h2>
               <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {group.cars.map((car) => (
-                  <CarCard key={car.id} car={car} isAdmin={isAdmin} />
+                  <CarCard key={car.id} car={car} />
                 ))}
               </div>
             </section>
@@ -147,112 +159,99 @@ export default function CarsBrowser({ cars, isAdmin }: { cars: CarItem[]; isAdmi
   );
 }
 
-function CarCard({ car, isAdmin }: { car: CarItem; isAdmin: boolean }) {
+function CarCard({ car }: { car: CarItem }) {
+  return (
+    <div className="border-foreground/10 hover:border-foreground/25 bg-foreground/[0.02] group relative flex flex-col overflow-hidden rounded-xl border transition-all hover:shadow-lg">
+      <FavoriteButton carId={car.id} initialFavorited={car.isFavorite} />
+      <Link href={`/coches/${car.id}`} className="flex flex-col">
+        <div className="bg-foreground/5 relative aspect-[16/10]">
+          {car.photoUrl ? (
+            <Image
+              src={car.photoUrl}
+              alt={car.name}
+              fill
+              sizes="(max-width: 640px) 100vw, 25vw"
+              className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+            />
+          ) : (
+            <div className="text-foreground/30 flex h-full items-center justify-center text-3xl">
+              🏎️
+            </div>
+          )}
+          <span
+            className={[
+              'absolute top-2 right-2 rounded px-2 py-0.5 text-[11px] font-medium tracking-wide',
+              car.isDlc
+                ? 'bg-primary text-primary-foreground'
+                : 'bg-foreground/40 text-background',
+            ].join(' ')}
+          >
+            {car.isDlc ? 'DLC' : 'BASE'}
+          </span>
+        </div>
+        <div className="flex flex-col gap-1.5 px-3 pt-2 pb-2.5 leading-tight">
+          <div className="text-sm font-semibold">{car.name}</div>
+          <div className="text-foreground/60 flex flex-wrap gap-1 text-[11px]">
+            {car.drivetrain ? (
+              <span className="border-foreground/15 rounded border px-1.5 py-0.5">
+                {car.drivetrain}
+              </span>
+            ) : null}
+            {car.year ? (
+              <span className="border-foreground/15 rounded border px-1.5 py-0.5">{car.year}</span>
+            ) : null}
+            {car.isRallycross ? (
+              <span className="border-foreground/15 rounded border px-1.5 py-0.5">RX</span>
+            ) : null}
+          </div>
+        </div>
+      </Link>
+    </div>
+  );
+}
+
+function FavoriteButton({
+  carId,
+  initialFavorited,
+}: {
+  carId: string;
+  initialFavorited: boolean;
+}) {
   const router = useRouter();
+  const [favorited, setFavorited] = useState(initialFavorited);
   const [pending, startTransition] = useTransition();
-  const [error, setError] = useState<string | null>(null);
 
-  const onUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-    const formData = new FormData();
-    formData.set('file', file);
-    setError(null);
+  const onToggle = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const optimistic = !favorited;
+    setFavorited(optimistic);
     startTransition(async () => {
-      const result = await uploadCarPhoto(car.id, formData);
-      if (!result.ok) setError(result.error);
-      else router.refresh();
-    });
-    event.target.value = '';
-  };
-
-  const onDelete = () => {
-    if (!confirm(`¿Borrar el coche "${car.name}"?`)) return;
-    setError(null);
-    startTransition(async () => {
-      const result = await deleteCar(car.id);
-      if (!result.ok) setError(result.error);
-      else router.refresh();
+      const result = await toggleFavoriteCar(carId);
+      if (!result.ok) {
+        setFavorited(!optimistic);
+        return;
+      }
+      router.refresh();
     });
   };
 
   return (
-    <div className="border-foreground/10 hover:border-foreground/25 bg-foreground/[0.02] group flex flex-col overflow-hidden rounded-xl border transition-all hover:shadow-lg">
-      <div className="bg-foreground/5 relative aspect-[16/10]">
-        {car.photoUrl ? (
-          <Image
-            src={car.photoUrl}
-            alt={car.name}
-            fill
-            sizes="(max-width: 640px) 100vw, 25vw"
-            className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-          />
-        ) : (
-          <div className="text-foreground/30 flex h-full items-center justify-center text-3xl">
-            🏎️
-          </div>
-        )}
-        {car.isDlc ? (
-          <span className="bg-primary text-primary-foreground absolute top-2 right-2 rounded px-2 py-0.5 text-xs font-medium">
-            DLC
-          </span>
-        ) : null}
-      </div>
-      <div className="flex flex-col gap-1.5 px-3 pt-2 pb-2.5 leading-tight">
-        <div className="text-sm font-semibold">{car.name}</div>
-        <div className="text-foreground/60 flex flex-wrap gap-1 text-[11px]">
-          {car.drivetrain ? (
-            <span className="border-foreground/15 rounded border px-1.5 py-0.5">
-              {car.drivetrain}
-            </span>
-          ) : null}
-          {car.year ? (
-            <span className="border-foreground/15 rounded border px-1.5 py-0.5">{car.year}</span>
-          ) : null}
-          {car.isRallycross ? (
-            <span className="border-foreground/15 rounded border px-1.5 py-0.5">RX</span>
-          ) : null}
-        </div>
-        {isAdmin ? (
-          <div className="border-foreground/10 mt-1 flex flex-wrap items-center gap-1.5 border-t pt-1.5">
-            <CarFormModal
-              initial={car}
-              trigger={
-                <Button variant="ghost" size="sm" isIconOnly aria-label="Editar coche">
-                  <Pencil size={14} />
-                </Button>
-              }
-            />
-            <label
-              className={[
-                'border-foreground/15 hover:bg-foreground/5 inline-flex cursor-pointer items-center gap-1 rounded-md border px-2 py-1 text-xs',
-                pending ? 'pointer-events-none opacity-60' : '',
-              ].join(' ')}
-              aria-label="Subir foto"
-            >
-              <input
-                type="file"
-                accept="image/png,image/jpeg,image/webp,image/gif"
-                className="hidden"
-                onChange={onUpload}
-                disabled={pending}
-              />
-              <Upload size={14} />
-            </label>
-            <Button
-              variant="ghost"
-              size="sm"
-              isIconOnly
-              aria-label="Borrar coche"
-              onPress={onDelete}
-              isDisabled={pending}
-            >
-              <Trash2 size={14} />
-            </Button>
-            {error ? <span className="text-danger text-xs">{error}</span> : null}
-          </div>
-        ) : null}
-      </div>
-    </div>
+    <button
+      type="button"
+      onClick={onToggle}
+      disabled={pending}
+      aria-label={favorited ? 'Quitar de favoritos' : 'Marcar como favorito'}
+      aria-pressed={favorited}
+      className="bg-background/70 hover:bg-background/90 absolute top-2 left-2 z-10 flex h-8 w-8 items-center justify-center rounded-full backdrop-blur-sm transition-colors disabled:opacity-50"
+    >
+      <Heart
+        size={16}
+        className={[
+          'transition-all',
+          favorited ? 'fill-red-500 text-red-500' : 'text-foreground/70',
+        ].join(' ')}
+      />
+    </button>
   );
 }

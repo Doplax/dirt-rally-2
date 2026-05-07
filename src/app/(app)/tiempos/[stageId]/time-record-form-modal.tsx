@@ -1,6 +1,7 @@
 'use client';
 
 import { Avatar, Button } from '@heroui/react';
+import { Star } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState, useTransition, type ReactNode } from 'react';
@@ -15,6 +16,7 @@ import type { LeaderboardCar, LeaderboardEntry, LeaderboardUser } from './stage-
 export type TimeFormSelections = {
   users: LeaderboardUser[];
   cars: LeaderboardCar[];
+  favoriteCarIds?: string[];
 };
 
 const WEATHER_META: Record<Weather, { label: string; icon: string }> = {
@@ -112,16 +114,22 @@ export function TimeRecordForm({
     [selections.users],
   );
 
-  const carOptions = useMemo<ComboOption[]>(
-    () =>
-      selections.cars.map((c) => ({
-        id: c.id,
-        label: c.name,
-        sublabel: c.className,
-        visual: <CarVisual car={c} />,
-      })),
-    [selections.cars],
-  );
+  const carOptions = useMemo<ComboOption[]>(() => {
+    const favorites = new Set(selections.favoriteCarIds ?? []);
+    const sorted = [...selections.cars].sort((a, b) => {
+      const aFav = favorites.has(a.id) ? 0 : 1;
+      const bFav = favorites.has(b.id) ? 0 : 1;
+      if (aFav !== bFav) return aFav - bFav;
+      const cls = a.className.localeCompare(b.className);
+      return cls !== 0 ? cls : a.name.localeCompare(b.name);
+    });
+    return sorted.map((c) => ({
+      id: c.id,
+      label: c.name,
+      sublabel: favorites.has(c.id) ? `★ ${c.className}` : c.className,
+      visual: <CarVisual car={c} favorite={favorites.has(c.id)} />,
+    }));
+  }, [selections.cars, selections.favoriteCarIds]);
 
   const weatherOptions = useMemo<ComboOption[]>(
     () =>
@@ -264,7 +272,7 @@ function UserVisual({ user }: { user: LeaderboardUser }) {
   );
 }
 
-function CarVisual({ car }: { car: LeaderboardCar }) {
+function CarVisual({ car, favorite }: { car: LeaderboardCar; favorite?: boolean }) {
   return (
     <span className="bg-foreground/5 relative h-9 w-12 shrink-0 overflow-hidden rounded">
       {car.photoUrl ? (
@@ -274,6 +282,11 @@ function CarVisual({ car }: { car: LeaderboardCar }) {
           🏎️
         </span>
       )}
+      {favorite ? (
+        <span className="bg-background/70 absolute top-0 right-0 flex h-4 w-4 items-center justify-center rounded-bl backdrop-blur-sm">
+          <Star size={10} className="fill-amber-400 text-amber-400" />
+        </span>
+      ) : null}
     </span>
   );
 }

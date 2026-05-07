@@ -10,7 +10,11 @@
       "Bash(identify /home/doplax/Personal/dirt-rally-2/public/logo.png)",
       "Bash(grep -E \"^\\(sharp|png-to-ico|to-ico|jimp\\)$\")",
       "Bash(python3 -c \"from PIL import Image; print\\('PIL ok'\\)\")",
-      "Bash(python3 -)"
+      "Bash(python3 -)",
+      "Bash(mkdir -p /home/doplax/Personal/dirt-rally-2/src/app/\\\\\\(app\\\\\\)/coches/\\\\[id\\\\])"
+    ],
+    "additionalDirectories": [
+      "/home/doplax/Personal/dirt-rally-2/src/app/(app)/coches"
     ]
   }
 }

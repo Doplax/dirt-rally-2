@@ -17,8 +17,9 @@ model User {
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
 
-  timesAsRunner    TimeRecord[] @relation("Runner")
-  timesAsRegistrar TimeRecord[] @relation("Registrar")
+  timesAsRunner    TimeRecord[]  @relation("Runner")
+  timesAsRegistrar TimeRecord[]  @relation("Registrar")
+  favoriteCars     FavoriteCar[]
 }
 
 enum Role {
@@ -58,17 +59,30 @@ enum Direction {
 }
 
 model Car {
-  id           String       @id @default(cuid())
-  name         String       @unique
+  id           String        @id @default(cuid())
+  name         String        @unique
   className    String
   classCode    String
   drivetrain   String?
   year         Int?
-  isDlc        Boolean      @default(false)
+  isDlc        Boolean       @default(false)
   dlcPack      String?
-  isRallycross Boolean      @default(false)
+  isRallycross Boolean       @default(false)
   photoUrl     String?
   times        TimeRecord[]
+  favoritedBy  FavoriteCar[]
+}
+
+model FavoriteCar {
+  userId    String
+  carId     String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  car       Car      @relation(fields: [carId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@id([userId, carId])
+  @@index([userId])
+  @@index([carId])
 }
 
 model TimeRecord {
