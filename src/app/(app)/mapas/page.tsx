@@ -2,7 +2,7 @@ import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/db';
 import LocationsBrowser from './locations-browser';
 
-export const metadata = { title: 'Mapas · DiRT Tracker' };
+export const metadata = { title: 'Mapas · DR2 Tracker' };
 
 export default async function MapasPage() {
   const session = await auth();

@@ -8,7 +8,7 @@ import { prisma } from '@/lib/db';
 import { msToString } from '@/lib/time-format';
 import StageLeaderboard from './stage-leaderboard';
 
-export const metadata = { title: 'Leaderboard · DiRT Tracker' };
+export const metadata = { title: 'Leaderboard · DR2 Tracker' };
 
 export default async function StageDetailPage({
   params,

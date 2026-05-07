@@ -3,7 +3,7 @@ import { auth } from '@/lib/auth';
 import ChangePasswordForm from './change-password-form';
 
 export const metadata = {
-  title: 'Cambiar contraseña · DiRT Tracker',
+  title: 'Cambiar contraseña · DR2 Tracker',
 };
 
 export default async function ChangePasswordPage() {

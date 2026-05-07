@@ -1,7 +1,7 @@
 import LoginForm from './login-form';
 
 export const metadata = {
-  title: 'Iniciar sesión · DiRT Tracker',
+  title: 'Iniciar sesión · DR2 Tracker',
 };
 
 export default function LoginPage({

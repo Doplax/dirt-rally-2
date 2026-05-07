@@ -4,11 +4,18 @@
 @theme inline {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* HeroUI v3 exposes `--color-accent` as the brand utility, not `primary`.
+   * Alias both to the same token so Tailwind classes `bg-primary` /
+   * `text-primary` render the same red as `bg-accent` / `text-accent`. */
+  --color-primary: var(--accent);
+  --color-primary-foreground: var(--accent-foreground);
 }
 
-/* Rally-friendly orange accent for both themes */
+/* DiRT Rally 2.0 red — pulled from the logo wordmark. */
 :root {
-  --accent: oklch(0.74 0.18 50);
+  --accent: oklch(0.6 0.225 27);
+  --accent-foreground: oklch(0.99 0 0);
 
   /* HeroUI ships fields with no border (`--field-border-width: 0`) and a
    * transparent border colour, so empty inputs visually disappear into the
@@ -19,7 +26,8 @@
 }
 
 html.dark {
-  --accent: oklch(0.78 0.19 55);
+  --accent: oklch(0.66 0.235 27);
+  --accent-foreground: oklch(0.99 0 0);
   --field-border: var(--border);
   --field-border-width: 1px;
 }

@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'DiRT Tracker',
+  title: 'DR2 Tracker',
   description: 'Registra y compara tiempos de DiRT Rally 2.0 con tu grupo de amigos',
 };
 

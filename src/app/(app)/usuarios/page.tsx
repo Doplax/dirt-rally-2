@@ -3,7 +3,7 @@ import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/db';
 import UsersTable from './users-table';
 
-export const metadata = { title: 'Usuarios · DiRT Tracker' };
+export const metadata = { title: 'Usuarios · DR2 Tracker' };
 
 export default async function UsuariosPage() {
   const session = await auth();

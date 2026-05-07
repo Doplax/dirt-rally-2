@@ -3,7 +3,7 @@ import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/db';
 import ProfileEditor from './profile-editor';
 
-export const metadata = { title: 'Mi perfil · DiRT Tracker' };
+export const metadata = { title: 'Mi perfil · DR2 Tracker' };
 
 export default async function PerfilPage() {
   const session = await auth();

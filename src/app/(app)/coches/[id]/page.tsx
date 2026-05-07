@@ -8,7 +8,7 @@ import { FilteredTimesTable } from '@/components/shared/filtered-times-table';
 import { CarAdminPanel } from './car-admin-panel';
 import { FavoriteToggle } from './favorite-toggle';
 
-export const metadata = { title: 'Detalle de coche · DiRT Tracker' };
+export const metadata = { title: 'Detalle de coche · DR2 Tracker' };
 
 export default async function CarDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

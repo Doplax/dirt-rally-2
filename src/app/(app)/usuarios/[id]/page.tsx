@@ -6,7 +6,7 @@ import { prisma } from '@/lib/db';
 import { FilteredTimesTable } from '@/components/shared/filtered-times-table';
 import { UserAdminPanel } from './user-admin-panel';
 
-export const metadata = { title: 'Detalle de usuario · DiRT Tracker' };
+export const metadata = { title: 'Detalle de usuario · DR2 Tracker' };
 
 export default async function UserDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

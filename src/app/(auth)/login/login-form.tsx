@@ -51,10 +51,17 @@ export default function LoginForm({
     <Card className="w-full max-w-sm p-6">
       <Card.Header>
         <div className="mb-2 flex justify-center">
-          <Image src="/logo.png" alt="DiRT Tracker" width={72} height={72} priority />
+          <Image
+            src="/logo.png"
+            alt="DR2 Tracker"
+            width={180}
+            height={101}
+            priority
+            className="h-auto w-32"
+          />
         </div>
         <Card.Title className="text-center text-2xl font-semibold">
-          DiRT Tracker
+          DR2 Tracker
         </Card.Title>
         <Card.Description className="text-center">
           Inicia sesión para registrar tiempos

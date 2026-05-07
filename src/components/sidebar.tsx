@@ -34,16 +34,28 @@ export function Sidebar({ user }: { user: SidebarUser }) {
 
   return (
     <>
-      <header className="border-foreground/10 bg-background sticky top-0 z-30 flex items-center justify-between border-b px-4 py-3 md:hidden">
-        <Link href="/" className="flex items-center gap-2 text-lg font-bold">
-          <Image src="/logo.png" alt="DiRT Tracker" width={28} height={28} priority />
-          <span>DiRT Tracker</span>
+      <header className="border-foreground/10 bg-background sticky top-0 z-30 grid grid-cols-3 items-center border-b px-4 py-3 md:hidden">
+        <Link
+          href="/"
+          aria-label="DR2 Tracker"
+          className="justify-self-start"
+        >
+          <Image
+            src="/logo.png"
+            alt="DR2 Tracker"
+            width={50}
+            height={28}
+            priority
+            className="h-7 w-auto"
+          />
         </Link>
+        <span className="justify-self-center text-lg font-bold">DR2 Tracker</span>
         <Button
           variant="ghost"
           isIconOnly
           aria-label={open ? 'Cerrar menú' : 'Abrir menú'}
           onPress={() => setOpen((v) => !v)}
+          className="justify-self-end"
         >
           {open ? <X size={20} /> : <Menu size={20} />}
         </Button>
@@ -81,8 +93,15 @@ function SidebarContent({ user, onNavigate }: { user: SidebarUser; onNavigate: (
         className="mb-6 flex items-center gap-2 text-xl font-bold"
         onClick={onNavigate}
       >
-        <Image src="/logo.png" alt="DiRT Tracker" width={32} height={32} priority />
-        <span>DiRT Tracker</span>
+        <Image
+          src="/logo.png"
+          alt="DR2 Tracker"
+          width={64}
+          height={36}
+          priority
+          className="h-8 w-auto"
+        />
+        <span>DR2 Tracker</span>
       </Link>
 
       <nav className="flex flex-1 flex-col gap-1">

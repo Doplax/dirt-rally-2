@@ -6,7 +6,7 @@ import { prisma } from '@/lib/db';
 import { msToString } from '@/lib/time-format';
 import { Direction } from '@prisma/client';
 
-export const metadata = { title: 'Inicio · DiRT Tracker' };
+export const metadata = { title: 'Inicio · DR2 Tracker' };
 
 const ONE_WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 
@@ -77,7 +77,7 @@ export default async function HomePage() {
       <div>
         <h1 className="text-3xl font-bold">Hola, {username} 🏁</h1>
         <p className="text-foreground/60">
-          Bienvenido al DiRT Tracker. Usa la barra lateral para navegar.
+          Bienvenido al DR2 Tracker. Usa la barra lateral para navegar.
         </p>
       </div>
 

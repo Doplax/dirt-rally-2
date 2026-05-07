@@ -2,7 +2,7 @@ import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/db';
 import CarsBrowser from './cars-browser';
 
-export const metadata = { title: 'Coches · DiRT Tracker' };
+export const metadata = { title: 'Coches · DR2 Tracker' };
 
 export default async function CochesPage() {
   const session = await auth();

@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/db';
 import StagesBrowser from './stages-browser';
 
-export const metadata = { title: 'Tiempos · DiRT Tracker' };
+export const metadata = { title: 'Tiempos · DR2 Tracker' };
 
 export default async function TiemposPage() {
   const locations = await prisma.location.findMany({

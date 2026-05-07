@@ -7,7 +7,7 @@ import { prisma } from '@/lib/db';
 import { LocationAdminPanel } from './location-admin-panel';
 import { StagesTable } from './stages-table';
 
-export const metadata = { title: 'Detalle de mapa · DiRT Tracker' };
+export const metadata = { title: 'Detalle de mapa · DR2 Tracker' };
 
 export default async function LocationDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
