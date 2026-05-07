@@ -177,8 +177,8 @@ export default function CarsBrowser({ cars, isAdmin }: { cars: CarItem[]; isAdmi
   }, [filtered]);
 
   return (
-    <div className="flex flex-col gap-5">
-      <div className="grid grid-cols-2 gap-3 lg:grid-cols-10">
+    <div className="@container flex flex-col gap-5">
+      <div className="grid grid-cols-2 gap-3 @3xl:grid-cols-12">
         <Field
           label="Buscar"
           name="search"
@@ -187,7 +187,7 @@ export default function CarsBrowser({ cars, isAdmin }: { cars: CarItem[]; isAdmi
             onChange: (e) => setSearch(e.target.value),
             placeholder: 'Nombre…',
           }}
-          className="col-span-2 lg:col-span-2"
+          className="col-span-2 @3xl:col-span-3"
         />
         <IconCombobox
           label="Clase"
@@ -196,7 +196,7 @@ export default function CarsBrowser({ cars, isAdmin }: { cars: CarItem[]; isAdmi
           onChange={setClassCode}
           searchable
           placeholder="Todas las clases"
-          className="col-span-2 lg:col-span-3"
+          className="col-span-2 @3xl:col-span-3"
         />
         <IconCombobox
           label="Tracción"
@@ -204,7 +204,7 @@ export default function CarsBrowser({ cars, isAdmin }: { cars: CarItem[]; isAdmi
           value={drivetrain}
           onChange={setDrivetrain}
           placeholder="Todas las tracciones"
-          className="col-span-2 lg:col-span-2"
+          className="col-span-2 @3xl:col-span-2"
         />
         <IconCombobox
           label="Tipo"
@@ -212,7 +212,7 @@ export default function CarsBrowser({ cars, isAdmin }: { cars: CarItem[]; isAdmi
           value={dlc}
           onChange={(id) => setDlc(id as typeof dlc)}
           placeholder="Todos los tipos"
-          className="col-span-1 lg:col-span-1"
+          className="col-span-1 @3xl:col-span-2"
         />
         <IconCombobox
           label="Disciplina"
@@ -220,7 +220,7 @@ export default function CarsBrowser({ cars, isAdmin }: { cars: CarItem[]; isAdmi
           value={discipline}
           onChange={(id) => setDiscipline(id as typeof discipline)}
           placeholder="Ambas"
-          className="col-span-1 lg:col-span-2"
+          className="col-span-1 @3xl:col-span-2"
         />
       </div>
 
