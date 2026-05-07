@@ -13,7 +13,11 @@
       "Bash(python3 -)",
       "Bash(mkdir -p /home/doplax/Personal/dirt-rally-2/src/app/\\\\\\(app\\\\\\)/coches/\\\\[id\\\\])",
       "Bash(rm /home/doplax/Personal/dirt-rally-2/src/app/\\\\\\(app\\\\\\)/coches/\\\\[id\\\\]/car-times-table.tsx)",
-      "Bash(mkdir -p /home/doplax/Personal/dirt-rally-2/src/app/\\\\\\(app\\\\\\)/usuarios/\\\\[id\\\\])"
+      "Bash(mkdir -p /home/doplax/Personal/dirt-rally-2/src/app/\\\\\\(app\\\\\\)/usuarios/\\\\[id\\\\])",
+      "Bash(awk '/\\\\.button--outline/,/^}$/' /home/doplax/Personal/dirt-rally-2/node_modules/@heroui/styles/dist/components/button.css)",
+      "Bash(awk '/\\\\.button--secondary/,/^}$/' /home/doplax/Personal/dirt-rally-2/node_modules/@heroui/styles/dist/components/button.css)",
+      "Bash(awk '/\\\\.button--ghost|\\\\.button--tertiary/,/^}$/' /home/doplax/Personal/dirt-rally-2/node_modules/@heroui/styles/dist/components/button.css)",
+      "Bash(awk '/^\\\\.button {/,/^}$/' /home/doplax/Personal/dirt-rally-2/node_modules/@heroui/styles/dist/components/button.css)"
     ],
     "additionalDirectories": [
       "/home/doplax/Personal/dirt-rally-2/src/app/(app)/coches",

@@ -3,10 +3,14 @@
 import { Button, Modal } from '@heroui/react';
 import { Pencil, Trash2, Upload, AlertTriangle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useState, useTransition } from 'react';
+import { useRef, useState, useTransition } from 'react';
 import { useOverlayTriggerState } from 'react-stately';
 import { CarFormModal } from '../car-form-modal';
 import { deleteCar, uploadCarPhoto } from '@/server/actions/cars';
+
+const ACTION_BTN_LAYOUT = 'w-full justify-center sm:w-auto';
+const ACTION_BTN_CLASS =
+  `${ACTION_BTN_LAYOUT} bg-foreground/[0.08] hover:bg-foreground/[0.16] border-foreground/30 hover:border-foreground/55 text-foreground`;
 
 type CarAdminPanelProps = {
   car: {
@@ -24,6 +28,7 @@ type CarAdminPanelProps = {
 
 export function CarAdminPanel({ car }: CarAdminPanelProps) {
   const router = useRouter();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
 
@@ -42,33 +47,36 @@ export function CarAdminPanel({ car }: CarAdminPanelProps) {
   };
 
   return (
-    <div className="border-foreground/10 mt-1 flex flex-wrap items-center gap-2 border-t pt-3">
+    <div className="border-foreground/10 mt-1 grid grid-cols-2 gap-2 border-t pt-3 sm:flex sm:flex-wrap">
       <CarFormModal
         initial={car}
         trigger={
-          <Button variant="secondary" size="sm">
+          <Button variant="outline" size="sm" className={ACTION_BTN_CLASS}>
             <Pencil size={14} /> Editar
           </Button>
         }
       />
-      <label
-        className={[
-          'border-foreground/15 hover:bg-foreground/5 inline-flex cursor-pointer items-center gap-1.5 rounded-md border px-3 py-1.5 text-sm',
-          pending ? 'pointer-events-none opacity-60' : '',
-        ].join(' ')}
-        aria-label="Subir foto"
+      <Button
+        variant="outline"
+        size="sm"
+        onPress={() => fileInputRef.current?.click()}
+        isDisabled={pending}
+        className={ACTION_BTN_CLASS}
       >
-        <input
-          type="file"
-          accept="image/png,image/jpeg,image/webp,image/gif"
-          className="hidden"
-          onChange={onUpload}
-          disabled={pending}
-        />
         <Upload size={14} /> Subir foto
-      </label>
+      </Button>
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/png,image/jpeg,image/webp,image/gif"
+        className="hidden"
+        onChange={onUpload}
+        disabled={pending}
+      />
       <DeleteCarButton carId={car.id} carName={car.name} />
-      {error ? <span className="text-danger text-xs">{error}</span> : null}
+      {error ? (
+        <span className="text-danger col-span-2 text-xs sm:col-span-1">{error}</span>
+      ) : null}
     </div>
   );
 }
@@ -100,7 +108,12 @@ function DeleteCarButton({ carId, carName }: { carId: string; carName: string })
 
   return (
     <Modal state={state}>
-      <Button variant="danger" size="sm" onPress={() => state.open()}>
+      <Button
+        variant="danger"
+        size="sm"
+        onPress={() => state.open()}
+        className={ACTION_BTN_LAYOUT}
+      >
         <Trash2 size={14} /> Borrar
       </Button>
       <Modal.Backdrop>
