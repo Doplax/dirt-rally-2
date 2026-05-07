@@ -1,13 +1,13 @@
 'use client';
 
 import { Button } from '@heroui/react';
-import { Heart, Plus, Search } from 'lucide-react';
+import { Cog, Flame, Heart, Layers, Plus, Search, Sparkles } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState, useTransition } from 'react';
 import { Field } from '@/components/ui/field';
-import { NativeSelect } from '@/components/ui/native-select';
+import { IconCombobox, type ComboOption } from '@/components/ui/icon-combobox';
 import { CarFormModal } from './car-form-modal';
 import { toggleFavoriteCar } from '@/server/actions/cars';
 
@@ -33,19 +33,125 @@ export default function CarsBrowser({ cars, isAdmin }: { cars: CarItem[]; isAdmi
   const [discipline, setDiscipline] = useState<'' | 'rally' | 'rallycross'>('');
   const [onlyFavorites, setOnlyFavorites] = useState(false);
 
-  const classOptions = useMemo(() => {
+  const classOptions = useMemo<ComboOption[]>(() => {
     const seen = new Map<string, string>();
     cars.forEach((c) => seen.set(c.classCode, c.className));
-    return Array.from(seen.entries())
-      .map(([value, label]) => ({ value, label }))
-      .sort((a, b) => a.label.localeCompare(b.label));
+    const sorted = Array.from(seen.entries())
+      .map(([code, name]) => ({ code, name }))
+      .sort((a, b) => a.name.localeCompare(b.name));
+    return [
+      {
+        id: '',
+        label: 'Todas las clases',
+        visual: (
+          <span className="bg-foreground/5 text-foreground/40 flex h-9 w-9 shrink-0 items-center justify-center rounded">
+            <Layers size={16} />
+          </span>
+        ),
+      },
+      ...sorted.map((c) => ({
+        id: c.code,
+        label: c.name,
+        visual: (
+          <span className="bg-foreground/5 text-foreground/60 flex h-9 w-9 shrink-0 items-center justify-center rounded text-[10px] font-bold tracking-wider uppercase">
+            {c.code.slice(0, 3)}
+          </span>
+        ),
+      })),
+    ];
   }, [cars]);
 
-  const drivetrainOptions = useMemo(() => {
+  const drivetrainOptions = useMemo<ComboOption[]>(() => {
     const seen = new Set<string>();
     cars.forEach((c) => c.drivetrain && seen.add(c.drivetrain));
-    return Array.from(seen).sort().map((d) => ({ value: d, label: d }));
+    const sorted = Array.from(seen).sort();
+    return [
+      {
+        id: '',
+        label: 'Todas las tracciones',
+        visual: (
+          <span className="bg-foreground/5 text-foreground/40 flex h-9 w-9 shrink-0 items-center justify-center rounded">
+            <Cog size={16} />
+          </span>
+        ),
+      },
+      ...sorted.map((d) => ({
+        id: d,
+        label: d,
+        visual: (
+          <span className="bg-foreground/5 text-foreground/70 flex h-9 w-9 shrink-0 items-center justify-center rounded text-[10px] font-bold tracking-wider">
+            {d}
+          </span>
+        ),
+      })),
+    ];
   }, [cars]);
+
+  const dlcOptions = useMemo<ComboOption[]>(
+    () => [
+      {
+        id: '',
+        label: 'Todos los tipos',
+        visual: (
+          <span className="bg-foreground/5 text-foreground/40 flex h-9 w-9 shrink-0 items-center justify-center rounded">
+            <Sparkles size={16} />
+          </span>
+        ),
+      },
+      {
+        id: 'base',
+        label: 'Base',
+        visual: (
+          <span className="bg-foreground/10 text-foreground/70 flex h-9 w-9 shrink-0 items-center justify-center rounded text-[10px] font-bold tracking-wider">
+            BASE
+          </span>
+        ),
+      },
+      {
+        id: 'dlc',
+        label: 'DLC',
+        visual: (
+          <span className="bg-primary/15 text-primary flex h-9 w-9 shrink-0 items-center justify-center rounded text-[10px] font-bold tracking-wider">
+            DLC
+          </span>
+        ),
+      },
+    ],
+    [],
+  );
+
+  const disciplineOptions = useMemo<ComboOption[]>(
+    () => [
+      {
+        id: '',
+        label: 'Ambas disciplinas',
+        visual: (
+          <span className="bg-foreground/5 text-foreground/40 flex h-9 w-9 shrink-0 items-center justify-center rounded">
+            <Flame size={16} />
+          </span>
+        ),
+      },
+      {
+        id: 'rally',
+        label: 'Rally',
+        visual: (
+          <span className="bg-foreground/10 text-foreground/70 flex h-9 w-9 shrink-0 items-center justify-center rounded text-[10px] font-bold tracking-wider">
+            RAL
+          </span>
+        ),
+      },
+      {
+        id: 'rallycross',
+        label: 'Rallycross',
+        visual: (
+          <span className="bg-foreground/10 text-foreground/70 flex h-9 w-9 shrink-0 items-center justify-center rounded text-[10px] font-bold tracking-wider">
+            RX
+          </span>
+        ),
+      },
+    ],
+    [],
+  );
 
   const filtered = cars.filter((c) => {
     if (search && !c.name.toLowerCase().includes(search.toLowerCase())) return false;
@@ -71,7 +177,7 @@ export default function CarsBrowser({ cars, isAdmin }: { cars: CarItem[]; isAdmi
 
   return (
     <div className="flex flex-col gap-5">
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-10">
         <Field
           label="Buscar"
           name="search"
@@ -80,40 +186,40 @@ export default function CarsBrowser({ cars, isAdmin }: { cars: CarItem[]; isAdmi
             onChange: (e) => setSearch(e.target.value),
             placeholder: 'Nombre…',
           }}
+          className="col-span-2 lg:col-span-2"
         />
-        <NativeSelect
+        <IconCombobox
           label="Clase"
-          value={classCode}
-          onChange={(e) => setClassCode(e.target.value)}
-          placeholder="Todas"
           options={classOptions}
+          value={classCode}
+          onChange={setClassCode}
+          searchable
+          placeholder="Todas las clases"
+          className="col-span-2 lg:col-span-3"
         />
-        <NativeSelect
+        <IconCombobox
           label="Tracción"
-          value={drivetrain}
-          onChange={(e) => setDrivetrain(e.target.value)}
-          placeholder="Todas"
           options={drivetrainOptions}
+          value={drivetrain}
+          onChange={setDrivetrain}
+          placeholder="Todas las tracciones"
+          className="col-span-2 lg:col-span-2"
         />
-        <NativeSelect
+        <IconCombobox
           label="Tipo"
+          options={dlcOptions}
           value={dlc}
-          onChange={(e) => setDlc(e.target.value as typeof dlc)}
-          placeholder="Todos"
-          options={[
-            { value: 'base', label: 'Base' },
-            { value: 'dlc', label: 'DLC' },
-          ]}
+          onChange={(id) => setDlc(id as typeof dlc)}
+          placeholder="Todos los tipos"
+          className="col-span-1 lg:col-span-1"
         />
-        <NativeSelect
+        <IconCombobox
           label="Disciplina"
+          options={disciplineOptions}
           value={discipline}
-          onChange={(e) => setDiscipline(e.target.value as typeof discipline)}
+          onChange={(id) => setDiscipline(id as typeof discipline)}
           placeholder="Ambas"
-          options={[
-            { value: 'rally', label: 'Rally' },
-            { value: 'rallycross', label: 'Rallycross' },
-          ]}
+          className="col-span-1 lg:col-span-2"
         />
       </div>
 

@@ -1,11 +1,12 @@
 'use client';
 
 import { Button } from '@heroui/react';
-import { Plus } from 'lucide-react';
+import { Globe, Layers, Mountain, Plus, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useMemo, useState } from 'react';
-import { NativeSelect } from '@/components/ui/native-select';
+import { IconCombobox, type ComboOption } from '@/components/ui/icon-combobox';
+import { CountryFlag } from '@/components/ui/country-flag';
 import { LocationFormModal } from './location-form-modal';
 
 export type LocationItem = {
@@ -30,13 +31,81 @@ export default function LocationsBrowser({
   const [surface, setSurface] = useState('');
   const [dlcFilter, setDlcFilter] = useState<'' | 'base' | 'dlc'>('');
 
-  const countries = useMemo(
-    () => Array.from(new Set(locations.map((l) => l.country))).sort(),
-    [locations],
-  );
-  const surfaces = useMemo(
-    () => Array.from(new Set(locations.map((l) => l.surface))).sort(),
-    [locations],
+  const countryOptions = useMemo<ComboOption[]>(() => {
+    const seen = Array.from(new Set(locations.map((l) => l.country))).sort();
+    return [
+      {
+        id: '',
+        label: 'Todos los países',
+        visual: (
+          <span className="bg-foreground/5 text-foreground/40 flex h-6 w-9 shrink-0 items-center justify-center rounded-sm">
+            <Globe size={14} />
+          </span>
+        ),
+      },
+      ...seen.map((c) => ({
+        id: c,
+        label: c,
+        visual: <CountryFlag country={c} />,
+      })),
+    ];
+  }, [locations]);
+
+  const surfaceOptions = useMemo<ComboOption[]>(() => {
+    const seen = Array.from(new Set(locations.map((l) => l.surface))).sort();
+    return [
+      {
+        id: '',
+        label: 'Todas las superficies',
+        visual: (
+          <span className="bg-foreground/5 text-foreground/40 flex h-9 w-9 shrink-0 items-center justify-center rounded">
+            <Mountain size={16} />
+          </span>
+        ),
+      },
+      ...seen.map((s) => ({
+        id: s,
+        label: s,
+        visual: (
+          <span className="bg-foreground/5 text-foreground/60 flex h-9 w-9 shrink-0 items-center justify-center rounded">
+            <Layers size={14} />
+          </span>
+        ),
+      })),
+    ];
+  }, [locations]);
+
+  const dlcOptions = useMemo<ComboOption[]>(
+    () => [
+      {
+        id: '',
+        label: 'Todos los tipos',
+        visual: (
+          <span className="bg-foreground/5 text-foreground/40 flex h-9 w-9 shrink-0 items-center justify-center rounded">
+            <Sparkles size={16} />
+          </span>
+        ),
+      },
+      {
+        id: 'base',
+        label: 'Base',
+        visual: (
+          <span className="bg-foreground/10 text-foreground/70 flex h-9 w-9 shrink-0 items-center justify-center rounded text-[10px] font-bold tracking-wider">
+            BASE
+          </span>
+        ),
+      },
+      {
+        id: 'dlc',
+        label: 'DLC',
+        visual: (
+          <span className="bg-primary/15 text-primary flex h-9 w-9 shrink-0 items-center justify-center rounded text-[10px] font-bold tracking-wider">
+            DLC
+          </span>
+        ),
+      },
+    ],
+    [],
   );
 
   const filtered = locations.filter((l) => {
@@ -49,33 +118,35 @@ export default function LocationsBrowser({
 
   return (
     <div className="flex flex-col gap-5">
-      <div className="flex flex-wrap items-end gap-3">
-        <NativeSelect
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-12">
+        <IconCombobox
           label="País"
+          options={countryOptions}
           value={country}
-          onChange={(e) => setCountry(e.target.value)}
-          placeholder="Todos"
-          options={countries.map((c) => ({ value: c, label: c }))}
+          onChange={setCountry}
+          searchable
+          placeholder="Todos los países"
+          className="col-span-2 lg:col-span-4"
         />
-        <NativeSelect
+        <IconCombobox
           label="Superficie"
+          options={surfaceOptions}
           value={surface}
-          onChange={(e) => setSurface(e.target.value)}
-          placeholder="Todas"
-          options={surfaces.map((s) => ({ value: s, label: s }))}
+          onChange={setSurface}
+          searchable
+          placeholder="Todas las superficies"
+          className="col-span-2 lg:col-span-5"
         />
-        <NativeSelect
+        <IconCombobox
           label="Tipo"
+          options={dlcOptions}
           value={dlcFilter}
-          onChange={(e) => setDlcFilter(e.target.value as typeof dlcFilter)}
-          placeholder="Todas"
-          options={[
-            { value: 'base', label: 'Base' },
-            { value: 'dlc', label: 'DLC' },
-          ]}
+          onChange={(id) => setDlcFilter(id as typeof dlcFilter)}
+          placeholder="Todos los tipos"
+          className="col-span-2 lg:col-span-3"
         />
-        <div className="ml-auto flex items-center gap-2">
-          {isAdmin ? (
+        {isAdmin ? (
+          <div className="col-span-2 flex justify-end lg:col-span-12">
             <LocationFormModal
               trigger={
                 <Button variant="primary">
@@ -83,8 +154,8 @@ export default function LocationsBrowser({
                 </Button>
               }
             />
-          ) : null}
-        </div>
+          </div>
+        ) : null}
       </div>
 
       {filtered.length === 0 ? (
@@ -118,7 +189,8 @@ export default function LocationsBrowser({
                 ) : null}
               </div>
               <div className="flex flex-col gap-0.5 px-3 pt-2 pb-2.5 leading-tight">
-                <div className="text-foreground/55 text-[11px] uppercase tracking-wide">
+                <div className="text-foreground/55 flex items-center gap-1.5 text-[11px] uppercase tracking-wide">
+                  <CountryFlag country={loc.country} variant="inline" />
                   {loc.country}
                 </div>
                 <div className="text-base font-semibold">{loc.name}</div>
