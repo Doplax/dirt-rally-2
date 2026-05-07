@@ -7,7 +7,7 @@ import { Direction, InputDevice, Role, TimeOfDay, Weather } from '@prisma/client
 import type { ActionResult } from '@/server/actions/locations';
 
 /** Neon free-tier quota in bytes (0.5 GiB). Override with NEON_QUOTA_BYTES. */
-export const DEFAULT_QUOTA_BYTES = 512 * 1024 * 1024;
+const DEFAULT_QUOTA_BYTES = 512 * 1024 * 1024;
 
 export type DatabaseUsage = {
   usedBytes: number;
