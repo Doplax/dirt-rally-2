@@ -6,7 +6,11 @@
       "Bash(git remote *)",
       "Bash(git push *)",
       "Bash(echo \"exit=$?\")",
-      "Bash(npx next *)"
+      "Bash(npx next *)",
+      "Bash(identify /home/doplax/Personal/dirt-rally-2/public/logo.png)",
+      "Bash(grep -E \"^\\(sharp|png-to-ico|to-ico|jimp\\)$\")",
+      "Bash(python3 -c \"from PIL import Image; print\\('PIL ok'\\)\")",
+      "Bash(python3 -)"
     ]
   }
 }

@@ -2,6 +2,7 @@
 
 import { Avatar, Button } from '@heroui/react';
 import { Car, Clock, KeyRound, LogOut, Map, Menu, Users, X } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
@@ -35,7 +36,8 @@ export function Sidebar({ user }: { user: SidebarUser }) {
     <>
       <header className="border-foreground/10 bg-background sticky top-0 z-30 flex items-center justify-between border-b px-4 py-3 md:hidden">
         <Link href="/" className="flex items-center gap-2 text-lg font-bold">
-          <span>🏁</span> DiRT Tracker
+          <Image src="/logo.png" alt="DiRT Tracker" width={28} height={28} priority />
+          <span>DiRT Tracker</span>
         </Link>
         <Button
           variant="ghost"
@@ -79,7 +81,8 @@ function SidebarContent({ user, onNavigate }: { user: SidebarUser; onNavigate: (
         className="mb-6 flex items-center gap-2 text-xl font-bold"
         onClick={onNavigate}
       >
-        <span>🏁</span> DiRT Tracker
+        <Image src="/logo.png" alt="DiRT Tracker" width={32} height={32} priority />
+        <span>DiRT Tracker</span>
       </Link>
 
       <nav className="flex flex-1 flex-col gap-1">

@@ -1,6 +1,7 @@
 'use client';
 
 import { Button, Card } from '@heroui/react';
+import Image from 'next/image';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useState, useTransition } from 'react';
@@ -49,10 +50,15 @@ export default function LoginForm({
   return (
     <Card className="w-full max-w-sm p-6">
       <Card.Header>
-        <Card.Title className="flex items-center gap-2 text-2xl font-semibold">
-          <span>🏁</span> DiRT Tracker
+        <div className="mb-2 flex justify-center">
+          <Image src="/logo.png" alt="DiRT Tracker" width={72} height={72} priority />
+        </div>
+        <Card.Title className="text-center text-2xl font-semibold">
+          DiRT Tracker
         </Card.Title>
-        <Card.Description>Inicia sesión para registrar tiempos</Card.Description>
+        <Card.Description className="text-center">
+          Inicia sesión para registrar tiempos
+        </Card.Description>
       </Card.Header>
       <Card.Content>
         <form onSubmit={onSubmit} className="flex flex-col gap-4">
