@@ -229,8 +229,9 @@ export function TimeRecordForm({
   return (
     <form
       onSubmit={onSubmit}
-      className="grid grid-cols-2 gap-3 sm:grid-cols-2 md:grid-cols-12"
+      className="grid grid-cols-2 gap-3 sm:grid-cols-2 md:grid-cols-12 md:items-end"
     >
+      {/* Row 1 — identidad y números */}
       <IconCombobox
         label="Piloto"
         options={userOptions}
@@ -245,7 +246,7 @@ export function TimeRecordForm({
         value={carId}
         onChange={setCarId}
         searchable
-        className="col-span-2 md:col-span-4"
+        className="col-span-2 md:col-span-5"
       />
       <MaskedTimeField
         label="Tiempo"
@@ -253,59 +254,59 @@ export function TimeRecordForm({
         onChangeDigits={setTimeDigits}
         isRequired={!isDnf}
         isDisabled={isDnf}
-        className="col-span-2 sm:col-span-1 md:col-span-3"
+        className="col-span-1 md:col-span-2"
       />
       <MaskedTimeField
         label="Sanción"
         digits={penaltyDigits}
         onChangeDigits={setPenaltyDigits}
-        className="col-span-2 sm:col-span-1 md:col-span-2"
+        className="col-span-1 md:col-span-2"
       />
 
+      {/* Row 2 — condiciones (4 columnas iguales) */}
       <IconCombobox
         label="Clima"
         options={weatherOptions}
         value={weather}
         onChange={(id) => setWeather(id as Weather)}
-        className="col-span-1 md:col-span-2"
+        className="col-span-1 md:col-span-3"
       />
       <IconCombobox
         label="Hora"
         options={timeOfDayOptions}
         value={timeOfDay}
         onChange={(id) => setTimeOfDay(id as TimeOfDay)}
-        className="col-span-1 md:col-span-2"
+        className="col-span-1 md:col-span-3"
       />
       <IconCombobox
         label="Mando"
         options={inputDeviceOptions}
         value={inputDevice}
         onChange={(id) => setInputDevice(id as InputDevice)}
-        className="col-span-1 md:col-span-2"
+        className="col-span-1 md:col-span-3"
       />
       <IconCombobox
         label="VR"
         options={vrOptions}
         value={usesVr ? 'ON' : 'OFF'}
         onChange={(id) => setUsesVr(id === 'ON')}
-        className="col-span-1 md:col-span-2"
+        className="col-span-1 md:col-span-3"
       />
+
+      {/* Row 3 — toggles, notas y acción */}
       <SwitchField
         label="DNF (no terminado)"
         isSelected={isDnf}
         onChange={setIsDnf}
-        className="col-span-2 md:col-span-4"
+        className="col-span-2 md:col-span-3"
       />
       <Field
         label="Notas"
         value={notes}
         onChange={setNotes}
         inputProps={{ placeholder: 'Opcional' }}
-        className="col-span-2 md:col-span-9"
+        className="col-span-2 md:col-span-6"
       />
-
-      {error ? <p className="text-danger col-span-full text-sm">{error}</p> : null}
-
       <Button
         type="submit"
         variant="primary"
@@ -315,6 +316,8 @@ export function TimeRecordForm({
       >
         {pending ? 'Guardando…' : initial ? 'Guardar cambios' : 'Registrar tiempo'}
       </Button>
+
+      {error ? <p className="text-danger col-span-full text-sm">{error}</p> : null}
     </form>
   );
 }
