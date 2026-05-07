@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/db';
+import { CountryFlag } from '@/components/ui/country-flag';
 import { LocationAdminPanel } from './location-admin-panel';
 import { StagesTable } from './stages-table';
 
@@ -51,9 +52,12 @@ export default async function LocationDetailPage({ params }: { params: Promise<{
         </div>
 
         <div className="flex flex-col gap-3">
-          <div>
-            <div className="text-foreground/60 text-sm">{location.country}</div>
-            <h1 className="text-3xl font-bold">{location.name}</h1>
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <div className="text-foreground/60 text-sm">{location.country}</div>
+              <h1 className="text-3xl font-bold">{location.name}</h1>
+            </div>
+            <CountryFlag country={location.country} />
           </div>
           <dl className="grid grid-cols-2 gap-3 text-sm">
             <div>
