@@ -68,12 +68,15 @@ async function linkLocationsAndStages() {
       id: true,
       name: true,
       photoUrl: true,
-      stages: { select: { id: true, name: true, photoUrl: true } },
+      stages: {
+        select: { id: true, name: true, photoUrl: true, distanceKm: true, direction: true },
+      },
     },
   });
 
   let locLinked = 0, locMissing = 0;
   let stLinked = 0, stMissing = 0, stTotal = 0;
+  const missingStages: { loc: string; name: string; slug: string }[] = [];
 
   for (const loc of locations) {
     const locSlug = slugify(loc.name);
@@ -81,26 +84,65 @@ async function linkLocationsAndStages() {
     if (!locUrl) {
       console.log(`  ❌ [LOC] ${loc.name.padEnd(46)} (slug: ${locSlug})`);
       locMissing++;
-    } else {
-      if (loc.photoUrl !== locUrl) {
-        await prisma.location.update({ where: { id: loc.id }, data: { photoUrl: locUrl } });
-        locLinked++;
-      }
+    } else if (loc.photoUrl !== locUrl) {
+      await prisma.location.update({ where: { id: loc.id }, data: { photoUrl: locUrl } });
+      locLinked++;
     }
 
+    // Pass 1: per-stage slug + suffix-strip match.
+    const resolved = new Map<string, string>(); // stageId -> url
     for (const stage of loc.stages) {
       stTotal++;
       const stageSlug = `${locSlug}__${slugify(stage.name)}`;
       let url = findFileBySlug('stages', stageSlug);
-      // Reverse no se descarga: comparte imagen con el forward del mismo nombre.
       if (!url) {
         const baseName = stage.name.replace(/\s+(Reverse|Forward)\s*$/i, '').trim();
         if (baseName !== stage.name) {
           url = findFileBySlug('stages', `${locSlug}__${slugify(baseName)}`);
         }
       }
+      if (url) resolved.set(stage.id, url);
+    }
+
+    // Pass 2: pair-by-distance — a reverse without its own image inherits the
+    // forward image for the same route (matched by closest distanceKm in the
+    // same location and opposite direction). Uses greedy bipartite matching:
+    // global ascending sort over candidate pairs, first claim wins.
+    const DIST_TOLERANCE = 0.55;
+    type Cand = { unresolvedId: string; partnerId: string; diff: number };
+    const candidates: Cand[] = [];
+    for (const stage of loc.stages) {
+      if (resolved.has(stage.id)) continue;
+      for (const partner of loc.stages) {
+        if (
+          partner.id !== stage.id &&
+          partner.direction !== stage.direction &&
+          resolved.has(partner.id)
+        ) {
+          const diff = Math.abs(partner.distanceKm - stage.distanceKm);
+          if (diff <= DIST_TOLERANCE) {
+            candidates.push({ unresolvedId: stage.id, partnerId: partner.id, diff });
+          }
+        }
+      }
+    }
+    candidates.sort((a, b) => a.diff - b.diff);
+    const claimedPartners = new Set<string>();
+    for (const c of candidates) {
+      if (resolved.has(c.unresolvedId)) continue;
+      if (claimedPartners.has(c.partnerId)) continue;
+      resolved.set(c.unresolvedId, resolved.get(c.partnerId)!);
+      claimedPartners.add(c.partnerId);
+    }
+
+    for (const stage of loc.stages) {
+      const url = resolved.get(stage.id);
       if (!url) {
-        console.log(`    ❌ [STG] ${stage.name.padEnd(44)} (slug: ${stageSlug})`);
+        missingStages.push({
+          loc: loc.name,
+          name: stage.name,
+          slug: `${locSlug}__${slugify(stage.name)}`,
+        });
         stMissing++;
         continue;
       }
@@ -109,6 +151,10 @@ async function linkLocationsAndStages() {
         stLinked++;
       }
     }
+  }
+
+  for (const m of missingStages) {
+    console.log(`    ❌ [STG] ${m.loc.padEnd(20)} ${m.name.padEnd(38)} (slug: ${m.slug})`);
   }
 
   console.log(`✓ Locations: linked ${locLinked}, missing ${locMissing}, total ${locations.length}`);
