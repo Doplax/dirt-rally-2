@@ -80,7 +80,7 @@ export default function StageLeaderboard({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="border-foreground/10 overflow-hidden rounded-xl border">
+      <div className="border-surface-border bg-surface overflow-hidden rounded-xl border backdrop-blur-xl">
         <button
           type="button"
           onClick={() => setFormOpen((o) => !o)}
@@ -129,7 +129,7 @@ export default function StageLeaderboard({
           aria-hidden={!formOpen}
         >
           <div className="overflow-hidden">
-            <div className="border-foreground/10 border-t px-3 pt-3 pb-3 sm:px-4 sm:pt-4 sm:pb-4">
+            <div className="border-surface-border border-t px-3 pt-3 pb-3 sm:px-4 sm:pt-4 sm:pb-4">
               <TimeRecordForm
                 stageId={stage.id}
                 currentUserId={currentUserId}

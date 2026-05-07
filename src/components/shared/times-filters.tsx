@@ -379,7 +379,7 @@ export function TimesFilters({
 
   return (
     <>
-      <div className="border-foreground/10 overflow-hidden rounded-xl border">
+      <div className="border-surface-border bg-surface overflow-hidden rounded-xl border backdrop-blur-xl">
         <div className="hover:bg-foreground/5 group flex w-full items-center gap-2 pr-2 transition-colors">
           <button
             type="button"
@@ -430,7 +430,7 @@ export function TimesFilters({
           aria-hidden={!open}
         >
           <div className="overflow-hidden">
-            <div className="border-foreground/10 border-t px-3 pt-3 pb-3 sm:px-4 sm:pt-4 sm:pb-4">
+            <div className="border-surface-border border-t px-3 pt-3 pb-3 sm:px-4 sm:pt-4 sm:pb-4">
               <div className="grid grid-cols-2 gap-3 md:grid-cols-12">
                 {showRunner ? (
                   <IconCombobox

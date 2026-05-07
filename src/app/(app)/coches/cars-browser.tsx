@@ -265,7 +265,7 @@ export default function CarsBrowser({ cars, isAdmin }: { cars: CarItem[]; isAdmi
 
 function CarCard({ car }: { car: CarItem }) {
   return (
-    <div className="border-foreground/10 hover:border-foreground/25 bg-foreground/[0.02] group relative flex flex-col overflow-hidden rounded-xl border transition-all hover:shadow-lg">
+    <div className="border-surface-border hover:border-foreground/25 bg-surface group relative flex flex-col overflow-hidden rounded-xl border backdrop-blur-xl transition-all hover:shadow-lg">
       <FavoriteButton carId={car.id} initialFavorited={car.isFavorite} />
       <Link href={`/coches/${car.id}`} className="flex flex-col">
         <div className="bg-foreground/5 relative aspect-[16/10]">

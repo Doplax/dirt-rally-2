@@ -10,12 +10,26 @@
    * `text-primary` render the same red as `bg-accent` / `text-accent`. */
   --color-primary: var(--accent);
   --color-primary-foreground: var(--accent-foreground);
+
+  /* Reusable elevated surface — slightly lighter than the page background,
+   * with matching border. Used for sidebar, cards, filters, etc. */
+  --color-surface: var(--surface);
+  --color-surface-border: var(--surface-border);
+}
+
+/* Bump base font size a couple of pixels — every rem-based size scales. */
+html {
+  font-size: 17px;
 }
 
 /* DiRT Rally 2.0 red — pulled from the logo wordmark. */
 :root {
   --accent: oklch(0.6 0.225 27);
   --accent-foreground: oklch(0.99 0 0);
+
+  /* Elevated surface tokens — translucent so backdrop-blur can show through. */
+  --surface: oklch(0 0 0 / 0.04);
+  --surface-border: oklch(0 0 0 / 0.1);
 
   /* HeroUI ships fields with no border (`--field-border-width: 0`) and a
    * transparent border colour, so empty inputs visually disappear into the
@@ -28,6 +42,8 @@
 html.dark {
   --accent: oklch(0.66 0.235 27);
   --accent-foreground: oklch(0.99 0 0);
+  --surface: oklch(1 0 0 / 0.04);
+  --surface-border: oklch(1 0 0 / 0.1);
   --field-border: var(--border);
   --field-border-width: 1px;
 }

@@ -68,7 +68,7 @@ export function Sidebar({ user }: { user: SidebarUser }) {
 
   return (
     <>
-      <header className="border-foreground/10 bg-foreground/[0.04] sticky top-0 z-30 grid grid-cols-3 items-center border-b px-4 py-3 backdrop-blur-xl md:hidden">
+      <header className="border-foreground/10 bg-surface sticky top-0 z-30 grid grid-cols-3 items-center border-b px-4 py-3 backdrop-blur-xl md:hidden">
         <Link
           href="/"
           aria-label="DR2 Tracker"
@@ -105,7 +105,7 @@ export function Sidebar({ user }: { user: SidebarUser }) {
 
       <aside
         className={[
-          'border-foreground/10 bg-foreground/[0.04] fixed top-0 left-0 z-40 h-screen w-64 shrink-0 border-r backdrop-blur-xl transition-[width,transform] duration-200',
+          'border-foreground/10 bg-surface fixed top-0 left-0 z-40 h-screen w-64 shrink-0 border-r backdrop-blur-xl transition-[width,transform] duration-200',
           'md:sticky md:top-0 md:translate-x-0',
           open ? 'translate-x-0' : '-translate-x-full md:translate-x-0',
           desktopCollapsed ? 'md:w-16' : 'md:w-64',
