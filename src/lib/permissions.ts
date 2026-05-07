@@ -18,7 +18,7 @@ export class AuthError extends Error {
 
 export async function requireSession(): Promise<SessionUser> {
   const session = await auth();
-  if (!session) throw new AuthError('Sesión requerida', 401);
+  if (!session?.user?.id) throw new AuthError('Sesión requerida', 401);
   return session.user;
 }
 

@@ -79,6 +79,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         token.username = user.username;
         token.role = user.role;
         token.mustChangePassword = user.mustChangePassword;
+        return token;
       }
 
       if (trigger === 'update' && session && typeof session === 'object') {
@@ -92,6 +93,26 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         }
         if (incoming.username) token.username = incoming.username;
         if (incoming.role) token.role = incoming.role;
+      }
+
+      // Re-validate against the DB on every request. `username` is the stable
+      // identity (unique, immutable in this app) — `id` can change if the DB
+      // was re-seeded, so we look up the row by username and refresh the id /
+      // role / mustChangePassword. If the user no longer exists, wipe the
+      // token so middleware bounces the request to /login.
+      if (token.username) {
+        const dbUser = await prisma.user.findUnique({
+          where: { username: token.username },
+          select: { id: true, role: true, mustChangePassword: true },
+        });
+        if (!dbUser) {
+          token.id = '';
+          token.username = '';
+          return token;
+        }
+        token.id = dbUser.id;
+        token.role = dbUser.role;
+        token.mustChangePassword = dbUser.mustChangePassword;
       }
 
       return token;
