@@ -431,7 +431,7 @@ export function TimesFilters({
         >
           <div className="overflow-hidden">
             <div className="border-foreground/10 border-t px-3 pt-3 pb-3 sm:px-4 sm:pt-4 sm:pb-4">
-              <div className="grid grid-cols-2 gap-3 lg:grid-cols-12">
+              <div className="grid grid-cols-2 gap-3 md:grid-cols-12">
                 {showRunner ? (
                   <IconCombobox
                     label="Piloto"
@@ -440,7 +440,7 @@ export function TimesFilters({
                     onChange={setRunnerFilter}
                     searchable
                     placeholder="Todos los pilotos"
-                    className="col-span-2 lg:col-span-3"
+                    className="col-span-2 md:col-span-3"
                   />
                 ) : null}
                 {showCar ? (
@@ -451,7 +451,7 @@ export function TimesFilters({
                     onChange={setCarFilter}
                     searchable
                     placeholder="Todos los coches"
-                    className="col-span-2 lg:col-span-4"
+                    className="col-span-2 md:col-span-4"
                   />
                 ) : null}
                 {showClass ? (
@@ -462,7 +462,7 @@ export function TimesFilters({
                     onChange={setClassFilter}
                     searchable
                     placeholder="Todas las clases"
-                    className="col-span-2 lg:col-span-3"
+                    className="col-span-2 md:col-span-3"
                   />
                 ) : null}
                 {showWeather ? (
@@ -472,7 +472,7 @@ export function TimesFilters({
                     value={weatherFilter}
                     onChange={(id) => setWeatherFilter(id as typeof weatherFilter)}
                     placeholder="Todos los climas"
-                    className="col-span-2 lg:col-span-2"
+                    className="col-span-2 md:col-span-2"
                   />
                 ) : null}
                 {showInput ? (
@@ -482,7 +482,7 @@ export function TimesFilters({
                     value={inputFilter}
                     onChange={(id) => setInputFilter(id as typeof inputFilter)}
                     placeholder="Mando y volante"
-                    className="col-span-2 lg:col-span-2"
+                    className="col-span-2 md:col-span-2"
                   />
                 ) : null}
                 {showVr ? (
@@ -492,7 +492,7 @@ export function TimesFilters({
                     value={vrFilter}
                     onChange={(id) => setVrFilter(id as VrFilter)}
                     placeholder="Con y sin VR"
-                    className="col-span-2 lg:col-span-2"
+                    className="col-span-2 md:col-span-2"
                   />
                 ) : null}
                 {showDnf ? (
@@ -501,7 +501,7 @@ export function TimesFilters({
                     description="Mostrar tiempos no terminados"
                     isSelected={includeDnf}
                     onChange={setIncludeDnf}
-                    className="col-span-2 lg:col-span-12"
+                    className="col-span-2 md:col-span-12"
                   />
                 ) : null}
               </div>

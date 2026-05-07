@@ -16,7 +16,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
           photoUrl: session.user.image ?? null,
         }}
       />
-      <main className="flex flex-1 flex-col p-6 md:p-10">{children}</main>
+      <main className="flex min-w-0 flex-1 flex-col p-4 sm:p-6 lg:p-10">{children}</main>
     </div>
   );
 }

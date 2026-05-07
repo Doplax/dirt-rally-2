@@ -25,7 +25,9 @@
       "Bash(grep -oE \"\\\\.text-field[^{,]*\\\\{[^}]{0,200}\\\\}\" /home/doplax/Personal/dirt-rally-2/node_modules/@heroui/styles/dist/heroui.min.css)",
       "Bash(grep -oE \"\\\\.input[a-z_-]*\\\\{[^}]{0,200}\\\\}\" /home/doplax/Personal/dirt-rally-2/node_modules/@heroui/styles/dist/heroui.min.css)",
       "Bash(grep -oE \"\\\\.input\\([:[][^{]*\\)?\\\\{[^}]{0,400}\\\\}\" /home/doplax/Personal/dirt-rally-2/node_modules/@heroui/styles/dist/heroui.min.css)",
-      "Bash(grep -oE \"\\\\.input[^,{]*\\\\{[^}]{0,300}\\\\}\" /home/doplax/Personal/dirt-rally-2/node_modules/@heroui/styles/dist/heroui.min.css)"
+      "Bash(grep -oE \"\\\\.input[^,{]*\\\\{[^}]{0,300}\\\\}\" /home/doplax/Personal/dirt-rally-2/node_modules/@heroui/styles/dist/heroui.min.css)",
+      "Bash(node -e \"const c = require\\('@prisma/client'\\); console.log\\({Weather: !!c.Weather, TimeOfDay: !!c.TimeOfDay, InputDevice: !!c.InputDevice, keys: Object.keys\\(c\\).filter\\(k => /^[A-Z]/.test\\(k\\) && !c[k]?.prototype\\).slice\\(0, 20\\)}\\);\")",
+      "Bash(node -e \"const c = require\\('@prisma/client'\\); console.log\\({Weather: c.Weather, TimeOfDay: c.TimeOfDay, InputDevice: c.InputDevice}\\);\")"
     ],
     "additionalDirectories": [
       "/home/doplax/Personal/dirt-rally-2/src/app/(app)/coches",

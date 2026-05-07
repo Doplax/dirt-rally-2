@@ -1,9 +1,9 @@
 'use client';
 
 import { Button } from '@heroui/react';
-import { ChevronDown, Pencil, Plus, Trash2 } from 'lucide-react';
+import { ChevronDown, Maximize2, Minimize2, Pencil, Plus, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState, useTransition } from 'react';
+import { useEffect, useRef, useState, useTransition } from 'react';
 import { FilteredTimesTable } from '@/components/shared/filtered-times-table';
 import type { TimesTableEntry } from '@/components/shared/times-table';
 import {
@@ -39,6 +39,8 @@ export default function StageLeaderboard({
   times: LeaderboardEntry[];
 }) {
   const [formOpen, setFormOpen] = useState(true);
+  const [fullscreen, setFullscreen] = useState(false);
+  const tableWrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const formStored = localStorage.getItem('tiempos.formOpen');
@@ -47,6 +49,32 @@ export default function StageLeaderboard({
   useEffect(() => {
     localStorage.setItem('tiempos.formOpen', formOpen ? '1' : '0');
   }, [formOpen]);
+
+  // Sync local state with the browser Fullscreen API. The user can exit
+  // native fullscreen via ESC or the browser chrome — we listen and reset
+  // our own state so the layout collapses back too.
+  useEffect(() => {
+    const handler = () => {
+      if (!document.fullscreenElement) setFullscreen(false);
+    };
+    document.addEventListener('fullscreenchange', handler);
+    return () => document.removeEventListener('fullscreenchange', handler);
+  }, []);
+
+  const toggleFullscreen = async () => {
+    const next = !fullscreen;
+    setFullscreen(next);
+    try {
+      if (next) {
+        await tableWrapperRef.current?.requestFullscreen?.();
+      } else if (document.fullscreenElement) {
+        await document.exitFullscreen();
+      }
+    } catch {
+      // Fullscreen API can reject (Safari permissions, iframe sandbox). The
+      // CSS-based fullscreen still works, so we silently ignore.
+    }
+  };
 
   const formSelections: TimeFormSelections = { users, cars, favoriteCarIds };
 
@@ -113,32 +141,53 @@ export default function StageLeaderboard({
         </div>
       </div>
 
-      <FilteredTimesTable
-        times={times}
-        columns={[
-          'rank',
-          'runner',
-          'car',
-          'time',
-          'penalty',
-          'total',
-          'conditions',
-          'setup',
-          'date',
-          'actions',
-        ]}
-        filters={['runner', 'car', 'class', 'weather', 'input', 'vr', 'dnf']}
-        filtersStorageKey="tiempos.filtersOpen"
-        favoriteCarIds={favoriteCarIds}
-        renderActions={(entry) => (
-          <RowActions
-            stageId={stage.id}
-            entry={entry as LeaderboardEntry}
-            selections={formSelections}
-          />
-        )}
-        emptyMessage="Aún no hay tiempos. ¡Sé el primero!"
-      />
+      <div
+        ref={tableWrapperRef}
+        className={[
+          'flex flex-col gap-3',
+          fullscreen
+            ? 'bg-background fixed inset-0 z-50 overflow-auto p-3 sm:p-4'
+            : '',
+        ].join(' ')}
+      >
+        <div className="flex items-center justify-between gap-2">
+          <h2 className="text-foreground/70 text-sm font-semibold uppercase tracking-wide">
+            Leaderboard
+          </h2>
+          <Button variant="ghost" size="sm" onPress={toggleFullscreen}>
+            {fullscreen ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
+            <span className="ml-1.5">
+              {fullscreen ? 'Salir' : 'Pantalla completa'}
+            </span>
+          </Button>
+        </div>
+        <FilteredTimesTable
+          times={times}
+          columns={[
+            'rank',
+            'runner',
+            'car',
+            'time',
+            'penalty',
+            'total',
+            'conditions',
+            'setup',
+            'date',
+            'actions',
+          ]}
+          filters={['runner', 'car', 'class', 'weather', 'input', 'vr', 'dnf']}
+          filtersStorageKey="tiempos.filtersOpen"
+          favoriteCarIds={favoriteCarIds}
+          renderActions={(entry) => (
+            <RowActions
+              stageId={stage.id}
+              entry={entry as LeaderboardEntry}
+              selections={formSelections}
+            />
+          )}
+          emptyMessage="Aún no hay tiempos. ¡Sé el primero!"
+        />
+      </div>
     </div>
   );
 }
