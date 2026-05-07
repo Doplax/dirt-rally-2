@@ -1,9 +1,9 @@
 'use client';
 
 import { Avatar, Button, Card } from '@heroui/react';
-import { Pencil, Trash2 } from 'lucide-react';
+import { ChevronDown, ChevronUp, Pencil, Plus, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useMemo, useState, useTransition } from 'react';
+import { useEffect, useMemo, useState, useTransition } from 'react';
 import { TimeOfDay, Weather } from '@prisma/client';
 import { NativeSelect } from '@/components/ui/native-select';
 import { msToString } from '@/lib/time-format';
@@ -67,6 +67,16 @@ export default function StageLeaderboard({
   const [classFilter, setClassFilter] = useState('');
   const [weatherFilter, setWeatherFilter] = useState<'' | Weather>('');
   const [includeDnf, setIncludeDnf] = useState(false);
+  const [formOpen, setFormOpen] = useState(true);
+
+  // Persist the form panel's open/closed preference across visits.
+  useEffect(() => {
+    const stored = localStorage.getItem('tiempos.formOpen');
+    if (stored !== null) setFormOpen(stored === '1');
+  }, []);
+  useEffect(() => {
+    localStorage.setItem('tiempos.formOpen', formOpen ? '1' : '0');
+  }, [formOpen]);
 
   const classOptions = useMemo(() => {
     const seen = new Map<string, string>();
@@ -96,20 +106,39 @@ export default function StageLeaderboard({
 
   return (
     <div className="flex flex-col gap-4">
-      <Card className="flex flex-col gap-4 p-4">
-        <div className="flex flex-col gap-1">
-          <h2 className="text-lg font-semibold">Registrar tiempo</h2>
-          <p className="text-foreground/60 text-sm">
-            Coche, clima y hora se mantienen entre envíos. Solo cambia el piloto y el tiempo
-            para registrar a otro corredor.
-          </p>
-        </div>
-        <TimeRecordForm
-          stageId={stage.id}
-          currentUserId={currentUserId}
-          selections={formSelections}
-          resetClearableOnSuccess
-        />
+      <Card className={['flex flex-col gap-3', formOpen ? 'p-3' : 'p-1'].join(' ')}>
+        <button
+          type="button"
+          onClick={() => setFormOpen((o) => !o)}
+          aria-expanded={formOpen}
+          aria-controls="registrar-tiempo-form"
+          className="hover:bg-foreground/5 flex items-center justify-between gap-3 rounded-md px-2 py-1.5 text-left"
+        >
+          <span className="flex items-center gap-2">
+            <Plus size={14} className="text-foreground/60" />
+            <span className="text-sm font-semibold">Registrar tiempo</span>
+            {formOpen ? (
+              <span className="text-foreground/50 hidden text-xs sm:inline">
+                · Coche, clima y hora se mantienen entre envíos
+              </span>
+            ) : null}
+          </span>
+          {formOpen ? (
+            <ChevronUp size={16} className="text-foreground/60" />
+          ) : (
+            <ChevronDown size={16} className="text-foreground/60" />
+          )}
+        </button>
+        {formOpen ? (
+          <div id="registrar-tiempo-form">
+            <TimeRecordForm
+              stageId={stage.id}
+              currentUserId={currentUserId}
+              selections={formSelections}
+              resetClearableOnSuccess
+            />
+          </div>
+        ) : null}
       </Card>
 
       <div className="flex flex-wrap items-end gap-3">

@@ -136,32 +136,35 @@ export function TimeRecordForm({
   };
 
   return (
-    <form onSubmit={onSubmit} className="grid gap-4 sm:grid-cols-2">
+    <form onSubmit={onSubmit} className="grid grid-cols-2 gap-3 lg:grid-cols-12">
       <NativeSelect
-        label="Piloto (runner)"
+        label="Piloto"
         value={runnerId}
         onChange={(e) => setRunnerId(e.target.value)}
         options={selections.users.map((u) => ({ value: u.id, label: u.username }))}
+        className="col-span-2 lg:col-span-3"
       />
       <CarCombobox
         label="Coche"
         cars={selections.cars}
         value={carId}
         onChange={setCarId}
+        className="col-span-2 lg:col-span-4"
       />
-
       <Field
-        label="Tiempo (MM:SS.mmm)"
+        label="Tiempo"
         value={time}
         onChange={setTime}
         inputProps={{ placeholder: '04:23.567', disabled: isDnf }}
         isRequired={!isDnf}
+        className="lg:col-span-3"
       />
       <Field
-        label="Sanción (MM:SS.mmm)"
+        label="Sanción"
         value={penalty}
         onChange={setPenalty}
-        inputProps={{ placeholder: 'Opcional, ej: 00:10.000' }}
+        inputProps={{ placeholder: '00:10.000' }}
+        className="lg:col-span-2"
       />
 
       <NativeSelect
@@ -169,15 +172,23 @@ export function TimeRecordForm({
         value={weather}
         onChange={(e) => setWeather(e.target.value as Weather)}
         options={WEATHER_OPTIONS}
+        className="col-span-1 lg:col-span-2"
       />
       <NativeSelect
-        label="Hora del día"
+        label="Hora"
         value={timeOfDay}
         onChange={(e) => setTimeOfDay(e.target.value as TimeOfDay)}
         options={TIME_OF_DAY_OPTIONS}
+        className="col-span-1 lg:col-span-2"
       />
-
-      <label className="col-span-full flex items-center gap-2 text-sm">
+      <Field
+        label="Notas"
+        value={notes}
+        onChange={setNotes}
+        inputProps={{ placeholder: 'Opcional' }}
+        className="col-span-2 lg:col-span-5"
+      />
+      <label className="text-foreground/80 col-span-2 flex items-end gap-2 pb-2 text-sm lg:col-span-3">
         <input
           type="checkbox"
           checked={isDnf}
@@ -186,20 +197,13 @@ export function TimeRecordForm({
         DNF (no terminado)
       </label>
 
-      <Field
-        label="Notas"
-        value={notes}
-        onChange={setNotes}
-        inputProps={{ placeholder: 'Opcional' }}
-      />
-
       {error ? <p className="text-danger col-span-full text-sm">{error}</p> : null}
 
       <Button
         type="submit"
         variant="primary"
         isDisabled={pending}
-        className="col-span-full"
+        className="col-span-full lg:col-span-3 lg:col-start-10"
         fullWidth
       >
         {pending ? 'Guardando…' : initial ? 'Guardar cambios' : 'Registrar tiempo'}

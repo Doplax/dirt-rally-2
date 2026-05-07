@@ -20,15 +20,15 @@ export function NativeSelect({
   className,
   ...rest
 }: NativeSelectProps) {
+  // `className` styles the wrapper so callers can apply layout classes
+  // (col-span-*, w-full, etc.). The inner <select> always uses the same
+  // visual style — there's no current need to override it per call site.
   return (
-    <label className="flex flex-col gap-1 text-sm">
+    <label className={['flex flex-col gap-1 text-sm', className ?? ''].join(' ')}>
       {label ? <span className="text-foreground/80">{label}</span> : null}
       <select
         {...rest}
-        className={[
-          'border-foreground/15 bg-background focus:border-primary focus:ring-primary/40 rounded-md border px-3 py-2 text-sm focus:ring-2 focus:outline-none',
-          className ?? '',
-        ].join(' ')}
+        className="border-foreground/15 bg-background focus:border-primary focus:ring-primary/40 rounded-md border px-3 py-2 text-sm focus:ring-2 focus:outline-none"
       >
         {placeholder ? <option value="">{placeholder}</option> : null}
         {options.map((opt) => (

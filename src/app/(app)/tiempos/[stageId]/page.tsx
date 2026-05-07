@@ -1,4 +1,5 @@
 import { ArrowDown, ArrowLeft, ArrowUp } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Direction } from '@prisma/client';
@@ -51,6 +52,8 @@ export default async function StageDetailPage({
 
   if (!stage) notFound();
 
+  const heroPhoto = stage.photoUrl ?? stage.location.photoUrl;
+
   return (
     <section className="flex flex-col gap-6">
       <Link
@@ -60,30 +63,49 @@ export default async function StageDetailPage({
         <ArrowLeft size={16} /> Volver a Tiempos
       </Link>
 
-      <header className="flex flex-col gap-2">
-        <Link
-          href={`/mapas/${stage.location.id}`}
-          className="text-foreground/60 hover:text-foreground text-sm"
-        >
-          {stage.location.country} · {stage.location.name}
-        </Link>
-        <h1 className="text-3xl font-bold">{stage.name}</h1>
-        <div className="text-foreground/70 flex flex-wrap items-center gap-3 text-sm">
-          <span className="border-foreground/15 inline-flex items-center gap-1 rounded-full border px-2 py-0.5">
-            {stage.direction === Direction.FORWARD ? (
-              <>
-                <ArrowUp size={14} /> Forward
-              </>
-            ) : (
-              <>
-                <ArrowDown size={14} /> Reverse
-              </>
-            )}
-          </span>
-          <span>{stage.distanceKm.toFixed(2)} km</span>
-          <span>{stage.location.surface}</span>
+      <div className="grid gap-5 md:grid-cols-[2fr_3fr]">
+        <div className="bg-foreground/5 relative aspect-[16/9] overflow-hidden rounded-lg">
+          {heroPhoto ? (
+            <Image
+              src={heroPhoto}
+              alt={stage.name}
+              fill
+              sizes="(max-width: 768px) 100vw, 40vw"
+              className="object-cover"
+              priority
+            />
+          ) : (
+            <div className="text-foreground/30 flex h-full items-center justify-center text-6xl">
+              🗺️
+            </div>
+          )}
         </div>
-      </header>
+
+        <header className="flex flex-col gap-3">
+          <Link
+            href={`/mapas/${stage.location.id}`}
+            className="text-foreground/60 hover:text-foreground text-sm"
+          >
+            {stage.location.country} · {stage.location.name}
+          </Link>
+          <h1 className="text-3xl font-bold">{stage.name}</h1>
+          <div className="text-foreground/70 flex flex-wrap items-center gap-3 text-sm">
+            <span className="border-foreground/15 inline-flex items-center gap-1 rounded-full border px-2 py-0.5">
+              {stage.direction === Direction.FORWARD ? (
+                <>
+                  <ArrowUp size={14} /> Forward
+                </>
+              ) : (
+                <>
+                  <ArrowDown size={14} /> Reverse
+                </>
+              )}
+            </span>
+            <span>{stage.distanceKm.toFixed(2)} km</span>
+            <span>{stage.location.surface}</span>
+          </div>
+        </header>
+      </div>
 
       <StageLeaderboard
         stage={{
