@@ -1,39 +1,144 @@
 'use client';
 
-import { useId, useRef } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 
-const PLACEHOLDER = '00:00.000';
+type Segment = 'mm' | 'ss' | 'ms';
+
+const SEGMENTS: ReadonlyArray<{
+  key: Segment;
+  maxLen: number;
+  placeholder: string;
+  /** Inclusive maximum value for ArrowUp clamping. */
+  max: number;
+}> = [
+  { key: 'mm', maxLen: 2, placeholder: '00', max: 99 },
+  { key: 'ss', maxLen: 2, placeholder: '00', max: 59 },
+  { key: 'ms', maxLen: 3, placeholder: '000', max: 999 },
+];
 
 type Props = {
   label: string;
-  /** Digits-only state (max 7 chars, fills right-to-left into MM SS mmm). */
-  digits: string;
-  onChangeDigits: (digits: string) => void;
+  /** Value in milliseconds. `null` means "empty". */
+  valueMs: number | null;
+  onChange: (valueMs: number | null) => void;
   isRequired?: boolean;
   isDisabled?: boolean;
   className?: string;
 };
 
 /**
- * Time input with right-to-left digit entry. Untyped leading digits render in
- * a muted color so the user can see at a glance which positions still hold
- * placeholder zeros vs. digits they've entered. Visually mimics the project's
- * `Field` component but the visible text is composed of two real spans (the
- * grey prefix and the typed suffix), with an invisible `<input>` overlaid on
- * top of just the typed portion to handle keyboard input and the caret.
+ * Three-segment time input (MM / SS / mmm). Auto-jumps forward when a segment
+ * is full, and ArrowLeft / ArrowRight at the input edges navigate between
+ * segments. Backspace on an empty segment moves focus to the previous one.
+ * Tab works naturally across segments.
+ *
+ * Public state is just a millisecond number — local segment strings are kept
+ * in sync via effect when the parent overrides the value (e.g. form reset).
  */
 export function MaskedTimeField({
   label,
-  digits,
-  onChangeDigits,
+  valueMs,
+  onChange,
   isRequired,
   isDisabled,
   className,
 }: Props) {
-  const inputRef = useRef<HTMLInputElement>(null);
   const id = useId();
+  const refs = [
+    useRef<HTMLInputElement>(null),
+    useRef<HTMLInputElement>(null),
+    useRef<HTMLInputElement>(null),
+  ] as const;
 
-  const { gray, white } = splitParts(digits);
+  const [segs, setSegs] = useState<[string, string, string]>(() => msToSegs(valueMs));
+
+  // Sync segments with external valueMs changes (parent reset / initial edit).
+  // We only adopt the incoming representation if it would render to a
+  // different number than what we currently hold — otherwise typing "5" in
+  // mm would get bounced back to "05" on the next render and break the caret.
+  useEffect(() => {
+    setSegs((curr) => (segsToMs(curr) === valueMs ? curr : msToSegs(valueMs)));
+  }, [valueMs]);
+
+  const update = (idx: 0 | 1 | 2, raw: string) => {
+    const max = SEGMENTS[idx].maxLen;
+    const cleaned = raw.replace(/\D/g, '').slice(0, max);
+    const next: [string, string, string] = [...segs];
+    next[idx] = cleaned;
+    setSegs(next);
+    onChange(segsToMs(next));
+    // Auto-advance to next segment when this one is full.
+    if (cleaned.length === max && idx < 2) {
+      const target = refs[idx + 1].current;
+      target?.focus();
+      target?.setSelectionRange(0, 0);
+    }
+  };
+
+  const bump = (idx: 0 | 1 | 2, delta: 1 | -1) => {
+    const { maxLen, max } = SEGMENTS[idx];
+    const current = parseInt(segs[idx] || '0', 10);
+    const nextNum = Math.max(0, Math.min(max, current + delta));
+    const nextStr = String(nextNum).padStart(maxLen, '0');
+    const next: [string, string, string] = [...segs];
+    next[idx] = nextStr;
+    setSegs(next);
+    onChange(segsToMs(next));
+    // Keep the input fully selected so repeated up/down keeps stepping in place.
+    requestAnimationFrame(() => {
+      const el = refs[idx].current;
+      if (el) el.setSelectionRange(0, el.value.length);
+    });
+  };
+
+  const onKeyDown = (idx: 0 | 1 | 2) => (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const input = e.currentTarget;
+    const start = input.selectionStart ?? 0;
+    const end = input.selectionEnd ?? 0;
+    const atStart = start === 0 && end === 0;
+    const atEnd = start === input.value.length && end === input.value.length;
+
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      bump(idx, 1);
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      bump(idx, -1);
+    } else if (e.key === 'ArrowLeft' && atStart && idx > 0) {
+      e.preventDefault();
+      const prev = refs[idx - 1].current;
+      prev?.focus();
+      prev?.setSelectionRange(prev.value.length, prev.value.length);
+    } else if (e.key === 'ArrowRight' && atEnd && idx < 2) {
+      e.preventDefault();
+      const target = refs[idx + 1].current;
+      target?.focus();
+      target?.setSelectionRange(0, 0);
+    } else if (e.key === 'Backspace' && input.value === '' && idx > 0) {
+      e.preventDefault();
+      const prev = refs[idx - 1].current;
+      prev?.focus();
+      prev?.setSelectionRange(prev.value.length, prev.value.length);
+    }
+  };
+
+  const onBlurPad = (idx: 0 | 1 | 2) => () => {
+    const seg = segs[idx];
+    if (!seg) return;
+    const padded = seg.padStart(SEGMENTS[idx].maxLen, '0');
+    if (padded === seg) return;
+    const next: [string, string, string] = [...segs];
+    next[idx] = padded;
+    setSegs(next);
+    // No onChange — padded representation parses to the same ms.
+  };
+
+  const onFocusSelect = (e: React.FocusEvent<HTMLInputElement>) => {
+    e.currentTarget.select();
+  };
+
+  const inputBase =
+    'w-[2ch] bg-transparent text-center font-mono text-base tabular-nums leading-none outline-none placeholder:text-foreground/30';
 
   return (
     <label
@@ -45,87 +150,86 @@ export function MaskedTimeField({
         {isRequired ? <span className="text-danger ml-0.5">*</span> : null}
       </span>
       <div
-        onClick={() => inputRef.current?.focus()}
         className={[
-          'border-foreground/15 bg-background relative flex min-h-[42px] items-center rounded-md border px-3 py-1.5 cursor-text font-mono text-base tabular-nums leading-none',
+          'border-foreground/15 bg-background flex min-h-[42px] items-center justify-center rounded-md border px-3 py-1.5',
           'focus-within:border-primary focus-within:ring-primary/30 focus-within:ring-2',
-          isDisabled ? 'opacity-60 pointer-events-none' : '',
+          isDisabled ? 'pointer-events-none opacity-60' : '',
         ].join(' ')}
       >
-        {digits ? (
-          <>
-            <span className="text-foreground/30">{gray}</span>
-            <span className="text-foreground">{white}</span>
-          </>
-        ) : (
-          <span className="text-foreground/30">{PLACEHOLDER}</span>
-        )}
         <input
-          ref={inputRef}
           id={id}
+          ref={refs[0]}
           type="text"
-          // Mirror the visible content so the native caret lands at the end of
-          // the typed digits.
-          value={digits ? gray + white : ''}
-          onChange={(e) => onChangeDigits(extractDigits(e.target.value))}
-          onKeyDown={(e) => {
-            if (e.key === 'Backspace' && digits) {
-              e.preventDefault();
-              onChangeDigits(digits.slice(0, -1));
-            }
-          }}
-          disabled={isDisabled}
-          required={isRequired}
           inputMode="numeric"
           autoComplete="off"
-          aria-label={label}
-          // Hide the input's own glyph rendering on every browser (Webkit
-          // honours -webkit-text-fill-color over `color`), but keep the caret
-          // visible in the foreground color.
-          style={{
-            color: 'transparent',
-            WebkitTextFillColor: 'transparent',
-            caretColor: 'var(--foreground)',
-          }}
-          className="absolute inset-0 w-full bg-transparent px-3 font-mono text-base tabular-nums leading-none outline-none selection:bg-transparent"
+          aria-label={`${label} (minutos)`}
+          placeholder={SEGMENTS[0].placeholder}
+          value={segs[0]}
+          onChange={(e) => update(0, e.target.value)}
+          onKeyDown={onKeyDown(0)}
+          onBlur={onBlurPad(0)}
+          onFocus={onFocusSelect}
+          disabled={isDisabled}
+          required={isRequired}
+          maxLength={SEGMENTS[0].maxLen}
+          className={inputBase}
+        />
+        <span className="text-foreground/40 px-0.5">:</span>
+        <input
+          ref={refs[1]}
+          type="text"
+          inputMode="numeric"
+          autoComplete="off"
+          aria-label={`${label} (segundos)`}
+          placeholder={SEGMENTS[1].placeholder}
+          value={segs[1]}
+          onChange={(e) => update(1, e.target.value)}
+          onKeyDown={onKeyDown(1)}
+          onBlur={onBlurPad(1)}
+          onFocus={onFocusSelect}
+          disabled={isDisabled}
+          maxLength={SEGMENTS[1].maxLen}
+          className={inputBase}
+        />
+        <span className="text-foreground/40 px-0.5">.</span>
+        <input
+          ref={refs[2]}
+          type="text"
+          inputMode="numeric"
+          autoComplete="off"
+          aria-label={`${label} (milisegundos)`}
+          placeholder={SEGMENTS[2].placeholder}
+          value={segs[2]}
+          onChange={(e) => update(2, e.target.value)}
+          onKeyDown={onKeyDown(2)}
+          onBlur={onBlurPad(2)}
+          onFocus={onFocusSelect}
+          disabled={isDisabled}
+          maxLength={SEGMENTS[2].maxLen}
+          className={[inputBase, 'w-[3ch]'].join(' ')}
         />
       </div>
     </label>
   );
 }
 
-function extractDigits(input: string): string {
-  return input.replace(/\D/g, '').slice(-7);
+function msToSegs(ms: number | null): [string, string, string] {
+  if (ms == null || ms <= 0) return ['', '', ''];
+  const total = Math.round(ms);
+  const minutes = Math.floor(total / 60000);
+  const seconds = Math.floor((total % 60000) / 1000);
+  const millis = total % 1000;
+  return [
+    String(minutes).padStart(2, '0'),
+    String(seconds).padStart(2, '0'),
+    String(millis).padStart(3, '0'),
+  ];
 }
 
-function formatDigits(digits: string): string {
-  if (!digits) return '';
-  const padded = digits.padStart(7, '0');
-  return `${padded.slice(0, 2)}:${padded.slice(2, 4)}.${padded.slice(4)}`;
-}
-
-/**
- * Splits the formatted time into the leading "untyped" portion (rendered
- * muted) and the trailing "typed" portion (rendered foreground). The split
- * lands at the formatted-string index of the first digit the user has
- * actually entered.
- */
-function splitParts(digits: string): { gray: string; white: string } {
-  if (!digits) return { gray: '', white: '' };
-  const formatted = formatDigits(digits);
-  // Digit index (0..6) of the first user-typed digit (right-most digits are
-  // user-typed; left-most are zero-padded fillers).
-  const firstTypedDigitIndex = 7 - digits.length;
-  const split = digitIndexToFormattedIndex(firstTypedDigitIndex);
-  return {
-    gray: formatted.slice(0, split),
-    white: formatted.slice(split),
-  };
-}
-
-/** Maps a 7-digit position (0..6) to the index in the "MM:SS.mmm" string. */
-function digitIndexToFormattedIndex(i: number): number {
-  if (i < 2) return i;
-  if (i < 4) return i + 1;
-  return i + 2;
+function segsToMs(segs: [string, string, string]): number | null {
+  if (!segs[0] && !segs[1] && !segs[2]) return null;
+  const minutes = parseInt(segs[0] || '0', 10);
+  const seconds = parseInt(segs[1] || '0', 10);
+  const millis = parseInt(segs[2] || '0', 10);
+  return minutes * 60000 + seconds * 1000 + millis;
 }

@@ -111,14 +111,12 @@ export function TimeRecordForm({
   );
   const [usesVr, setUsesVr] = useState<boolean>(initial?.usesVr ?? false);
 
-  const [timeDigits, setTimeDigits] = useState(
-    initial && !initial.isDnf ? msToTimeDigits(initial.timeMs) : '',
+  const [timeMs, setTimeMs] = useState<number | null>(
+    initial && !initial.isDnf ? initial.timeMs : null,
   );
-  const [penaltyDigits, setPenaltyDigits] = useState(
-    initial && initial.penaltyMs > 0 ? msToTimeDigits(initial.penaltyMs) : '',
+  const [penaltyMs, setPenaltyMs] = useState<number | null>(
+    initial && initial.penaltyMs > 0 ? initial.penaltyMs : null,
   );
-  const time = timeDigitsToString(timeDigits);
-  const penalty = timeDigitsToString(penaltyDigits);
   const [notes, setNotes] = useState(initial?.notes ?? '');
   const [isDnf, setIsDnf] = useState(initial?.isDnf ?? false);
 
@@ -198,8 +196,8 @@ export function TimeRecordForm({
     formData.set('stageId', stageId);
     formData.set('runnerId', runnerId);
     formData.set('carId', carId);
-    formData.set('time', time);
-    formData.set('penalty', penalty);
+    formData.set('time', timeMs != null ? msToString(timeMs) : '');
+    formData.set('penalty', penaltyMs != null ? msToString(penaltyMs) : '');
     formData.set('weather', weather);
     formData.set('timeOfDay', timeOfDay);
     formData.set('inputDevice', inputDevice);
@@ -217,8 +215,8 @@ export function TimeRecordForm({
       }
       router.refresh();
       if (resetClearableOnSuccess) {
-        setTimeDigits('');
-        setPenaltyDigits('');
+        setTimeMs(null);
+        setPenaltyMs(null);
         setNotes('');
         setIsDnf(false);
       }
@@ -235,16 +233,16 @@ export function TimeRecordForm({
       {/* Row 1 — tiempos */}
       <MaskedTimeField
         label="Tiempo"
-        digits={timeDigits}
-        onChangeDigits={setTimeDigits}
+        valueMs={timeMs}
+        onChange={setTimeMs}
         isRequired={!isDnf}
         isDisabled={isDnf}
         className="col-span-1 @3xl:col-span-6"
       />
       <MaskedTimeField
         label="Sanción"
-        digits={penaltyDigits}
-        onChangeDigits={setPenaltyDigits}
+        valueMs={penaltyMs}
+        onChange={setPenaltyMs}
         className="col-span-1 @3xl:col-span-6"
       />
 
@@ -362,20 +360,3 @@ function SvgVisual({ src, alt }: { src: string; alt: string }) {
   );
 }
 
-/**
- * Time-input helpers. We keep state as a digits-only string (max 7 chars:
- * MM SS mmm) and format on display so the user always sees segmented
- * "MM:SS.mmm" with leading zeros — typing right-to-left fills milliseconds
- * first and shifts left as digits are added (3 → "00:00.003", 1234 →
- * "00:01.234", 423567 → "04:23.567").
- */
-function timeDigitsToString(digits: string): string {
-  if (!digits) return '';
-  const padded = digits.padStart(7, '0');
-  return `${padded.slice(0, 2)}:${padded.slice(2, 4)}.${padded.slice(4)}`;
-}
-
-function msToTimeDigits(ms: number): string {
-  if (!ms) return '';
-  return msToString(ms).replace(/\D/g, '').slice(-7);
-}
