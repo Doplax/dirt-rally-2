@@ -53,8 +53,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const parsed = credentialsSchema.safeParse(raw);
         if (!parsed.success) return null;
 
-        const user = await prisma.user.findUnique({
-          where: { username: parsed.data.username },
+        // Case-insensitive username lookup so "Doplax" and "doplax" both
+        // resolve to the same row. The token then uses `user.username` (the
+        // canonical case stored in the DB), which keeps the rest of the app
+        // — and the JWT revalidation in the `jwt` callback — consistent.
+        const user = await prisma.user.findFirst({
+          where: {
+            username: { equals: parsed.data.username.trim(), mode: 'insensitive' },
+          },
         });
         if (!user) return null;
 
