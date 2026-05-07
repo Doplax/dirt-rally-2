@@ -6,7 +6,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Clock,
-  KeyRound,
   LogOut,
   Map,
   Menu,
@@ -69,7 +68,7 @@ export function Sidebar({ user }: { user: SidebarUser }) {
 
   return (
     <>
-      <header className="border-foreground/10 bg-background sticky top-0 z-30 grid grid-cols-3 items-center border-b px-4 py-3 md:hidden">
+      <header className="border-foreground/10 bg-foreground/[0.04] sticky top-0 z-30 grid grid-cols-3 items-center border-b px-4 py-3 backdrop-blur-xl md:hidden">
         <Link
           href="/"
           aria-label="DR2 Tracker"
@@ -106,7 +105,7 @@ export function Sidebar({ user }: { user: SidebarUser }) {
 
       <aside
         className={[
-          'border-foreground/10 bg-background fixed top-0 left-0 z-40 h-screen w-64 shrink-0 border-r transition-[width,transform] duration-200',
+          'border-foreground/10 bg-foreground/[0.04] fixed top-0 left-0 z-40 h-screen w-64 shrink-0 border-r backdrop-blur-xl transition-[width,transform] duration-200',
           'md:sticky md:top-0 md:translate-x-0',
           open ? 'translate-x-0' : '-translate-x-full md:translate-x-0',
           desktopCollapsed ? 'md:w-16' : 'md:w-64',
@@ -162,7 +161,7 @@ function SidebarContent({
         <span className={labelHiddenWhenCollapsed}>DR2 Tracker</span>
       </Link>
 
-      <nav className="flex flex-1 flex-col gap-1">
+      <nav className="flex flex-1 flex-col gap-1.5">
         {visibleItems.map((item) => {
           const Icon = item.icon;
           const active = pathname === item.href || pathname.startsWith(item.href + '/');
@@ -173,14 +172,14 @@ function SidebarContent({
               onClick={onNavigate}
               title={collapsed ? item.label : undefined}
               className={[
-                'flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors',
+                'flex items-center gap-3.5 rounded-md px-3 py-3 text-base transition-colors',
                 justifyWhenCollapsed,
                 active
-                  ? 'bg-foreground/10 text-foreground font-medium'
+                  ? 'bg-primary/15 text-primary font-semibold'
                   : 'text-foreground/70 hover:bg-foreground/5',
               ].join(' ')}
             >
-              <Icon size={18} />
+              <Icon size={20} />
               <span className={labelHiddenWhenCollapsed}>{item.label}</span>
             </Link>
           );
@@ -188,8 +187,14 @@ function SidebarContent({
       </nav>
 
       <div className="border-foreground/10 mt-4 border-t pt-4">
-        <div
-          className={['mb-3 flex items-center gap-3', justifyWhenCollapsed].join(' ')}
+        <Link
+          href="/perfil"
+          onClick={onNavigate}
+          title={collapsed ? `${user.username} — Mi perfil` : undefined}
+          className={[
+            'hover:bg-foreground/5 mb-3 flex items-center gap-3 rounded-md p-2 transition-colors',
+            justifyWhenCollapsed,
+          ].join(' ')}
         >
           <Avatar>
             {user.photoUrl ? <Avatar.Image src={user.photoUrl} alt={user.username} /> : null}
@@ -201,20 +206,8 @@ function SidebarContent({
               {user.role === 'ADMIN' ? 'Administrador' : 'Piloto'}
             </div>
           </div>
-        </div>
+        </Link>
         <div className="flex flex-col gap-1">
-          <Link
-            href="/perfil"
-            onClick={onNavigate}
-            title={collapsed ? 'Mi perfil' : undefined}
-            className={[
-              'text-foreground/70 hover:bg-foreground/5 flex items-center gap-2 rounded-md px-3 py-2 text-sm',
-              justifyWhenCollapsed,
-            ].join(' ')}
-          >
-            <KeyRound size={16} />
-            <span className={labelHiddenWhenCollapsed}>Mi perfil</span>
-          </Link>
           <form action={logout}>
             <button
               type="submit"
@@ -231,16 +224,14 @@ function SidebarContent({
         </div>
 
         <div className="border-foreground/10 mt-2 hidden border-t pt-2 md:block">
-          <Button
-            variant="light"
-            isIconOnly
-            size="sm"
+          <button
+            type="button"
             aria-label={collapsed ? 'Expandir barra lateral' : 'Colapsar barra lateral'}
-            onPress={onToggleCollapsed}
-            className="w-full"
+            onClick={onToggleCollapsed}
+            className="text-foreground/60 hover:bg-foreground/10 hover:text-foreground flex w-full items-center justify-center rounded-md py-2 transition-colors"
           >
             {collapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
-          </Button>
+          </button>
         </div>
       </div>
     </div>
