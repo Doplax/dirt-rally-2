@@ -42,6 +42,7 @@ export type TimesTableEntry = {
     id: string;
     name: string;
     className: string;
+    classCode: string;
     photoUrl: string | null;
   };
   stage: {

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/db';
-import { TimesTable } from '@/components/shared/times-table';
+import { FilteredTimesTable } from '@/components/shared/filtered-times-table';
 import { CarAdminPanel } from './car-admin-panel';
 import { FavoriteToggle } from './favorite-toggle';
 
@@ -133,8 +133,8 @@ export default async function CarDetailPage({ params }: { params: Promise<{ id: 
         </header>
       </div>
 
-      <TimesTable
-        entries={sortedTimes.map((t) => ({
+      <FilteredTimesTable
+        times={sortedTimes.map((t) => ({
           id: t.id,
           totalMs: t.totalMs,
           timeMs: t.timeMs,
@@ -149,11 +149,14 @@ export default async function CarDetailPage({ params }: { params: Promise<{ id: 
             id: car.id,
             name: car.name,
             className: car.className,
+            classCode: car.classCode,
             photoUrl: car.photoUrl,
           },
           stage: t.stage,
         }))}
         columns={['rank', 'stage', 'runner', 'time', 'penalty', 'total', 'conditions', 'date']}
+        filters={['runner', 'weather', 'dnf']}
+        filtersStorageKey={`coches.${car.id}.filtersOpen`}
         emptyMessage="Aún no hay tiempos registrados con este coche."
       />
     </section>

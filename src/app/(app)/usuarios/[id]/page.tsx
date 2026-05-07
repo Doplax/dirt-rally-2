@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/db';
-import { TimesTable } from '@/components/shared/times-table';
+import { FilteredTimesTable } from '@/components/shared/filtered-times-table';
 import { UserAdminPanel } from './user-admin-panel';
 
 export const metadata = { title: 'Detalle de usuario · DiRT Tracker' };
@@ -20,7 +20,13 @@ export default async function UserDetailPage({ params }: { params: Promise<{ id:
       timesAsRunner: {
         include: {
           car: {
-            select: { id: true, name: true, className: true, photoUrl: true },
+            select: {
+              id: true,
+              name: true,
+              className: true,
+              classCode: true,
+              photoUrl: true,
+            },
           },
           stage: {
             select: {
@@ -136,8 +142,8 @@ export default async function UserDetailPage({ params }: { params: Promise<{ id:
         </header>
       </div>
 
-      <TimesTable
-        entries={sortedTimes.map((t) => ({
+      <FilteredTimesTable
+        times={sortedTimes.map((t) => ({
           id: t.id,
           totalMs: t.totalMs,
           timeMs: t.timeMs,
@@ -152,6 +158,8 @@ export default async function UserDetailPage({ params }: { params: Promise<{ id:
           stage: t.stage,
         }))}
         columns={['rank', 'stage', 'car', 'time', 'penalty', 'total', 'conditions', 'date']}
+        filters={['car', 'class', 'weather', 'dnf']}
+        filtersStorageKey={`usuarios.${user.id}.filtersOpen`}
         emptyMessage={`${user.username} aún no ha registrado ningún tiempo.`}
       />
     </section>
