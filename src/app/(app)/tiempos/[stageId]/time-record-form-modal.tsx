@@ -63,7 +63,7 @@ export function TimeRecordFormModal({
       trigger={trigger}
       title={initial ? 'Editar tiempo' : 'Registrar tiempo'}
       description="Indica piloto, coche, tiempo y condiciones."
-      size="lg"
+      size="cover"
     >
       {(close) => (
         <TimeRecordForm
@@ -229,7 +229,7 @@ export function TimeRecordForm({
   return (
     <form
       onSubmit={onSubmit}
-      className="grid grid-cols-2 gap-3 sm:grid-cols-2 md:grid-cols-12 md:items-end"
+      className="@container grid grid-cols-2 gap-3 sm:grid-cols-2 @3xl:grid-cols-12 @3xl:items-end"
     >
       {/* Row 1 — identidad y números */}
       <IconCombobox
@@ -238,7 +238,7 @@ export function TimeRecordForm({
         value={runnerId}
         onChange={setRunnerId}
         searchable
-        className="col-span-2 md:col-span-3"
+        className="col-span-2 @3xl:col-span-3"
       />
       <IconCombobox
         label="Coche"
@@ -246,7 +246,7 @@ export function TimeRecordForm({
         value={carId}
         onChange={setCarId}
         searchable
-        className="col-span-2 md:col-span-5"
+        className="col-span-2 @3xl:col-span-5"
       />
       <MaskedTimeField
         label="Tiempo"
@@ -254,13 +254,13 @@ export function TimeRecordForm({
         onChangeDigits={setTimeDigits}
         isRequired={!isDnf}
         isDisabled={isDnf}
-        className="col-span-1 md:col-span-2"
+        className="col-span-1 @3xl:col-span-2"
       />
       <MaskedTimeField
         label="Sanción"
         digits={penaltyDigits}
         onChangeDigits={setPenaltyDigits}
-        className="col-span-1 md:col-span-2"
+        className="col-span-1 @3xl:col-span-2"
       />
 
       {/* Row 2 — condiciones (4 columnas iguales) */}
@@ -269,28 +269,28 @@ export function TimeRecordForm({
         options={weatherOptions}
         value={weather}
         onChange={(id) => setWeather(id as Weather)}
-        className="col-span-1 md:col-span-3"
+        className="col-span-1 @3xl:col-span-3"
       />
       <IconCombobox
         label="Hora"
         options={timeOfDayOptions}
         value={timeOfDay}
         onChange={(id) => setTimeOfDay(id as TimeOfDay)}
-        className="col-span-1 md:col-span-3"
+        className="col-span-1 @3xl:col-span-3"
       />
       <IconCombobox
         label="Mando"
         options={inputDeviceOptions}
         value={inputDevice}
         onChange={(id) => setInputDevice(id as InputDevice)}
-        className="col-span-1 md:col-span-3"
+        className="col-span-1 @3xl:col-span-3"
       />
       <IconCombobox
         label="VR"
         options={vrOptions}
         value={usesVr ? 'ON' : 'OFF'}
         onChange={(id) => setUsesVr(id === 'ON')}
-        className="col-span-1 md:col-span-3"
+        className="col-span-1 @3xl:col-span-3"
       />
 
       {/* Row 3 — toggles, notas y acción */}
@@ -298,20 +298,20 @@ export function TimeRecordForm({
         label="DNF (no terminado)"
         isSelected={isDnf}
         onChange={setIsDnf}
-        className="col-span-2 md:col-span-3"
+        className="col-span-2 @3xl:col-span-3"
       />
       <Field
         label="Notas"
         value={notes}
         onChange={setNotes}
         inputProps={{ placeholder: 'Opcional' }}
-        className="col-span-2 md:col-span-6"
+        className="col-span-2 @3xl:col-span-6"
       />
       <Button
         type="submit"
         variant="primary"
         isDisabled={pending}
-        className="col-span-2 md:col-span-3"
+        className="col-span-2 @3xl:col-span-3"
         fullWidth
       >
         {pending ? 'Guardando…' : initial ? 'Guardar cambios' : 'Registrar tiempo'}

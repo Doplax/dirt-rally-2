@@ -9,7 +9,7 @@ export type FormModalProps = {
   title: string;
   description?: string;
   children: (close: () => void) => ReactNode;
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'md' | 'lg' | 'cover' | 'full';
 };
 
 export function FormModal({ trigger, title, description, children, size = 'md' }: FormModalProps) {
