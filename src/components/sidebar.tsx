@@ -9,6 +9,7 @@ import {
   LogOut,
   Map,
   Menu,
+  Shield,
   Users,
   X,
 } from 'lucide-react';
@@ -33,6 +34,7 @@ const NAV_ITEMS: NavItem[] = [
   { href: '/mapas', label: 'Mapas', icon: Map },
   { href: '/coches', label: 'Coches', icon: Car },
   { href: '/usuarios', label: 'Usuarios', icon: Users, adminOnly: true },
+  { href: '/admin', label: 'Admin', icon: Shield, adminOnly: true },
 ];
 
 type SidebarUser = {
@@ -48,6 +50,7 @@ export function Sidebar({ user }: { user: SidebarUser }) {
   useEffect(() => {
     try {
       if (window.localStorage.getItem(SIDEBAR_COLLAPSED_STORAGE_KEY) === '1') {
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time hydration from localStorage; SSR can't read it
         setDesktopCollapsed(true);
       }
     } catch {

@@ -20,7 +20,16 @@ export function FormModal({ trigger, title, description, children, size = 'md' }
       {trigger}
       <Modal.Backdrop>
         <Modal.Container size={size}>
-          <Modal.Dialog>
+          {/* `cover` size from HeroUI applies `h-full min-h-full`, which
+              stretches the dialog to the viewport even when the form is
+              short. Override to natural height + cap so it stays centered. */}
+          <Modal.Dialog
+            className={
+              size === 'cover' || size === 'full'
+                ? '!h-auto !min-h-0 max-h-[90vh] overflow-y-auto'
+                : undefined
+            }
+          >
             <Modal.Header>
               <Modal.Heading>{title}</Modal.Heading>
               {description ? (

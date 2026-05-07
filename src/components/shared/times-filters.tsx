@@ -430,8 +430,8 @@ export function TimesFilters({
           aria-hidden={!open}
         >
           <div className="overflow-hidden">
-            <div className="border-surface-border border-t px-3 pt-3 pb-3 sm:px-4 sm:pt-4 sm:pb-4">
-              <div className="@container grid grid-cols-2 gap-3 @3xl:grid-cols-12">
+            <div className="@container border-surface-border border-t px-3 pt-3 pb-3 sm:px-4 sm:pt-4 sm:pb-4">
+              <div className="grid grid-cols-2 gap-3 @3xl:grid-cols-12">
                 {showRunner ? (
                   <IconCombobox
                     label="Piloto"

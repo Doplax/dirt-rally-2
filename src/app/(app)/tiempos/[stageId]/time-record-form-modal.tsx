@@ -227,9 +227,10 @@ export function TimeRecordForm({
   };
 
   return (
+    <div className="@container">
     <form
       onSubmit={onSubmit}
-      className="@container grid grid-cols-2 gap-3 sm:grid-cols-2 @3xl:grid-cols-12 @3xl:items-end"
+      className="grid grid-cols-2 gap-3 sm:grid-cols-2 @3xl:grid-cols-12 @3xl:items-end"
     >
       {/* Row 1 — identidad y números */}
       <IconCombobox
@@ -319,6 +320,7 @@ export function TimeRecordForm({
 
       {error ? <p className="text-danger col-span-full text-sm">{error}</p> : null}
     </form>
+    </div>
   );
 }
 
