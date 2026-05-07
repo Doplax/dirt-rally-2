@@ -18,5 +18,16 @@ export const authConfig = {
   session: { strategy: 'jwt' },
   callbacks: {
     authorized: () => true,
+    // Middleware runs in the edge runtime with this config, so it must mirror
+    // the session shape that auth.ts builds in Node. Without this, the default
+    // payload only exposes { name, email, image } and `session.user.id` is
+    // undefined — middleware would treat every request as unauthenticated.
+    session: ({ session, token }) => {
+      session.user.id = token.id as string;
+      session.user.username = token.username as string;
+      session.user.role = token.role as typeof session.user.role;
+      session.user.mustChangePassword = token.mustChangePassword as boolean;
+      return session;
+    },
   },
 } satisfies NextAuthConfig;
