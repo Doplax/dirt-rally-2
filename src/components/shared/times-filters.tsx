@@ -1,7 +1,7 @@
 'use client';
 
 import { Avatar } from '@heroui/react';
-import { Car as CarIcon, ChevronDown, Filter, Layers, Star, Users } from 'lucide-react';
+import { Car as CarIcon, ChevronDown, Filter, Layers, RotateCcw, Star, Users } from 'lucide-react';
 import Image from 'next/image';
 import {
   useEffect,
@@ -238,6 +238,17 @@ export function TimesFilters({
     weatherFilter,
   ]);
 
+  const hasActiveFilters =
+    !!runnerFilter || !!carFilter || !!classFilter || !!weatherFilter || (showDnf && includeDnf);
+
+  const resetFilters = () => {
+    setRunnerFilter('');
+    setCarFilter('');
+    setClassFilter('');
+    setWeatherFilter('');
+    setIncludeDnf(false);
+  };
+
   const summary = useMemo(() => {
     const parts: string[] = [];
     if (runnerFilter) {
@@ -270,36 +281,48 @@ export function TimesFilters({
   return (
     <>
       <div className="border-foreground/10 overflow-hidden rounded-xl border">
-        <button
-          type="button"
-          onClick={() => setOpen((o) => !o)}
-          aria-expanded={open}
-          className="hover:bg-foreground/5 group flex w-full items-center justify-between gap-3 px-3 py-2.5 text-left transition-colors sm:px-4 sm:py-3"
-        >
-          <span className="flex min-w-0 flex-1 items-center gap-2.5 sm:gap-3">
-            <span
-              className={[
-                'flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors duration-300',
-                open ? 'bg-primary/15 text-primary' : 'bg-foreground/10 text-foreground/70',
-              ].join(' ')}
-            >
-              <Filter size={14} />
-            </span>
-            <span className="flex min-w-0 flex-1 flex-col">
-              <span className="text-sm font-semibold">Filtros</span>
-              <span className="text-foreground/50 hidden truncate text-xs sm:inline">
-                {summary}
+        <div className="hover:bg-foreground/5 group flex w-full items-center gap-2 pr-2 transition-colors">
+          <button
+            type="button"
+            onClick={() => setOpen((o) => !o)}
+            aria-expanded={open}
+            className="flex min-w-0 flex-1 items-center justify-between gap-3 px-3 py-2.5 text-left sm:px-4 sm:py-3"
+          >
+            <span className="flex min-w-0 flex-1 items-center gap-2.5 sm:gap-3">
+              <span
+                className={[
+                  'flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors duration-300',
+                  open ? 'bg-primary/15 text-primary' : 'bg-foreground/10 text-foreground/70',
+                ].join(' ')}
+              >
+                <Filter size={14} />
+              </span>
+              <span className="flex min-w-0 flex-1 flex-col">
+                <span className="text-sm font-semibold">Filtros</span>
+                <span className="text-foreground/50 hidden truncate text-xs sm:inline">
+                  {summary}
+                </span>
               </span>
             </span>
-          </span>
-          <ChevronDown
-            size={18}
-            className={[
-              'text-foreground/60 shrink-0 transition-transform duration-300',
-              open ? 'rotate-180' : '',
-            ].join(' ')}
-          />
-        </button>
+            <ChevronDown
+              size={18}
+              className={[
+                'text-foreground/60 shrink-0 transition-transform duration-300',
+                open ? 'rotate-180' : '',
+              ].join(' ')}
+            />
+          </button>
+          <button
+            type="button"
+            onClick={resetFilters}
+            disabled={!hasActiveFilters}
+            aria-label="Limpiar filtros"
+            className="text-foreground/60 hover:bg-foreground/10 hover:text-foreground flex shrink-0 items-center gap-1.5 rounded-md px-2 py-1.5 text-xs transition-colors disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent"
+          >
+            <RotateCcw size={13} />
+            <span className="hidden sm:inline">Limpiar</span>
+          </button>
+        </div>
         <div
           className={[
             'grid transition-[grid-template-rows] duration-300 ease-in-out',
