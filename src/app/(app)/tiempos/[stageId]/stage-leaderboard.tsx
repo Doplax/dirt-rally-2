@@ -114,9 +114,9 @@ export default function StageLeaderboard({
           onClick={() => setFormOpen((o) => !o)}
           aria-expanded={formOpen}
           aria-controls="registrar-tiempo-form"
-          className="hover:bg-foreground/5 group flex w-full items-center justify-between gap-3 px-4 py-3 text-left transition-colors"
+          className="hover:bg-foreground/5 group flex w-full items-center justify-between gap-3 px-3 py-2.5 text-left transition-colors sm:px-4 sm:py-3"
         >
-          <span className="flex items-center gap-3">
+          <span className="flex min-w-0 flex-1 items-center gap-2.5 sm:gap-3">
             <span
               className={[
                 'flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors duration-300',
@@ -131,9 +131,9 @@ export default function StageLeaderboard({
                 ].join(' ')}
               />
             </span>
-            <span className="flex flex-col">
+            <span className="flex min-w-0 flex-1 flex-col">
               <span className="text-sm font-semibold">Registrar tiempo</span>
-              <span className="text-foreground/50 text-xs">
+              <span className="text-foreground/50 hidden truncate text-xs sm:inline">
                 {formOpen
                   ? 'Coche, clima y hora se mantienen entre envíos'
                   : 'Pulsa para añadir un nuevo tiempo a este tramo'}
@@ -157,7 +157,7 @@ export default function StageLeaderboard({
           aria-hidden={!formOpen}
         >
           <div className="overflow-hidden">
-            <div className="border-foreground/10 border-t px-4 pt-4 pb-4">
+            <div className="border-foreground/10 border-t px-3 pt-3 pb-3 sm:px-4 sm:pt-4 sm:pb-4">
               <TimeRecordForm
                 stageId={stage.id}
                 currentUserId={currentUserId}

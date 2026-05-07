@@ -95,12 +95,14 @@ export function TimeRecordForm({
   const [weather, setWeather] = useState<Weather>(initial?.weather ?? 'DRY');
   const [timeOfDay, setTimeOfDay] = useState<TimeOfDay>(initial?.timeOfDay ?? 'DAY');
 
-  const [time, setTime] = useState(
-    initial && !initial.isDnf ? msToString(initial.timeMs) : '',
+  const [timeDigits, setTimeDigits] = useState(
+    initial && !initial.isDnf ? msToTimeDigits(initial.timeMs) : '',
   );
-  const [penalty, setPenalty] = useState(
-    initial && initial.penaltyMs > 0 ? msToString(initial.penaltyMs) : '',
+  const [penaltyDigits, setPenaltyDigits] = useState(
+    initial && initial.penaltyMs > 0 ? msToTimeDigits(initial.penaltyMs) : '',
   );
+  const time = timeDigitsToString(timeDigits);
+  const penalty = timeDigitsToString(penaltyDigits);
   const [notes, setNotes] = useState(initial?.notes ?? '');
   const [isDnf, setIsDnf] = useState(initial?.isDnf ?? false);
 
@@ -175,8 +177,8 @@ export function TimeRecordForm({
       }
       router.refresh();
       if (resetClearableOnSuccess) {
-        setTime('');
-        setPenalty('');
+        setTimeDigits('');
+        setPenaltyDigits('');
         setNotes('');
         setIsDnf(false);
       }
@@ -184,8 +186,14 @@ export function TimeRecordForm({
     });
   };
 
+  const onChangeTime = (val: string) => setTimeDigits(extractDigits(val));
+  const onChangePenalty = (val: string) => setPenaltyDigits(extractDigits(val));
+
   return (
-    <form onSubmit={onSubmit} className="grid grid-cols-2 gap-3 lg:grid-cols-12">
+    <form
+      onSubmit={onSubmit}
+      className="grid grid-cols-2 gap-3 sm:grid-cols-2 lg:grid-cols-12"
+    >
       <IconCombobox
         label="Piloto"
         options={userOptions}
@@ -205,17 +213,28 @@ export function TimeRecordForm({
       <Field
         label="Tiempo"
         value={time}
-        onChange={setTime}
-        inputProps={{ placeholder: '04:23.567', disabled: isDnf }}
+        onChange={onChangeTime}
+        inputProps={{
+          placeholder: '00:00.000',
+          disabled: isDnf,
+          inputMode: 'numeric',
+          autoComplete: 'off',
+          className: 'font-mono tabular-nums',
+        }}
         isRequired={!isDnf}
-        className="lg:col-span-3"
+        className="col-span-2 sm:col-span-1 lg:col-span-3"
       />
       <Field
         label="Sanción"
         value={penalty}
-        onChange={setPenalty}
-        inputProps={{ placeholder: '00:10.000' }}
-        className="lg:col-span-2"
+        onChange={onChangePenalty}
+        inputProps={{
+          placeholder: '00:00.000',
+          inputMode: 'numeric',
+          autoComplete: 'off',
+          className: 'font-mono tabular-nums',
+        }}
+        className="col-span-2 sm:col-span-1 lg:col-span-2"
       />
 
       <IconCombobox
@@ -239,11 +258,12 @@ export function TimeRecordForm({
         inputProps={{ placeholder: 'Opcional' }}
         className="col-span-2 lg:col-span-5"
       />
-      <label className="text-foreground/80 col-span-2 flex items-end gap-2 pb-2 text-sm lg:col-span-3">
+      <label className="text-foreground/80 col-span-2 flex items-center gap-2 text-sm sm:items-end sm:pb-2 lg:col-span-3">
         <input
           type="checkbox"
           checked={isDnf}
           onChange={(e) => setIsDnf(e.target.checked)}
+          className="h-4 w-4"
         />
         DNF (no terminado)
       </label>
@@ -254,7 +274,7 @@ export function TimeRecordForm({
         type="submit"
         variant="primary"
         isDisabled={pending}
-        className="col-span-full lg:col-span-3 lg:col-start-10"
+        className="col-span-2 lg:col-span-3 lg:col-start-10"
         fullWidth
       >
         {pending ? 'Guardando…' : initial ? 'Guardar cambios' : 'Registrar tiempo'}
@@ -297,4 +317,26 @@ function SvgVisual({ src, alt }: { src: string; alt: string }) {
       <Image src={src} alt={alt} width={22} height={22} />
     </span>
   );
+}
+
+/**
+ * Time-input helpers. We keep state as a digits-only string (max 7 chars:
+ * MM SS mmm) and format on display so the user always sees segmented
+ * "MM:SS.mmm" with leading zeros — typing right-to-left fills milliseconds
+ * first and shifts left as digits are added (3 → "00:00.003", 1234 →
+ * "00:01.234", 423567 → "04:23.567").
+ */
+function extractDigits(input: string): string {
+  return input.replace(/\D/g, '').slice(-7);
+}
+
+function timeDigitsToString(digits: string): string {
+  if (!digits) return '';
+  const padded = digits.padStart(7, '0');
+  return `${padded.slice(0, 2)}:${padded.slice(2, 4)}.${padded.slice(4)}`;
+}
+
+function msToTimeDigits(ms: number): string {
+  if (!ms) return '';
+  return msToString(ms).replace(/\D/g, '').slice(-7);
 }
