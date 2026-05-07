@@ -71,7 +71,7 @@ export function TimesFilters({
   const [inputFilter, setInputFilter] = useState<'' | InputDevice>('');
   const [vrFilter, setVrFilter] = useState<VrFilter>('');
   const [includeDnf, setIncludeDnf] = useState(false);
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (!storageKey) return;
@@ -440,7 +440,7 @@ export function TimesFilters({
                     onChange={setRunnerFilter}
                     searchable
                     placeholder="Todos los pilotos"
-                    className="col-span-2 @3xl:col-span-3"
+                    className="col-span-2 @3xl:col-span-4"
                   />
                 ) : null}
                 {showCar ? (
@@ -462,7 +462,7 @@ export function TimesFilters({
                     onChange={setClassFilter}
                     searchable
                     placeholder="Todas las clases"
-                    className="col-span-2 @3xl:col-span-3"
+                    className="col-span-2 @3xl:col-span-4"
                   />
                 ) : null}
                 {showWeather ? (
@@ -472,7 +472,7 @@ export function TimesFilters({
                     value={weatherFilter}
                     onChange={(id) => setWeatherFilter(id as typeof weatherFilter)}
                     placeholder="Todos los climas"
-                    className="col-span-2 @3xl:col-span-2"
+                    className="col-span-2 @3xl:col-span-4"
                   />
                 ) : null}
                 {showInput ? (
@@ -482,7 +482,7 @@ export function TimesFilters({
                     value={inputFilter}
                     onChange={(id) => setInputFilter(id as typeof inputFilter)}
                     placeholder="Mando y volante"
-                    className="col-span-2 @3xl:col-span-2"
+                    className="col-span-2 @3xl:col-span-4"
                   />
                 ) : null}
                 {showVr ? (
@@ -492,7 +492,7 @@ export function TimesFilters({
                     value={vrFilter}
                     onChange={(id) => setVrFilter(id as VrFilter)}
                     placeholder="Con y sin VR"
-                    className="col-span-2 @3xl:col-span-2"
+                    className="col-span-2 @3xl:col-span-4"
                   />
                 ) : null}
                 {showDnf ? (

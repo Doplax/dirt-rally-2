@@ -38,7 +38,7 @@ export default function StageLeaderboard({
   favoriteCarIds: string[];
   times: LeaderboardEntry[];
 }) {
-  const [formOpen, setFormOpen] = useState(true);
+  const [formOpen, setFormOpen] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
   const tableWrapperRef = useRef<HTMLDivElement>(null);
 
