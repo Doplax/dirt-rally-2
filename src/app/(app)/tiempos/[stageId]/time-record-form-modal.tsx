@@ -5,7 +5,7 @@ import { Star } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState, useTransition, type ReactNode } from 'react';
-import { TimeOfDay, Weather } from '@prisma/client';
+import { InputDevice, TimeOfDay, Weather } from '@prisma/client';
 import { Field } from '@/components/ui/field';
 import { FormModal } from '@/components/ui/form-modal';
 import { IconCombobox, type ComboOption } from '@/components/ui/icon-combobox';
@@ -33,6 +33,16 @@ const TIME_OF_DAY_META: Record<TimeOfDay, { label: string; icon: string }> = {
   NIGHT: { label: 'Noche', icon: '/icons/time-of-day/night.svg' },
   DUSK: { label: 'Atardecer', icon: '/icons/time-of-day/dusk.svg' },
   DAWN: { label: 'Amanecer', icon: '/icons/time-of-day/dawn.svg' },
+};
+
+const INPUT_DEVICE_META: Record<InputDevice, { label: string; icon: string }> = {
+  GAMEPAD: { label: 'Mando', icon: '/icons/setup/gamepad.svg' },
+  WHEEL: { label: 'Volante', icon: '/icons/setup/wheel.svg' },
+};
+
+const VR_META: Record<'ON' | 'OFF', { label: string; icon: string }> = {
+  ON: { label: 'Con VR', icon: '/icons/setup/vr-on.svg' },
+  OFF: { label: 'Sin VR', icon: '/icons/setup/vr-off.svg' },
 };
 
 export function TimeRecordFormModal({
@@ -96,6 +106,10 @@ export function TimeRecordForm({
   const [carId, setCarId] = useState(initial?.car.id ?? selections.cars[0]?.id ?? '');
   const [weather, setWeather] = useState<Weather>(initial?.weather ?? 'DRY');
   const [timeOfDay, setTimeOfDay] = useState<TimeOfDay>(initial?.timeOfDay ?? 'DAY');
+  const [inputDevice, setInputDevice] = useState<InputDevice>(
+    initial?.inputDevice ?? 'GAMEPAD',
+  );
+  const [usesVr, setUsesVr] = useState<boolean>(initial?.usesVr ?? false);
 
   const [timeDigits, setTimeDigits] = useState(
     initial && !initial.isDnf ? msToTimeDigits(initial.timeMs) : '',
@@ -155,6 +169,28 @@ export function TimeRecordForm({
     [],
   );
 
+  const inputDeviceOptions = useMemo<ComboOption[]>(
+    () =>
+      (Object.keys(INPUT_DEVICE_META) as InputDevice[]).map((d) => ({
+        id: d,
+        label: INPUT_DEVICE_META[d].label,
+        visual: (
+          <SvgVisual src={INPUT_DEVICE_META[d].icon} alt={INPUT_DEVICE_META[d].label} />
+        ),
+      })),
+    [],
+  );
+
+  const vrOptions = useMemo<ComboOption[]>(
+    () =>
+      (Object.keys(VR_META) as Array<keyof typeof VR_META>).map((k) => ({
+        id: k,
+        label: VR_META[k].label,
+        visual: <SvgVisual src={VR_META[k].icon} alt={VR_META[k].label} />,
+      })),
+    [],
+  );
+
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError(null);
@@ -166,6 +202,8 @@ export function TimeRecordForm({
     formData.set('penalty', penalty);
     formData.set('weather', weather);
     formData.set('timeOfDay', timeOfDay);
+    formData.set('inputDevice', inputDevice);
+    formData.set('usesVr', usesVr ? 'true' : 'false');
     formData.set('isDnf', isDnf ? 'true' : 'false');
     formData.set('notes', notes);
 
@@ -238,18 +276,32 @@ export function TimeRecordForm({
         onChange={(id) => setTimeOfDay(id as TimeOfDay)}
         className="col-span-1 lg:col-span-2"
       />
-      <Field
-        label="Notas"
-        value={notes}
-        onChange={setNotes}
-        inputProps={{ placeholder: 'Opcional' }}
-        className="col-span-2 lg:col-span-5"
+      <IconCombobox
+        label="Mando"
+        options={inputDeviceOptions}
+        value={inputDevice}
+        onChange={(id) => setInputDevice(id as InputDevice)}
+        className="col-span-1 lg:col-span-2"
+      />
+      <IconCombobox
+        label="VR"
+        options={vrOptions}
+        value={usesVr ? 'ON' : 'OFF'}
+        onChange={(id) => setUsesVr(id === 'ON')}
+        className="col-span-1 lg:col-span-2"
       />
       <SwitchField
         label="DNF (no terminado)"
         isSelected={isDnf}
         onChange={setIsDnf}
-        className="col-span-2 lg:col-span-3"
+        className="col-span-2 lg:col-span-4"
+      />
+      <Field
+        label="Notas"
+        value={notes}
+        onChange={setNotes}
+        inputProps={{ placeholder: 'Opcional' }}
+        className="col-span-2 lg:col-span-9"
       />
 
       {error ? <p className="text-danger col-span-full text-sm">{error}</p> : null}
@@ -258,7 +310,7 @@ export function TimeRecordForm({
         type="submit"
         variant="primary"
         isDisabled={pending}
-        className="col-span-2 lg:col-span-3 lg:col-start-10"
+        className="col-span-2 lg:col-span-3"
         fullWidth
       >
         {pending ? 'Guardando…' : initial ? 'Guardar cambios' : 'Registrar tiempo'}

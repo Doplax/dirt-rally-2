@@ -123,10 +123,11 @@ export default function StageLeaderboard({
           'penalty',
           'total',
           'conditions',
+          'setup',
           'date',
           'actions',
         ]}
-        filters={['runner', 'car', 'class', 'weather', 'dnf']}
+        filters={['runner', 'car', 'class', 'weather', 'input', 'vr', 'dnf']}
         filtersStorageKey="tiempos.filtersOpen"
         favoriteCarIds={favoriteCarIds}
         renderActions={(entry) => (

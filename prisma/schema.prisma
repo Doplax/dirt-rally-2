@@ -101,9 +101,11 @@ model TimeRecord {
   penaltyMs Int     @default(0)
   isDnf     Boolean @default(false)
 
-  weather   Weather   @default(DRY)
-  timeOfDay TimeOfDay @default(DAY)
-  notes     String?
+  weather     Weather     @default(DRY)
+  timeOfDay   TimeOfDay   @default(DAY)
+  inputDevice InputDevice @default(GAMEPAD)
+  usesVr      Boolean     @default(false)
+  notes       String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -124,4 +126,9 @@ enum TimeOfDay {
   NIGHT
   DUSK
   DAWN
+}
+
+enum InputDevice {
+  GAMEPAD
+  WHEEL
 }

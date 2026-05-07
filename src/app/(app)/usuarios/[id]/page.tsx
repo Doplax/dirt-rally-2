@@ -151,14 +151,16 @@ export default async function UserDetailPage({ params }: { params: Promise<{ id:
           isDnf: t.isDnf,
           weather: t.weather,
           timeOfDay: t.timeOfDay,
+          inputDevice: t.inputDevice,
+          usesVr: t.usesVr,
           createdAt: t.createdAt.toISOString(),
           href: `/tiempos/${t.stage.id}`,
           runner: { id: user.id, username: user.username, photoUrl: user.photoUrl },
           car: t.car,
           stage: t.stage,
         }))}
-        columns={['rank', 'stage', 'car', 'time', 'penalty', 'total', 'conditions', 'date']}
-        filters={['car', 'class', 'weather', 'dnf']}
+        columns={['rank', 'stage', 'car', 'time', 'penalty', 'total', 'conditions', 'setup', 'date']}
+        filters={['car', 'class', 'weather', 'input', 'vr', 'dnf']}
         filtersStorageKey={`usuarios.${user.id}.filtersOpen`}
         emptyMessage={`${user.username} aún no ha registrado ningún tiempo.`}
       />

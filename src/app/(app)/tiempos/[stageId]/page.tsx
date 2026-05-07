@@ -179,6 +179,8 @@ export default async function StageDetailPage({
           isDnf: t.isDnf,
           weather: t.weather,
           timeOfDay: t.timeOfDay,
+          inputDevice: t.inputDevice,
+          usesVr: t.usesVr,
           notes: t.notes,
           createdAt: t.createdAt.toISOString(),
         }))}

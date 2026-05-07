@@ -9,7 +9,7 @@ import {
   useState,
   type ReactNode,
 } from 'react';
-import { Weather } from '@prisma/client';
+import { InputDevice, Weather } from '@prisma/client';
 import { IconCombobox, type ComboOption } from '@/components/ui/icon-combobox';
 import { SwitchField } from '@/components/ui/switch-field';
 import type { TimesTableEntry } from './times-table';
@@ -28,7 +28,19 @@ const WEATHER_ICON: Record<Weather, string> = {
   ICE: '/icons/weather/ice.svg',
 };
 
-export type TimesFilterKey = 'runner' | 'car' | 'class' | 'weather' | 'dnf';
+const INPUT_DEVICE_LABEL: Record<InputDevice, string> = {
+  GAMEPAD: 'Mando',
+  WHEEL: 'Volante',
+};
+
+const INPUT_DEVICE_ICON: Record<InputDevice, string> = {
+  GAMEPAD: '/icons/setup/gamepad.svg',
+  WHEEL: '/icons/setup/wheel.svg',
+};
+
+type VrFilter = '' | 'ON' | 'OFF';
+
+export type TimesFilterKey = 'runner' | 'car' | 'class' | 'weather' | 'input' | 'vr' | 'dnf';
 
 type Props = {
   times: TimesTableEntry[];
@@ -56,6 +68,8 @@ export function TimesFilters({
   const [carFilter, setCarFilter] = useState('');
   const [classFilter, setClassFilter] = useState('');
   const [weatherFilter, setWeatherFilter] = useState<'' | Weather>('');
+  const [inputFilter, setInputFilter] = useState<'' | InputDevice>('');
+  const [vrFilter, setVrFilter] = useState<VrFilter>('');
   const [includeDnf, setIncludeDnf] = useState(false);
   const [open, setOpen] = useState(true);
 
@@ -73,6 +87,8 @@ export function TimesFilters({
   const showCar = show.includes('car');
   const showClass = show.includes('class');
   const showWeather = show.includes('weather');
+  const showInput = show.includes('input');
+  const showVr = show.includes('vr');
   const showDnf = show.includes('dnf');
 
   const runnerOptions = useMemo<ComboOption[]>(() => {
@@ -214,6 +230,68 @@ export function TimesFilters({
     ];
   }, [showWeather]);
 
+  const inputOptions = useMemo<ComboOption[]>(() => {
+    if (!showInput) return [];
+    return [
+      {
+        id: '',
+        label: 'Mando y volante',
+        visual: (
+          <span className="bg-foreground/5 text-foreground/40 flex h-9 w-9 shrink-0 items-center justify-center rounded">
+            <Filter size={16} />
+          </span>
+        ),
+      },
+      ...(Object.keys(INPUT_DEVICE_LABEL) as InputDevice[]).map((d) => ({
+        id: d,
+        label: INPUT_DEVICE_LABEL[d],
+        visual: (
+          <span className="bg-foreground/5 relative flex h-9 w-9 shrink-0 items-center justify-center rounded">
+            <Image
+              src={INPUT_DEVICE_ICON[d]}
+              alt={INPUT_DEVICE_LABEL[d]}
+              width={22}
+              height={22}
+            />
+          </span>
+        ),
+      })),
+    ];
+  }, [showInput]);
+
+  const vrOptions = useMemo<ComboOption[]>(() => {
+    if (!showVr) return [];
+    return [
+      {
+        id: '',
+        label: 'Con y sin VR',
+        visual: (
+          <span className="bg-foreground/5 text-foreground/40 flex h-9 w-9 shrink-0 items-center justify-center rounded">
+            <Filter size={16} />
+          </span>
+        ),
+      },
+      {
+        id: 'ON',
+        label: 'Con VR',
+        visual: (
+          <span className="bg-foreground/5 relative flex h-9 w-9 shrink-0 items-center justify-center rounded">
+            <Image src="/icons/setup/vr-on.svg" alt="Con VR" width={22} height={22} />
+          </span>
+        ),
+      },
+      {
+        id: 'OFF',
+        label: 'Sin VR',
+        visual: (
+          <span className="bg-foreground/5 relative flex h-9 w-9 shrink-0 items-center justify-center rounded">
+            <Image src="/icons/setup/vr-off.svg" alt="Sin VR" width={22} height={22} />
+          </span>
+        ),
+      },
+    ];
+  }, [showVr]);
+
   const filtered = useMemo(() => {
     return times.filter((t) => {
       if (showDnf && !includeDnf && t.isDnf) return false;
@@ -222,6 +300,11 @@ export function TimesFilters({
       if (showCar && carFilter && t.car.id !== carFilter) return false;
       if (showClass && classFilter && t.car.classCode !== classFilter) return false;
       if (showWeather && weatherFilter && t.weather !== weatherFilter) return false;
+      if (showInput && inputFilter && t.inputDevice !== inputFilter) return false;
+      if (showVr && vrFilter) {
+        if (vrFilter === 'ON' && !t.usesVr) return false;
+        if (vrFilter === 'OFF' && t.usesVr) return false;
+      }
       return true;
     });
   }, [
@@ -236,16 +319,28 @@ export function TimesFilters({
     classFilter,
     showWeather,
     weatherFilter,
+    showInput,
+    inputFilter,
+    showVr,
+    vrFilter,
   ]);
 
   const hasActiveFilters =
-    !!runnerFilter || !!carFilter || !!classFilter || !!weatherFilter || (showDnf && includeDnf);
+    !!runnerFilter ||
+    !!carFilter ||
+    !!classFilter ||
+    !!weatherFilter ||
+    !!inputFilter ||
+    !!vrFilter ||
+    (showDnf && includeDnf);
 
   const resetFilters = () => {
     setRunnerFilter('');
     setCarFilter('');
     setClassFilter('');
     setWeatherFilter('');
+    setInputFilter('');
+    setVrFilter('');
     setIncludeDnf(false);
   };
 
@@ -264,6 +359,8 @@ export function TimesFilters({
       if (o) parts.push(o.label);
     }
     if (weatherFilter) parts.push(WEATHER_LABEL[weatherFilter]);
+    if (inputFilter) parts.push(INPUT_DEVICE_LABEL[inputFilter]);
+    if (vrFilter) parts.push(vrFilter === 'ON' ? 'Con VR' : 'Sin VR');
     if (showDnf && includeDnf) parts.push('Incluir DNF');
     return parts.length ? parts.join(' · ') : 'Sin filtros aplicados';
   }, [
@@ -274,6 +371,8 @@ export function TimesFilters({
     classFilter,
     classOptions,
     weatherFilter,
+    inputFilter,
+    vrFilter,
     showDnf,
     includeDnf,
   ]);
@@ -373,6 +472,26 @@ export function TimesFilters({
                     value={weatherFilter}
                     onChange={(id) => setWeatherFilter(id as typeof weatherFilter)}
                     placeholder="Todos los climas"
+                    className="col-span-2 lg:col-span-2"
+                  />
+                ) : null}
+                {showInput ? (
+                  <IconCombobox
+                    label="Mando"
+                    options={inputOptions}
+                    value={inputFilter}
+                    onChange={(id) => setInputFilter(id as typeof inputFilter)}
+                    placeholder="Mando y volante"
+                    className="col-span-2 lg:col-span-2"
+                  />
+                ) : null}
+                {showVr ? (
+                  <IconCombobox
+                    label="VR"
+                    options={vrOptions}
+                    value={vrFilter}
+                    onChange={(id) => setVrFilter(id as VrFilter)}
+                    placeholder="Con y sin VR"
                     className="col-span-2 lg:col-span-2"
                   />
                 ) : null}

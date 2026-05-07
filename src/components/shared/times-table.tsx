@@ -5,7 +5,7 @@ import { ArrowDown, ArrowUp } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import type { ReactNode } from 'react';
-import { Direction, TimeOfDay, Weather } from '@prisma/client';
+import { Direction, InputDevice, TimeOfDay, Weather } from '@prisma/client';
 import { msToString } from '@/lib/time-format';
 
 const WEATHER_LABEL: Record<Weather, string> = {
@@ -22,6 +22,11 @@ const TIME_OF_DAY_LABEL: Record<TimeOfDay, string> = {
   DAWN: 'Amanecer',
 };
 
+const INPUT_DEVICE_META: Record<InputDevice, { label: string; icon: string }> = {
+  GAMEPAD: { label: 'Mando', icon: '/icons/setup/gamepad.svg' },
+  WHEEL: { label: 'Volante', icon: '/icons/setup/wheel.svg' },
+};
+
 export type TimesTableEntry = {
   id: string;
   totalMs: number;
@@ -30,6 +35,8 @@ export type TimesTableEntry = {
   isDnf: boolean;
   weather: Weather;
   timeOfDay: TimeOfDay;
+  inputDevice: InputDevice;
+  usesVr: boolean;
   notes?: string | null;
   createdAt: string;
   /** Optional precomputed URL — when present, clicking the row navigates here.
@@ -63,6 +70,7 @@ export type TimesColumn =
   | 'penalty'
   | 'total'
   | 'conditions'
+  | 'setup'
   | 'date'
   | 'actions';
 
@@ -75,6 +83,7 @@ const HEADERS: Record<TimesColumn, { label: string; align?: 'right' }> = {
   penalty: { label: 'Sanción', align: 'right' },
   total: { label: 'Total', align: 'right' },
   conditions: { label: 'Cond.' },
+  setup: { label: 'Setup' },
   date: { label: 'Fecha' },
   actions: { label: 'Acciones', align: 'right' },
 };
@@ -250,6 +259,38 @@ function Cell({
       return (
         <td className="px-3 py-2.5 text-foreground/70 whitespace-nowrap text-xs">
           {WEATHER_LABEL[entry.weather]} · {TIME_OF_DAY_LABEL[entry.timeOfDay]}
+        </td>
+      );
+    case 'setup':
+      return (
+        <td className="px-3 py-2.5 whitespace-nowrap">
+          <div className="flex items-center gap-1.5">
+            <span
+              className="bg-foreground/5 flex h-7 w-7 shrink-0 items-center justify-center rounded"
+              title={INPUT_DEVICE_META[entry.inputDevice].label}
+            >
+              <Image
+                src={INPUT_DEVICE_META[entry.inputDevice].icon}
+                alt={INPUT_DEVICE_META[entry.inputDevice].label}
+                width={18}
+                height={18}
+              />
+            </span>
+            <span
+              className={[
+                'flex h-7 w-7 shrink-0 items-center justify-center rounded',
+                entry.usesVr ? 'bg-purple-500/15' : 'bg-foreground/5',
+              ].join(' ')}
+              title={entry.usesVr ? 'Con VR' : 'Sin VR'}
+            >
+              <Image
+                src={entry.usesVr ? '/icons/setup/vr-on.svg' : '/icons/setup/vr-off.svg'}
+                alt={entry.usesVr ? 'Con VR' : 'Sin VR'}
+                width={18}
+                height={18}
+              />
+            </span>
+          </div>
         </td>
       );
     case 'date':

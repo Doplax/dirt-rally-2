@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
-import { TimeOfDay, Weather } from '@prisma/client';
+import { InputDevice, TimeOfDay, Weather } from '@prisma/client';
 import { prisma } from '@/lib/db';
 import { AuthError, requireSession } from '@/lib/permissions';
 import { stringToMs } from '@/lib/time-format';
@@ -26,6 +26,8 @@ const baseSchema = z.object({
   carId: z.string().min(1, 'Selecciona un coche'),
   weather: z.nativeEnum(Weather),
   timeOfDay: z.nativeEnum(TimeOfDay),
+  inputDevice: z.nativeEnum(InputDevice),
+  usesVr: z.boolean(),
   notes: z.string().max(500).optional().nullable(),
   isDnf: z.boolean(),
   penaltyMs: z.coerce.number().int().min(0).default(0),
@@ -71,6 +73,8 @@ function payloadFromForm(formData: FormData) {
     carId: formData.get('carId'),
     weather: formData.get('weather'),
     timeOfDay: formData.get('timeOfDay'),
+    inputDevice: formData.get('inputDevice'),
+    usesVr: readBoolean(formData.get('usesVr')),
     notes: (formData.get('notes') as string | null) || null,
     isDnf,
     penaltyMs,

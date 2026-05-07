@@ -142,6 +142,8 @@ export default async function CarDetailPage({ params }: { params: Promise<{ id: 
           isDnf: t.isDnf,
           weather: t.weather,
           timeOfDay: t.timeOfDay,
+          inputDevice: t.inputDevice,
+          usesVr: t.usesVr,
           createdAt: t.createdAt.toISOString(),
           href: `/tiempos/${t.stage.id}`,
           runner: t.runner,
@@ -154,8 +156,8 @@ export default async function CarDetailPage({ params }: { params: Promise<{ id: 
           },
           stage: t.stage,
         }))}
-        columns={['rank', 'stage', 'runner', 'time', 'penalty', 'total', 'conditions', 'date']}
-        filters={['runner', 'weather', 'dnf']}
+        columns={['rank', 'stage', 'runner', 'time', 'penalty', 'total', 'conditions', 'setup', 'date']}
+        filters={['runner', 'weather', 'input', 'vr', 'dnf']}
         filtersStorageKey={`coches.${car.id}.filtersOpen`}
         emptyMessage="Aún no hay tiempos registrados con este coche."
       />
